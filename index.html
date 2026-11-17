@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tênis Lab - Me22</title>
+<style>
+:root{--bg:#e8f4f8;--card:#ffffff;--tx:#12303d;--mut:#5b7a88;--ac:#2f9e6b;--ac2:#d7ec3c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f2230;--card:#17303f;--tx:#e6f3f8;--mut:#9bb8c6}}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+#start{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:linear-gradient(#bfe6f5,#e9f7ee 60%,#8fcf9f);z-index:9;text-align:center;color:#12303d}
+#start h1{margin:0;font-size:28px}#start p{margin:0;opacity:.7}
+#ball{width:150px;height:150px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 35% 30%,#f4ff7a,#cfe51f 55%,#a9c20c);position:relative;box-shadow:0 18px 20px -8px rgba(0,0,0,.35);animation:bounce 1.1s ease-in-out infinite;padding:0}
+#ball span{position:absolute;inset:0;border-radius:50%;overflow:hidden;pointer-events:none}
+#ball span::before,#ball span::after{content:"";position:absolute;width:126px;height:126px;border:5px solid rgba(255,255,255,.92);border-radius:50%;top:7px}
+#ball span::before{left:-84px}#ball span::after{right:-84px}
+#ball b{position:absolute;inset:0;display:grid;place-items:center;font-size:17px;color:#3a4a05;z-index:2;letter-spacing:.03em}
+.ver-tag{font-size:12px;font-weight:700;letter-spacing:.08em;color:#12303d;background:rgba(255,255,255,.55);padding:4px 12px;border-radius:99px;backdrop-filter:blur(4px);margin-top:-6px}
+@keyframes bounce{50%{transform:translateY(-34px) scale(.98,1.02)}0%,100%{transform:translateY(0) scale(1.05,.94)}}
+#app{display:none;height:100%;flex-direction:column}
+header{padding:8px 14px;display:flex;align-items:center;justify-content:space-between;font-weight:700}
+header small{font-weight:400;color:var(--mut)}
+#stage{flex:1;min-height:0;position:relative;background:linear-gradient(#bfe6f5,#eaf7f1);touch-action:none}
+canvas{width:100%;height:100%;display:block}
+#fsb,#uib,#ppb,#stb,#cmb,#mnb{position:absolute;bottom:8px;width:32px;height:32px;border-radius:50%;border:0;background:#ffffff66;color:#12303d;font-size:14px;line-height:1;opacity:.65;cursor:pointer;backdrop-filter:blur(4px);z-index:2;display:grid;place-items:center;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+#fsb{right:8px}
+#uib{right:46px}
+#ppb{right:84px}
+#stb{right:122px}
+#cmb{right:160px}
+#mnb{right:198px}
+#fsb:hover,#fsb:active,#uib:hover,#uib:active,#ppb:hover,#ppb:active,#stb:hover,#stb:active,#cmb:hover,#cmb:active,#mnb:hover,#mnb:active{opacity:1}
+#spd-menu,#stk-menu,#cam-menu,#main-menu{position:absolute;bottom:46px;background:var(--card);color:var(--tx);border:1px solid #9bb8c655;border-radius:12px;padding:4px;display:none;flex-direction:column;gap:2px;box-shadow:0 8px 20px rgba(0,0,0,.22);z-index:4}
+#spd-menu{right:84px;min-width:96px}
+#stk-menu{right:122px;min-width:168px;max-height:62vh;overflow-y:auto}
+#cam-menu{right:160px;min-width:160px;max-height:62vh;overflow-y:auto}
+#main-menu{right:198px;min-width:210px;max-height:68vh;overflow-y:auto}
+#spd-menu.open,#stk-menu.open,#cam-menu.open,#main-menu.open{display:flex}
+#spd-menu button,#stk-menu button,#cam-menu button,#main-menu button{border:0;background:transparent;color:var(--tx);padding:6px 10px;border-radius:8px;font-size:12.5px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
+#spd-menu button:hover,#stk-menu button:hover,#cam-menu button:hover,#main-menu button:hover{background:color-mix(in srgb,var(--ac) 14%,transparent)}
+#spd-menu button.on,#stk-menu button.on,#cam-menu button.on,#main-menu button.on{background:var(--ac);color:#fff;font-weight:600}
+body.hide-cap #cap{display:none!important}
+body.hide-cap #panel:has(#shots:empty){display:none!important}
+body.clean #panel,body.clean #sci,body.clean #drill-panel{display:none!important}
+#sci{position:absolute;left:8px;right:8px;top:8px;max-height:72%;overflow:auto;display:none;background:var(--card);color:var(--tx);border-radius:14px;padding:10px 14px;font-size:12.5px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:3}#sci ul{margin:6px 0;padding-left:18px}#sci li{margin-bottom:5px}#sci small{color:var(--mut)}
+#drill-panel{position:absolute;left:8px;right:8px;top:8px;max-height:75%;overflow:auto;display:none;background:var(--card);color:var(--tx);border-radius:14px;padding:14px;font-size:13px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:3}
+#drill-panel h2{margin:0 0 8px;font-size:17px;color:var(--ac)}
+#drill-panel .dr-card{background:color-mix(in srgb,var(--ac) 8%,transparent);border-left:4px solid var(--ac);padding:10px;border-radius:8px;margin-bottom:8px}
+#drill-panel .dr-card h4{margin:0 0 4px;font-size:14px}
+#drill-panel .dr-card p{margin:0;font-size:12.5px;color:var(--mut)}
+#panel{background:var(--card);border-radius:14px 14px 0 0;padding:5px 8px 7px;box-shadow:0 -4px 14px rgba(0,0,0,.12);max-height:42%;overflow:auto}
+.row{display:flex;gap:6px;overflow-x:auto;padding:2px 0;scrollbar-width:none}.row::-webkit-scrollbar{display:none}
+.lb{font-size:11px;color:var(--mut);margin:6px 0 0;text-transform:uppercase;letter-spacing:.05em}
+.c{flex:none;border:1px solid #9bb8c655;background:transparent;color:var(--tx);padding:6px 11px;border-radius:18px;font-size:13px;cursor:pointer}
+.c.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+#cap{margin-top:4px;padding:6px 10px;border-radius:12px;background:color-mix(in srgb,var(--ac) 13%,transparent);border-left:4px solid var(--ac);min-height:52px}
+#cap h3{margin:0 0 2px;font-size:14px}#cap p{margin:0;font-size:13px;line-height:1.35}
+</style></head><body>
+<div id="start"><h1>🎾 Tênis Lab</h1><p>Toque na bola para começar</p><button id="ball" aria-label="Iniciar"><span></span><b>INICIAR</b></button><span class="ver-tag">Versão Me22</span></div>
+<div id="app">
+<div id="stage"><canvas id="cv"></canvas><div id="sci"></div><div id="drill-panel"></div><div id="main-menu" role="menu" aria-label="Menu de opções"></div><div id="cam-menu" role="menu" aria-label="Foco da câmera"></div><div id="stk-menu" role="menu" aria-label="Selecionar golpe"></div><div id="spd-menu" role="menu" aria-label="Velocidade da animação"></div><button id="mnb" aria-label="Menu de opções" title="Menu de opções">☰</button><button id="cmb" aria-label="Foco da câmera" title="Enquadramento da câmera">📷</button><button id="stb" aria-label="Selecionar golpe" title="Escolher golpe">🎾</button><button id="ppb" aria-label="Pausar ou continuar" title="Toque: Play/Pause · Segure: Velocidade">⏸</button><button id="uib" aria-label="Ocultar ou exibir interface" title="Ocultar/exibir controles e estatísticas (tecla H)">👁</button><button id="fsb" aria-label="Tela cheia" title="Tela cheia">⛶</button></div>
+<div id="panel">
+<div class="row" id="shots"></div>
+<div id="cap"><h3>Escolha um golpe</h3><p></p></div>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),rad=a=>a*Math.PI/180;
+const V={add:(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],sub:(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],mul:(a,k)=>[a[0]*k,a[1]*k,a[2]*k],dot:(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],len:a=>Math.hypot(...a),norm(a){const l=Math.hypot(...a)||1;return[a[0]/l,a[1]/l,a[2]/l]}};
+function ik(a,t,l1,l2,pole){const d=V.sub(t,a),L=Math.max(.05,Math.min(V.len(d),l1+l2-.002)),n=V.norm(d),x=(l1*l1-l2*l2+L*L)/(2*L),h=Math.sqrt(Math.max(l1*l1-x*x,0));let pp=V.norm(V.sub(pole,V.mul(n,V.dot(pole,n))));return[V.add(a,V.add(V.mul(n,x),V.mul(pp,h))),V.add(a,V.mul(n,L))]}
+const BASE={p:[0,0,0],hy:0,sy:0,b:.1,l:10,rw:[.2,.1,.35],lw:[-.1,.1,.35],rk:[.2,.5,.85],ra:[.18,.05,0],la:[-.18,.05,0]};
+const K=(t,o)=>({t,...BASE,...o});
+function clampBio(v,mn,mx){return Math.max(mn,Math.min(mx,v))}
+function clampVecCone(dir,refDir,maxAngRad){
+  const d=V.norm(dir),r=V.norm(refDir);
+  const c=V.dot(d,r),minC=Math.cos(maxAngRad);
+  if(c>=minC)return d;
+  const ortho=V.norm(V.sub(d,V.mul(r,c)));
+  return V.norm(V.add(V.mul(r,minC),V.mul(ortho,Math.sin(maxAngRad))));
+}
+function joints(o){
+  // 1. Limites anatômicos da coluna e separação quadril-ombros (X-factor fisiológico <= 62°)
+  const hyDeg=clampBio(o.hy,-75,75);
+  const xFactor=clampBio(o.sy-hyDeg,-62,62);
+  const syDeg=hyDeg+xFactor;
+  const leanDeg=clampBio(o.l,-22,38);
+  const crouch=clampBio(o.b,-0.04,0.34);
+
+  const pel=[o.p[0],.95-crouch+o.p[1],o.p[2]],hy=rad(hyDeg),sy=rad(syDeg),lr=rad(leanDeg);
+  const hv=[Math.cos(hy),0,-Math.sin(hy)],sv=[Math.cos(sy),0,-Math.sin(sy)],fw=[Math.sin(hy),0,Math.cos(hy)];
+  const mv=[Math.cos((hy+sy)/2),0,-Math.sin((hy+sy)/2)];
+  const M=V.add(pel,[0,.26*Math.cos(lr*.5),.26*Math.sin(lr*.5)]);
+  const neck=V.add(M,[0,.3*Math.cos(lr),.3*Math.sin(lr)]);
+  const elR=Math.max(0,o.rw[1]-.3)*.07,elL=Math.max(0,o.lw[1]-.3)*.07;
+  const SR=V.add(V.add(neck,V.mul(sv,.19)),[0,elR,0]);
+  const SL=V.add(V.add(neck,V.mul(sv,-.19)),[0,elL,0]);
+  const HR=V.add(pel,V.mul(hv,.1)),HL=V.add(pel,V.mul(hv,-.1));
+  const head=V.add(neck,[0,.2*Math.cos(lr),.2*Math.sin(lr)+.02]);
+
+  // 2. Cinemática inversa com polos anatômicos que impedem hiperextensão/torção reversa de cotovelos e joelhos
+  const fS=[Math.sin(sy),0,Math.cos(sy)];
+  const pR=V.add(V.add(V.mul(sv,.48),[0,-.72,0]),V.mul(fS,-.24));
+  const pL=V.add(V.add(V.mul(sv,-.48),[0,-.72,0]),V.mul(fS,-.24));
+  const [RE,RW]=ik(SR,V.add(pel,o.rw),.3,.28,pR);
+
+  // 3. Limite fisiológico do punho (desvio radial/ulnar e flexão/extensão <= 78° em relação ao antebraço)
+  const forearmR=V.norm(V.sub(RW,RE));
+  const rawRk=V.norm(o.rk);
+  const d=clampVecCone(rawRk,forearmR,rad(78));
+
+  let lt=V.add(pel,o.lw);
+  if(o.lg>0)lt=V.add(V.mul(lt,1-o.lg),V.mul(V.add(RW,V.mul(d,o.lo)),o.lg));
+  const [LE,LW]=ik(SL,lt,.3,.28,pL);
+
+  // 4. Joelhos sempre flexionam para frente (nunca hiperestendem para trás)
+  const [RKN,RA]=ik(HR,o.ra,.47,.47,V.add(fw,V.mul(hv,.22)));
+  const [LKN,LA]=ik(HL,o.la,.47,.47,V.add(fw,V.mul(hv,-.22)));
+  const RKH=V.add(RW,V.mul(d,.56)),RKB=V.add(RW,V.mul(d,.3));
+  const ft=(A,s)=>[A[0]+fw[0]*s,Math.max(0,A[1]-(s>0?.2:.04)),A[2]+fw[2]*s];
+  return{pel,neck,head,SR,SL,HR,HL,RE,LE,RW,LW,RKN,LKN,RA,LA,RKH,RKB,M,mv,hv,sv,gz:[Math.sin(sy*.4),0,Math.cos(sy*.4)],RHD:V.add(RW,V.mul(d,.05)),RTO:ft(RA,.17),LTO:ft(LA,.17),RHL:ft(RA,-.08),LHL:ft(LA,-.08)}
+}
+const hm=(p0,p1,m0,m1,h,u)=>Array.isArray(p0)?p0.map((_,i)=>hm(p0[i],p1[i],m0[i],m1[i],h,u)):(2*u*u*u-3*u*u+1)*p0+(u*u*u-2*u*u+u)*h*m0+(-2*u*u*u+3*u*u)*p1+(u*u*u-u*u)*h*m1;
+const tg=(a,b,dt)=>Array.isArray(a)?a.map((_,i)=>tg(a[i],b[i],dt)):.72*(b-a)/dt;
+const cr=(a,b,c,d,u)=>Array.isArray(a)?a.map((_,i)=>cr(a[i],b[i],c[i],d[i],u)):.5*(2*b+(-a+c)*u+(2*a-5*b+4*c-d)*u*u+(-a+3*b-3*c+d)*u*u*u);
+function evalPose(S,t){if(S.hold&&t>=S.hold)return{...S.keys[S.keys.length-2]};const k=S.keys,n=k.length;let i=n-1;for(let j=0;j<n;j++)if(k[j].t<=t)i=j;const t0=k[i].t,t1=i==n-1?S.dur:k[i+1].t,u=Math.min(1,Math.max(0,(t-t0)/(t1-t0)));
+const g=j=>k[(j+n)%n],T=j=>k[(j+n)%n].t+Math.floor(j/n)*S.dur,r={};for(const key in BASE)r[key]=hm(g(i)[key],g(i+1)[key],tg(g(i-1)[key],g(i+1)[key],T(i+1)-T(i-1)),tg(g(i)[key],g(i+2)[key],T(i+2)-T(i)),t1-t0,u);for(const f of['ra','la']){const a=g(i)[f],b=g(i+1)[f],d=Math.hypot(b[0]-a[0],b[2]-a[2]),o0=f=='ra'?.1:.4,sp=f=='ra'?.55:.6;if(d>.08){const w=Math.min(1,Math.max(0,(u-o0)/sp)),e=w*w*(3-2*w);r[f]=[a[0]+(b[0]-a[0])*e,Math.max(.05,a[1]+(b[1]-a[1])*e)+.14*Math.sin(Math.PI*w)*Math.min(1,d*2.5),a[2]+(b[2]-a[2])*e]}else if(a[1]<.1&&b[1]<.1){const e=u*u*(3-2*u);r[f]=[a[0]+(b[0]-a[0])*e,.05,a[2]+(b[2]-a[2])*e]}}return r}
+const S={
+fh:{n:'Forehand',dur:2.4,tc:1.25,inb:[.3,.8,4],intro:'Forehand: o golpe de direita. Observe o giro do tronco, a raquete caindo atrás da bola e a finalização sobre o ombro oposto.',
+keys:[K(0,{}),K(.5,{hy:38,sy:92,b:.14,l:12,p:[.05,0,-.12],rw:[.4,.2,-.35],lw:[-.3,.4,.4],rk:[.1,.7,-.7],ra:[.25,.05,-.2],la:[-.2,.05,.3]}),K(.95,{hy:25,sy:72,b:.2,l:15,rw:[.35,-.1,-.4],lw:[-.35,.3,.35],rk:[.1,-.4,-.9],p:[.05,0,-.1],ra:[.25,.05,-.2],la:[-.2,.05,.3]}),K(1.1,{hy:20,sy:66,b:.16,l:15,rw:[.35,-.05,-.2],lw:[-.38,.3,.25],rk:[.1,-.2,-.9],p:[0,0,.12],ra:[.24,.05,-.18],la:[-.2,.05,.32]}),K(1.18,{hy:-7,sy:33,b:.14,l:15,rw:[.35,.05,.2],lw:[-.4,.3,.15],rk:[.1,-.21,-.8],p:[0,0,.16],ra:[.23,.05,-.16],la:[-.2,.05,.34]}),K(1.25,{hy:-16,sy:1,b:.12,l:15,rw:[.35,.12,.5],lw:[-.4,.3,.1],rk:[.1,.15,1],p:[0,0,.2],ra:[.22,.05,-.15],la:[-.2,.05,.35]}),K(1.3,{hy:-17,sy:1,b:.1,l:14,rw:[.3,.35,.75],lw:[-.45,.25,0],rk:[-.22,.54,.63],p:[0,0,.22],ra:[.2,.05,-.1],la:[-.2,.05,.36]}),K(1.6,{hy:-32,sy:-52,b:.04,l:8,rw:[-.2,.55,.3],lw:[-.45,.15,-.1],rk:[-.5,-.3,-.6],p:[0,0,.3],ra:[.1,.2,.15],la:[-.2,.05,.4]}),K(2,{hy:-5,sy:-15,rw:[.1,.2,.4],lw:[-.1,.15,.35],rk:[.2,.6,.8],p:[0,0,.1],ra:[.15,.05,.1],la:[-.15,.05,.2]})],
+tips:[[0,['HR','HL'],'Posição de espera','Pés afastados, joelhos flexionados e raquete à frente. Peso na ponta dos pés, pronto para reagir.'],[.5,['SR','SL','HR','HL'],'Unit turn (bloco único)','Tronco, ombros e braço giram juntos, assim que a bola sai da raquete do rival. Ombros ~90° e quadril só 30–45°: essa diferença guarda a energia elástica.'],[.95,['RKH','RKN','LKN'],'Queda da raquete','A raquete cai abaixo da bola enquanto os joelhos flexionam. Essa é a fonte da potência e do topspin.'],[1.18,['HR','HL','SR','SL'],'Pelve → tronco (−75 ms)','A pelve atinge o pico de rotação ~75 ms antes do contato e desacelera, passando o momento ao tronco (pico ~57 ms antes). Depois vêm o ombro (+24 ms) e o cotovelo (+35 ms). O timing, mais que a força, separa elite de jovens de alto nível.'],[1.25,['RW','RKH'],'Ponto de contato','Bola na frente do corpo, na altura da cintura. O quadril abre primeiro, depois ombro e braço. Punho firme.'],[1.6,['SL','RW'],'Finalização','A raquete termina sobre o ombro oposto, com o corpo equilibrado e o olhar na zona de contato.'],[2,['RA','LA'],'Recuperação','Volte rápido à posição de espera, com passos curtos, e prepare a próxima bola.']]},
+bh:{n:'Backhand 2 mãos',dur:2.4,tc:1.25,inb:[-.3,.8,4],intro:'Backhand de duas mãos. A mão esquerda comanda o golpe, e o ombro direito aponta para a bola no giro.',
+keys:[K(0,{}),K(.5,{hy:-50,sy:-85,l:12,p:[0,0,-.1],rw:[-.3,.2,-.2],lw:[-.35,.25,-.05],rk:[-.5,.7,-.5],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(.95,{hy:-30,sy:-80,b:.2,p:[0,0,-.1],l:15,rw:[-.25,0,-.4],lw:[-.35,.05,-.3],rk:[-.3,-.3,-.9],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(1.1,{hy:-20,sy:-66,b:.16,l:15,rw:[-.25,0,-.15],lw:[-.2,.1,-.05],rk:[-.2,-.2,-.9],p:[0,0,.12],ra:[.2,.05,.28],la:[-.25,.05,-.12]}),K(1.18,{hy:7,sy:-33,b:.14,l:15,rw:[-.25,.08,.25],lw:[-.15,.1,.2],rk:[-.1,-.21,-.8],p:[0,0,.16],ra:[.2,.05,.29],la:[-.25,.05,-.11]}),K(1.25,{hy:16,sy:-1,b:.12,l:15,rw:[-.1,.12,.55],lw:[-.05,.12,.5],rk:[0,.15,1],p:[0,0,.2],ra:[.2,.05,.3],la:[-.25,.05,-.1]}),K(1.3,{hy:17,sy:-1,b:.1,l:14,rw:[-.1,.4,.7],lw:[0,.35,.55],rk:[.22,.54,.63],p:[0,0,.22],ra:[.2,.05,.34],la:[-.25,.05,-.1]}),K(1.6,{hy:32,sy:52,b:.04,l:8,rw:[.3,.55,.3],lw:[.1,.5,.3],rk:[.5,.3,-.6],p:[0,0,.3],ra:[.2,.05,.4],la:[-.2,.15,.1]}),K(2,{hy:5,sy:10,rw:[.1,.2,.4],lw:[-.1,.15,.35],rk:[.2,.6,.8],p:[0,0,.1],ra:[.15,.05,.2],la:[-.15,.05,.1]})],
+tips:[[0,['HR','HL'],'Posição de espera','Base firme e raquete à frente. A empunhadura de duas mãos já fica pronta.'],[.5,['SR','LW','RW'],'Giro lateral','O ombro direito gira em direção à bola, as duas mãos levam a raquete para trás junto ao corpo.'],[.95,['RKH','LKN','RKN'],'Preparação baixa','Flexione os joelhos e deixe a raquete abaixo da bola. Mantenha as mãos próximas do tronco.'],[1.25,['LW','RW'],'Contato','Contato na frente do corpo. A mão esquerda conduz, o corpo desenrola do quadril para os ombros.'],[1.6,['SR','SL'],'Finalização alta','Termine com a raquete sobre o ombro, os braços alongados e o corpo equilibrado.'],[2,['RA','LA'],'Recuperação','Volte ao centro da quadra rapidamente.']]},
+sv:{n:'Saque',dur:3.2,tc:1.7,inb:[0,-1,0],intro:'Saque. Sequência: base firme no solo, lançamento cinemático do toss com braço estendido, flexão de joelhos para troféu, queda da raquete, salto e impacto no ponto mais alto.',
+keys:[K(0,{sy:55,hy:45,b:.06,rw:[.15,.1,.3],lw:[-.22,-.32,.25],rk:[.1,-.2,.7],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(.4,{sy:65,hy:52,b:.08,rw:[.25,.05,.1],lw:[-.18,.18,.35],rk:[.15,-.4,.4],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(.85,{sy:78,hy:58,b:.18,rw:[.32,.25,-.05],lw:[-.12,.82,.42],rk:[.05,.2,-.3],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(1.22,{sy:82,hy:62,b:.32,l:-6,rw:[.35,.52,-.18],lw:[-.08,1.15,.48],rk:[0,.75,-.75],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(1.52,{sy:52,hy:42,b:.10,l:14,p:[0,.12,.12],rw:[.22,.62,.05],lw:[-.28,.55,.25],rk:[0,.2,-.8],ra:[.25,.16,-.18],la:[-.25,.18,.22]}),K(1.7,{sy:10,hy:15,b:-.03,l:10,p:[0,.16,.28],rw:[.15,1.05,.3],lw:[-.3,.32,.28],rk:[0,1,.25],ra:[.24,.24,-.05],la:[-.25,.26,.34]}),K(1.78,{sy:9,hy:9,b:.08,l:25,p:[0,.10,.38],rw:[-.1,.6,.55],lw:[-.35,.2,.2],rk:[-.1,-.56,.72],ra:[.22,.22,.08],la:[-.25,.12,.45]}),K(2.1,{sy:-55,hy:-35,b:.12,l:32,p:[0,0,.55],rw:[-.3,.1,.5],lw:[-.4,.1,.1],rk:[-.3,-.7,.5],ra:[.20,.26,.12],la:[-.25,.05,.52]}),K(2.7,{sy:-10,b:.08,p:[0,0,.55],ra:[.18,.05,.62],la:[-.22,.05,.48]})],
+tips:[[0,['HR','HL'],'Postura inicial','Pés na largura dos ombros, corpo de lado para a rede, peso distribuído e ritmo calmo.'],[.6,['LW','SL'],'Lançamento','O braço esquerdo sobe reto e solta a bola à frente, um pouco acima do alcance da raquete.'],[1.1,['RW','RE','LKN','RKN'],'Posição de troféu','Joelhos flexionados, cotovelo alto e braço esquerdo apontando para a bola. É aqui que se armazena a energia.'],[1.4,['RKH','RE'],'Queda da raquete','A raquete cai atrás das costas, como um chicote, enquanto as pernas começam a empurrar.'],[1.7,['RW','RKH','RA','LA'],'Contato no ponto alto','Rotação interna do ombro (~41%) e flexão palmar do punho (~32%) geram a maior parte da velocidade da raquete. A pronção visível do antebraço é consequência da rotação interna, não um motor independente. Braço estendido e contato no ponto mais alto.'],[2.1,['SL','RA'],'Finalização','O braço cruza o corpo, e o pé de trás entra na quadra para você já ficar pronto.'],[2.7,['RA','LA'],'Recuperação','Equilibre-se e volte à posição de espera.']]},
+b1:{n:'Backhand 1 mão',dur:2.4,tc:1.25,inb:[-.3,.8,4],intro:'Backhand de uma mão. O braço esquerdo se estende para trás como contrapeso, e o braço da raquete fica alongado no contato.',
+keys:[K(0,{}),K(.5,{hy:-50,sy:-85,l:12,p:[0,0,-.1],rw:[-.25,.2,-.2],lw:[-.15,.25,.15],rk:[-.5,.6,-.5],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(.95,{hy:-30,sy:-85,b:.2,p:[0,0,-.1],rw:[-.2,0,-.4],lw:[-.2,.15,-.2],rk:[-.3,-.3,-.9],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(1.1,{hy:-20,sy:-66,b:.16,l:15,rw:[-.25,0,-.15],lw:[-.2,.2,-.3],rk:[-.2,-.2,-.9],p:[0,0,.12],ra:[.2,.05,.28],la:[-.25,.05,-.12]}),K(1.18,{hy:7,sy:-33,b:.14,l:15,rw:[-.28,.08,.3],lw:[-.2,.25,-.4],rk:[-.1,-.21,-.8],p:[0,0,.16],ra:[.2,.05,.29],la:[-.25,.05,-.11]}),K(1.25,{hy:16,sy:-1,b:.12,l:15,p:[0,0,.2],rw:[-.3,.12,.6],lw:[-.2,.3,-.45],rk:[-.1,.15,1],ra:[.2,.05,.3],la:[-.25,.05,-.1]}),K(1.3,{hy:17,sy:-1,b:.1,l:14,rw:[-.1,.4,.7],lw:[0,.3,-.45],rk:[.22,.54,.63],p:[0,0,.22],ra:[.2,.05,.34],la:[-.25,.05,-.1]}),K(1.6,{hy:32,sy:40,b:.04,l:8,p:[0,0,.3],rw:[.05,.45,.45],lw:[0,.3,-.4],rk:[.3,.4,.3],ra:[.2,.05,.4],la:[-.2,.15,.1]}),K(2,{hy:5,sy:10,rw:[.1,.2,.4],lw:[-.1,.15,.35],rk:[.2,.6,.8],p:[0,0,.1],ra:[.15,.05,.2],la:[-.15,.05,.1]})],
+tips:[[0,['HR','HL'],'Espera','Base estável, raquete à frente com a mão esquerda no pescoço dela.'],[.5,['SR','SL','LW'],'Giro de ombros','Ombro direito aponta para a bola e o peso vai para a perna de trás.'],[.95,['HR','HL','RKN'],'Quadril lidera','O quadril começa a abrir primeiro, enquanto os ombros ainda ficam fechados. Essa separação é a energia do golpe.'],[1.25,['RW','LW','RKH'],'Contato alongado','Braço da raquete estendido à frente. O braço esquerdo vai para trás em equilíbrio, e o peso passa para a perna da frente.'],[1.6,['SR','RW'],'Finalização','A raquete sobe e se alonga, com o tronco ereto e olhar no contato.'],[2,['RA','LA'],'Recuperação','Volte ao centro e prepare o próximo golpe.']]},
+sl:{n:'Slice',dur:2.6,tc:1.3,inb:[-.3,.7,3.5],intro:'Slice de backhand. Raquete alta, descida suave de cima para baixo com face levemente aberta, e a bola ganha efeito de backspin.',
+keys:[K(0,{}),K(.55,{hy:-45,sy:-80,b:.1,p:[0,0,-.1],rw:[-.2,.6,-.25],lw:[-.15,.3,.1],rk:[-.2,.9,-.3],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(1,{hy:-20,sy:-68,b:.18,p:[0,0,.05],rw:[-.25,.35,.2],lw:[-.2,.3,-.35],rk:[-.2,.4,.8],ra:[.2,.05,.28],la:[-.25,.05,-.15]}),K(1.12,{hy:-18,sy:-62,b:.2,l:16,p:[0,0,.1],rw:[-.22,.5,.05],lw:[-.2,.3,-.4],rk:[-.2,.7,-.35],ra:[.2,.05,.28],la:[-.25,.05,-.14]}),K(1.22,{hy:4,sy:-40,b:.2,l:17,p:[0,0,.16],rw:[-.25,.32,.4],lw:[-.2,.28,-.46],rk:[-.12,.45,.4],ra:[.2,.05,.29],la:[-.25,.05,-.13]}),K(1.3,{hy:14,sy:-4,b:.2,l:18,p:[0,0,.2],rw:[-.25,.2,.6],lw:[-.2,.25,-.5],rk:[-.05,.2,1],ra:[.2,.05,.3],la:[-.25,.05,-.12]}),K(1.38,{hy:15,sy:-2,b:.19,l:17,p:[0,0,.24],rw:[-.2,.1,.75],lw:[-.2,.28,-.5],rk:[-.04,-.05,1],ra:[.2,.05,.32],la:[-.25,.05,-.11]}),K(1.75,{hy:5,sy:-10,b:.18,p:[0,0,.28],rw:[-.1,0,.85],lw:[-.2,.3,-.55],rk:[0,-.3,1],ra:[.2,.05,.34],la:[-.25,.05,-.1]}),K(2.2,{hy:3,sy:0,rw:[.1,.2,.4],lw:[-.1,.15,.35],rk:[.2,.6,.8],p:[0,0,.1],ra:[.15,.05,.2],la:[-.15,.05,.1]})],
+tips:[[0,['HR','HL'],'Espera','Posição neutra, pronto para ler a bola.'],[.55,['RW','RKH'],'Raquete alta','A raquete sobe acima da altura da bola com o cotovelo flexionado e o ombro fechado.'],[1,['RW','LW'],'Descida controlada','O braço desce acompanhando o peso que avança para a perna da frente. Não force a velocidade.'],[1.3,['RW','RKH','RA'],'Contato','Face da raquete levemente aberta, punho firme, contato na frente do corpo. Isso gera o backspin.'],[1.75,['RW','RKH'],'Acompanhamento','A raquete continua para frente e para baixo, e o tronco permanece estável.'],[2.2,['RA','LA'],'Recuperação','Retorne rápido à base.']]},
+sm:{n:'Smash',dur:2.8,tc:1.3,inb:[.2,1.5,1.5],intro:'Smash. Passos laterais para trás, braço esquerdo apontando para a bola e um golpe forte, parecido com o saque.',
+keys:[K(0,{}),K(.35,{sy:55,hy:45,b:.12,p:[0,0,-.15],rw:[.3,.5,-.1],lw:[-.2,.9,.35],rk:[.1,.6,-.6],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(.8,{sy:75,hy:55,b:.24,l:-4,p:[0,0,-.2],rw:[.35,.5,-.15],lw:[-.1,.95,.4],rk:[0,.6,-.7],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(1.05,{sy:70,hy:50,b:.24,p:[0,0,-.15],rw:[.2,.4,-.3],lw:[-.2,.7,.3],rk:[0,-.7,-.5],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(1.17,{sy:48,hy:38,b:.08,l:12,p:[0,.09,-.05],rw:[.2,.6,.05],lw:[-.3,.4,.2],rk:[0,.14,-.8],ra:[.25,.18,-.22],la:[-.25,.18,.12]}),K(1.3,{sy:10,hy:10,b:-.02,l:10,p:[0,.12,.1],rw:[.15,1.05,.3],lw:[-.3,.3,.3],rk:[0,1,.2],ra:[.22,.24,-.06],la:[-.25,.24,.26]}),K(1.38,{sy:9,hy:9,b:.08,l:25,p:[0,.08,.2],rw:[-.1,.6,.55],lw:[-.35,.2,.2],rk:[-.1,-.56,.72],ra:[.2,.18,.04],la:[-.25,.12,.32]}),K(1.7,{sy:-50,hy:-30,l:32,b:.12,p:[0,0,.38],rw:[-.3,.1,.5],lw:[-.4,.1,.1],rk:[.3,-.7,.5],ra:[.18,.22,.08],la:[-.25,.05,.38]}),K(2.2,{b:.08,p:[0,0,.38],ra:[.16,.05,.44],la:[-.20,.05,.34]})],
+tips:[[0,['HR','HL'],'Leitura da bola','Observe a bola alta e prepare os passos laterais.'],[.35,['LW','RKH'],'Passos para trás','Gire de lado, com a raquete já alta e o braço esquerdo apontando para a bola.'],[.8,['RW','RE','LKN','RKN'],'Posição de troféu','Joelhos flexionados, cotovelo alto. O peso fica na perna de trás.'],[1.05,['RKH','RE'],'Queda da raquete','A raquete cai nas costas em chicote, e as pernas começam a empurrar.'],[1.3,['RW','RKH','RA','LA'],'Contato alto','Braço estendido, salto curto, contato no ponto mais alto. A cadeia sobe das pernas até a raquete.'],[1.7,['SL','RA'],'Finalização','O braço cruza o corpo, e o peso termina na perna da frente.'],[2.2,['RA','LA'],'Recuperação','Retorne ao centro da quadra.']]},
+vl:{n:'Voleio',dur:1.6,tc:.65,inb:[.2,.5,3],intro:'Voleio. Movimento curto, sem swing amplo: apenas o bloqueio com punho firme, dando um passo à frente.',
+keys:[K(0,{}),K(.35,{sy:50,hy:35,b:.2,l:15,rw:[.35,.35,.1],lw:[-.25,.3,.3],rk:[.1,.8,.5],ra:[.25,.05,-.05],la:[-.2,.05,.3]}),K(.55,{sy:38,hy:28,b:.23,l:18,p:[0,0,.18],rw:[.35,.3,.3],lw:[-.3,.3,.25],rk:[.1,.55,.45],ra:[.25,.05,-.05],la:[-.2,.05,.35]}),K(.65,{sy:12,hy:10,b:.25,l:20,p:[0,0,.25],rw:[.35,.25,.55],lw:[-.35,.3,.2],rk:[.05,.3,1],ra:[.25,.05,-.05],la:[-.2,.05,.4]}),K(.72,{sy:10,hy:8,b:.23,l:20,p:[0,0,.25],rw:[.33,.25,.6],lw:[-.32,.3,.25],rk:[.03,.2,1],ra:[.25,.05,-.05],la:[-.2,.05,.4]}),K(.95,{sy:20,hy:15,b:.22,l:20,p:[0,0,.25],rw:[.3,.25,.62],lw:[-.3,.3,.3],rk:[.05,.15,1],ra:[.25,.05,-.05],la:[-.2,.05,.4]}),K(1.3,{sy:5,rw:[.2,.15,.4],lw:[-.1,.1,.35],p:[0,0,.1],ra:[.2,.05,.05],la:[-.18,.05,.15]})],
+tips:[[0,['HR','HL'],'Raquete à frente','Raquete sempre à frente do corpo e na altura dos olhos, pronta para o bloqueio.'],[.35,['SR','RW'],'Preparação curta','Gire apenas os ombros. A raquete não passa da linha do corpo.'],[.65,['RW','RKH'],'Bloqueio','Passo à frente e punho firme. A bola é bloqueada na frente do corpo, sem swing amplo.'],[.95,['RW','LA'],'Acompanhamento','Acompanhe a bola com a raquete por poucos centímetros e mantenha o equilíbrio.'],[1.3,['RA','LA'],'Reposicionamento','Recue a raquete à frente e prepare o próximo voleio.']]}};
+function addSplit(s){const D=.28,d=s.keys[1].hy<0?-1:1;s.keys.shift();s.tips.shift();s.tl=.4;s.keys.forEach(k=>k.t+=D);s.tips.forEach(a=>a[0]+=D);s.tc+=D;s.dur+=D;s.keys.unshift(K(0,{}),K(.22,{p:[0,.08,0],b:.02,ra:[.2,.15,0],la:[-.2,.15,0]}),K(.4,{b:.24,l:14,ra:[.26,.05,0],la:[-.26,.05,0]}),K(.56,{b:.2,l:8,hy:12*d,sy:35*d,p:[.12*d,0,-.03],rw:[.3*d,.2,.1],lw:[0,.25,.3],rk:[.15*d,.6,.5],ra:d>0?[.38,.05,-.04]:[.14,.05,-.02],la:d>0?[-.14,.05,-.02]:[-.38,.05,-.04]}));s.tips.unshift([.42,['LKN','RKN'],'Arrancada + unit turn','No pouso, a perna de fora empurra o chao e o primeiro passo ja vai para o lado da bola, enquanto quadril e ombros comecam a girar juntos.'],[0,['RA','LA'],'Split step','Pequeno salto no instante em que o rival bate na bola. Aterrisse com base larga e joelhos flexionados, pronto para sair em qualquer direção.'])}
+S.ap={n:'Aproximação',dur:3.4,tc:1.2,inb:[.3,.8,4],intro:'Aproximação: unit turn em movimento, passo à frente, forehand profundo na paralela, corrida até a rede e split step antes do voleio.',
+keys:[K(0,{p:[0,0,-.6],ra:[.2,.05,-.6],la:[-.2,.05,-.6]}),K(.4,{hy:30,sy:80,b:.15,l:12,p:[0,0,-.3],rw:[.4,.2,-.3],lw:[-.2,.4,.4],rk:[.1,.7,-.7],ra:[.25,.05,-.5],la:[-.2,.05,0]}),K(.8,{hy:25,sy:70,b:.2,l:15,p:[0,0,.1],rw:[.35,-.05,-.4],lw:[-.35,.3,.35],rk:[.1,-.4,-.9],ra:[.25,.05,-.3],la:[-.2,.05,.5]}),K(1.2,{hy:0,sy:20,b:.12,l:15,p:[0,0,.5],rw:[.35,.15,.5],lw:[-.4,.3,.1],rk:[.1,.15,1],ra:[.2,.05,.1],la:[-.2,.05,.55]}),K(1.6,{hy:-25,sy:-50,b:.06,l:10,p:[0,0,.9],rw:[-.2,.5,.3],lw:[-.45,.15,-.1],rk:[-.5,-.3,-.6],ra:[.15,.05,.7],la:[-.2,.05,.6]}),K(2.2,{b:.1,p:[0,0,2],ra:[.2,.05,1.6],la:[-.2,.05,2.2]}),K(2.7,{p:[0,.07,2.6],b:.05,ra:[.2,.2,2.3],la:[-.2,.2,2.5]}),K(3,{b:.22,p:[0,0,2.6],rw:[.2,.2,.4],lw:[-.2,.2,.4],rk:[.1,.8,.5],ra:[.25,.05,2.4],la:[-.25,.05,2.5]})],
+tips:[[0,['HR','HL'],'Leitura','Observe a bola curta e comece o deslocamento já com a raquete à frente.'],[.4,['SR','SL','HR','HL'],'Unit turn em movimento','Gire o tronco como um bloco enquanto corre. Não espere chegar para preparar.'],[.8,['LA','RKN'],'Passo à frente','O pé da frente se planta antes do golpe: o peso avança junto com o corpo.'],[1.2,['RW','RKH'],'Contato na aproximação','Bola funda na paralela encurta seu caminho até a rede e cobre a passada reta.'],[1.6,['RA','SL'],'Acompanhar a bola','Siga a direção da bola para a rede e continue em frente, sem parar.'],[2.7,['RA','LA'],'Split step na rede','Pare com pequeno salto quando o rival vai bater e aterrisse equilibrado.'],[3,['RW','RKH'],'Pronto para voleiar','Raquete à frente e alta, base larga e peso na ponta dos pés.']]};
+['fh','bh','b1','sl'].forEach(k=>addSplit(S[k]));S.ap.keys.push({...S.ap.keys[S.ap.keys.length-1],t:3.2});S.ap.hold=3;
+const cl=(s,n,intro,mods,tips)=>{const c=JSON.parse(JSON.stringify(s));c.n=n;c.intro=intro;c.tips=tips;c.keys.forEach(k=>{const m=mods.find(m=>Math.abs(m[0]-k.t)<.011);if(m)Object.assign(k,m[1])});return c};
+S.kk=cl(S.sv,'Saque kick','Saque kick: toss atrás da cabeça e levemente à esquerda, mais arco nas costas e a raquete subindo de baixo para cima, escovando a bola para gerar topspin.',[[1.22,{l:-14,lw:[-.12,1.15,.22],rk:[0,.4,-.8]}],[1.52,{rk:[0,-1,-.1],rw:[.2,.3,-.35]}],[1.7,{l:0,p:[0,.14,.12],rw:[.05,1.05,.15],rk:[-.35,1,.1]}],[1.78,{rk:[-.3,-.45,.7]}]],[[0,['HR','HL'],'Postura','Pegada continental, base estável e ritmo calmo. O kick sai do mesmo setup do saque plano.'],[.6,['LW','SL'],'Toss atrás da cabeça','A bola sobe um pouco atrás da cabeça e levemente à esquerda (para destros). Quanto mais atrás, mais íngreme a subida da raquete e mais topspin.'],[1.1,['SR','LKN','RKN'],'Arco das costas','Joelhos flexionados e mais arco que no saque plano. É exigente: o kick sobrecarrega mais as costas e o ombro.'],[1.4,['RKH','RE'],'Queda da raquete','A raquete cai atrás e o cotovelo fica para trás por mais tempo: a raquete sobe antes do cotovelo.'],[1.7,['RW','RKH'],'Escovar de baixo para cima','A raquete sobe pela parte de trás da bola, de 7h para 1h no relógio. A velocidade da raquete segue alta: é um golpe rápido redirecionado em spin.'],[2.1,['SL','RA'],'Finalização','O braço cruza o corpo e o pé da frente aterrissa dentro da quadra.'],[2.7,['RA','LA'],'Recuperação','Equilibre-se e volte à posição inicial.']]);S.kk.inb=[.15,-1,-.35];
+S.rt={n:'Devolução',dur:2.2,tc:1,tl:.42,inb:[.3,.8,4],intro:'Devolução de saque: split step no contato do sacador, giro curto com backswing de cerca de 2/3 e contato à frente com o corpo indo para frente.',
+keys:[K(0,{b:.14,l:14,ra:[.25,.05,0],la:[-.25,.05,0]}),K(.35,{p:[0,.08,0],b:.02,ra:[.2,.15,0],la:[-.2,.15,0]}),K(.55,{b:.26,l:16,ra:[.27,.05,0],la:[-.27,.05,0]}),K(.72,{hy:25,sy:66,b:.2,p:[.1,0,-.02],rw:[.35,.2,0],lw:[-.05,.25,.3],rk:[.12,.55,.3],ra:[.38,.05,-.03],la:[-.15,.05,-.02]}),K(.9,{hy:7,sy:58,b:.18,p:[.1,0,.08],rw:[.35,.08,.2],lw:[-.35,.28,.2],rk:[.1,.09,.35],ra:[.34,.05,-.05],la:[-.2,.05,.2]}),K(.95,{hy:-10,sy:30,b:.16,p:[.1,0,.12],rw:[.35,.1,.35],lw:[-.38,.3,.15],rk:[.1,0,.6],ra:[.32,.05,-.05],la:[-.2,.05,.25]}),K(1,{hy:-7,sy:-4,b:.14,p:[.1,0,.15],rw:[.35,.12,.5],lw:[-.4,.3,.1],rk:[.1,.15,1],ra:[.3,.05,-.05],la:[-.2,.05,.3]}),K(1.08,{hy:-14,sy:2,b:.14,p:[.1,0,.18],rw:[.3,.3,.68],lw:[-.45,.25,0],rk:[-.2,.45,.7],ra:[.3,.05,-.05],la:[-.2,.05,.32]}),K(1.4,{hy:-25,sy:-35,b:.08,p:[.1,0,.3],rw:[-.1,.45,.4],lw:[-.4,.2,0],rk:[-.3,.2,.5],ra:[.25,.05,.1],la:[-.2,.05,.34]}),K(1.8,{b:.12,p:[0,0,.1],ra:[.2,.05,0],la:[-.2,.05,.1]})],
+tips:[[0,['HR','HL'],'Posição','Cerca de um metro atrás da linha, joelhos flexionados, raquete à frente e um pequeno passo à frente enquanto o sacador arma.'],[.55,['RA','LA'],'Split step no contato do sacador','Pouse no instante em que o sacador bate na bola. Você ainda não sabe a direção, então a pré-carga permite sair para qualquer lado.'],[.72,['SR','SL','HR'],'Giro curto','Passo com a perna de fora e giro do quadril, que já cria o backswing. Backswing de cerca de 2/3 do normal: quanto maior o saque, menor o backswing.'],[1,['RW','RKH'],'Contato à frente','Contato à frente do centro de gravidade, com o corpo ainda indo para frente. Aproveite a velocidade do saque.'],[1.4,['SL','RA'],'Finalização curta','Termine curto e volte ao centro, pronto para a terceira bola.']]};
+{const T=.27,B=-.05,r=(s,a)=>{s.gr=a};
+r(S.fh,[[-1,-.5,1.2,1.36,T],[2.3,2.55,9,10,T]]);
+r(S.bh,[[-1,-.5,.5,.8,T],[.5,.8,1.95,2.2,B],[2.3,2.55,9,10,T]]);
+r(S.b1,[[-1,-.5,1.15,1.35,T],[2.3,2.55,9,10,T]]);
+r(S.sl,[[-1,-.5,1.2,1.42,T],[2.5,2.75,9,10,T]]);
+r(S.rt,[[-1,-.5,.82,.98,T],[1.7,1.95,9,10,T]]);
+r(S.ap,[[-1,-.5,.7,.95,T],[2.7,2.95,9,10,T]]);
+r(S.vl,[[-1,-.5,.45,.62,T],[1,1.2,9,10,T]]);
+S.rt.db=5.8}
+S.lb=cl(S.fh,'Lob','Lob de ataque: começa como um forehand (disfarce), mas a raquete cai mais baixo e sobe mais íngreme, para a bola passar sobre quem está na rede.',[[1.23,{rw:[.35,.3,-.4],rk:[.1,-.8,-.7]}],[1.53,{rk:[.1,.45,.9]}],[1.58,{rw:[.3,.65,.6],rk:[-.1,.85,.5]}],[1.88,{sy:-45,rw:[-.2,.9,.2],rk:[-.4,.9,0]}]],[[0,['RA','LA'],'Disfarce','Comece como um forehand de ataque: a mesma preparação esconde o lob.'],[1.23,['RKH','LKN','RKN'],'Raquete baixa','A raquete cai bem abaixo da bola e os joelhos flexionam: o caminho será íngreme, de baixo para cima.'],[1.53,['RW','RKH'],'Contato','Contato com a face um pouco aberta. O lob de topspin precisa de altura e rotação para cair atrás do adversário.'],[1.88,['SL','RW'],'Finalização alta','Termine bem alto, acompanhando a bola para cima.']]);
+S.dp=cl(S.sl,'Drop shot','Drop shot: preparação igual à do slice ou do drive para disfarçar, raquete por baixo da bola com contato macio, backspin e a bola morrendo curta.',[[1.58,{rk:[-.05,.45,.9],rw:[-.25,.22,.55]}],[1.66,{rw:[-.2,.15,.6],rk:[.02,.3,.95]}],[2.03,{rw:[-.15,.1,.6],rk:[0,.2,.9],p:[0,0,.2]}]],[[0,['RA','LA'],'Split step','Pouse no instante em que o rival bate e saia já em direção à bola.'],[.42,['LKN','RKN'],'Arrancada','Primeiro passo na direção da bola, com o quadril e os ombros girando juntos.'],[.83,['RW','RKH'],'Disfarce','Preparação igual à do slice ou do drive: o rival só percebe tarde.'],[1.58,['RW','RKH'],'Raquete por baixo da bola','Face aberta e raquete por baixo da bola geram backspin e a bola morre curta. Contato macio, pouco swing.'],[2.03,['RW','LA'],'Finalização curta','Acompanhe a bola sem varrer e avance para a rede.']]);
+for(const id in S){const s=S[id];s.tips=s.tips.sort((a,b)=>a[0]-b[0]).map(a=>({t:a[0],j:a[1],h:a[2],x:a[3]}))}
+const PARTS={'Corpo todo':['pel',1],'Tronco':['neck',2.1],'Quadril':['pel',2.2],'Braço/Raquete':['RW',2.2],'Pernas/Pés':['legs',1.9],'Raquete':['RKH',3],'Quadra toda':['court',.145]};
+const st={id:'fh',t:0,play:1,spd:.5,coach:0,hold:0,yaw:35,tyaw:35,zoom:1,part:'Corpo todo',cam:[0,.9,0],sc:1,tip:null,trail:[],pulse:0,clean:false,tactics:false,showText:false,sound:true,hitPlayed:false,bouncePlayed:false,done:new Set()};
+document.body.classList.add('hide-cap');
+const cv=$('#cv'),cx=cv.getContext('2d');let W,H,DPR;
+function rs(){DPR=devicePixelRatio||1;const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR;cx.setTransform(DPR,0,0,DPR,0,0)}
+addEventListener('resize',rs);
+let PH=rad(20);let SCL=100;
+function proj(p){const y=rad(st.yaw),x=p[0]*Math.cos(y)+p[2]*Math.sin(y),d=-p[0]*Math.sin(y)+p[2]*Math.cos(y),Y=p[1]*Math.cos(PH)+d*Math.sin(PH),cam=st.cam;
+const cy_=cam[1]*Math.cos(PH)+(-cam[0]*Math.sin(y)+cam[2]*Math.cos(y))*Math.sin(PH),cxx=cam[0]*Math.cos(y)+cam[2]*Math.sin(y);
+return[W/2+(x-cxx)*SCL,H*.55-(Y-cy_)*SCL,d]}
+function poly(pts,fill,stroke,lw){cx.beginPath();pts.forEach((p,i)=>{const q=proj(p);i?cx.lineTo(q[0],q[1]):cx.moveTo(q[0],q[1])});cx.closePath();if(fill){cx.fillStyle=fill;cx.fill()}if(stroke){cx.strokeStyle=stroke;cx.lineWidth=lw||2;cx.stroke()}}
+function line(a,b,col,lw){const p=proj(a),q=proj(b);cx.strokeStyle=col;cx.lineWidth=lw;cx.beginPath();cx.moveTo(p[0],p[1]);cx.lineTo(q[0],q[1]);cx.stroke()}
+function court(){cx.clearRect(0,0,W,H);const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#a9dcf0');g.addColorStop(1,'#e6f6ee');cx.fillStyle=g;cx.fillRect(0,0,W,H);
+// Gramado/entorno externo e área de escape oficial ITF (run-off completo nos 4 lados)
+poly([[-45,0,-25],[45,0,-25],[45,0,65],[-45,0,65]],'#9fd3a8');
+poly([[-9.14,0,-6.4],[9.14,0,-6.4],[9.14,0,30.17],[-9.14,0,30.17]],'#4b93b5');
+// Superfície interna oficial de duplas (10.97m x 23.77m -> x: ±5.485, z: 0..23.77)
+poly([[-5.485,0,0],[5.485,0,0],[5.485,0,23.77],[-5.485,0,23.77]],'#3f86a8');
+const L='#ffffffee';const seg=(a,b)=>line(a,b,L,2);
+// Linhas de fundo (Baselines) nos dois lados da quadra
+seg([-5.485,0,0],[5.485,0,0]);
+seg([-5.485,0,23.77],[5.485,0,23.77]);
+// Linhas laterais de duplas (Doubles sidelines)
+seg([-5.485,0,0],[-5.485,0,23.77]);
+seg([5.485,0,0],[5.485,0,23.77]);
+// Linhas laterais de simples (Singles sidelines: ±4.115m)
+seg([-4.115,0,0],[-4.115,0,23.77]);
+seg([4.115,0,0],[4.115,0,23.77]);
+// Linhas de saque (Service lines: 6.40m da rede -> z=5.485 e z=18.285)
+seg([-4.115,0,5.485],[4.115,0,5.485]);
+seg([-4.115,0,18.285],[4.115,0,18.285]);
+// Linha central de saque (Center service line completa entre as duas áreas de saque)
+seg([0,0,5.485],[0,0,18.285]);
+// Marcas centrais de saque (Center marks: 10cm para dentro nas duas linhas de fundo)
+seg([0,0,0],[0,0,.22]);
+seg([0,0,23.77],[0,0,23.55]);
+// Rede oficial completa (postes a 0.914m fora das linhas de duplas = ±6.40m, altura 1.07m nos postes e 0.914m no centro)
+const nZ=11.885,px=6.40;
+poly([[-px,0,nZ],[-px,1.07,nZ],[0,.914,nZ],[px,1.07,nZ],[px,0,nZ]],'rgba(255,255,255,0.16)');
+line([-px,0,nZ],[px,0,nZ],'#ffffff88',1.2);
+// Malha vertical e horizontal sutil da rede
+for(let x=-6;x<=6;x+=1.0){const hNet=.914+(1.07-.914)*Math.abs(x)/px;line([x,0,nZ],[x,hNet,nZ],'#ffffff44',1);}
+line([-px,.48,nZ],[0,.45,nZ],'#ffffff55',1);line([0,.45,nZ],[px,.48,nZ],'#ffffff55',1);
+// Fita superior branca (headband) com catenária realista
+line([-px,1.07,nZ],[0,.914,nZ],'#ffffff',3);
+line([0,.914,nZ],[px,1.07,nZ],'#ffffff',3);
+// Cinta central (Center strap) e postes laterais
+line([0,0,nZ],[0,.914,nZ],'#ffffffdd',2);
+line([-px,0,nZ],[-px,1.07,nZ],'#1e293b',4);
+line([px,0,nZ],[px,1.07,nZ],'#1e293b',4);
+if(st.tactics&&!st.clean){
+cx.save();
+const p1=proj([0,0,2]),p2=proj([-3.5,0,16]),p3=proj([3.5,0,16]);
+cx.fillStyle='rgba(47, 158, 107, 0.25)';cx.beginPath();cx.moveTo(p1[0],p1[1]);cx.lineTo(p2[0],p2[1]);cx.lineTo(p3[0],p3[1]);cx.closePath();cx.fill();
+cx.strokeStyle='#2f9e6b';cx.lineWidth=2;cx.setLineDash([4,4]);
+line([0,0,2],[-3.5,0,16],'#2f9e6b',2);
+line([0,0,2],[3.5,0,16],'#2f9e6b',2);
+cx.setLineDash([]);
+cx.fillStyle='#12303d';cx.font='700 11px system-ui';
+const mid=proj([0,0,9]);cx.fillText('🎯 Zona de Alvo Tático (Cruzada / Profunda)',mid[0]-90,mid[1]);
+cx.restore();
+}}
+function shadow(J){const p=proj([J.pel[0],0,J.pel[2]]);cx.fillStyle='#0003';cx.beginPath();cx.ellipse(p[0],p[1],.4*SCL,.12*SCL,0,0,7);cx.fill()}
+function ballPos(s,t,J){const c=s.c,tc=s.tc;
+if(t>=tc)return st.fl?flightPos(t-tc):null;
+if(s.id=='sv'||s.id=='kk'){
+  const tRelease=1.22;
+  if(t<tRelease){
+    return V.add(J.LW,[0,0.06,0.02]);
+  }else{
+    const dtToss=t-tRelease,totalTossTime=tc-tRelease;
+    const handAtRelease=joints(pose(s,tRelease)).LW;
+    const v0y=(c[1]-(handAtRelease[1]+0.06)+0.5*9.81*totalTossTime*totalTossTime)/totalTossTime;
+    const x=handAtRelease[0]+(c[0]-handAtRelease[0])*(dtToss/totalTossTime);
+    const z=handAtRelease[2]+(c[2]-handAtRelease[2])*(dtToss/totalTossTime);
+    const y=(handAtRelease[1]+0.06)+v0y*dtToss-0.5*9.81*dtToss*dtToss;
+    return [x,Math.max(0.05,y),z];
+  }
+}
+if(s.tl){if(t<s.tl)return null;const u=(t-s.tl)/(tc-s.tl),D=23.5,db=s.db||4.4,eb=(D-db)/(D-db+db/.72);let d,y;
+if(u<eb){const q=u/eb;d=D-(D-db)*q;y=1.05*(1-q)+.0335*q+1.6*4*q*(1-q)}else{const q=(u-eb)/(1-eb);d=db*(1-q);y=.0335+(c[1]-.0335)*q+.5*4*q*(1-q)}
+return[c[0]+s.inb[0]*d/D,y,c[2]+d]}
+const bw=.6;if(t<tc-bw)return null;return V.add(c,V.mul(s.inb,1-(t-tc+bw)/bw))}
+function drawBall(p,r,ang,sq){cx.save();cx.translate(p[0],p[1]);cx.rotate(ang);cx.scale(1+sq*.4,1-sq);cx.fillStyle='#d7ec3c';cx.beginPath();cx.arc(0,0,r,0,7);cx.fill();cx.strokeStyle='#fff';cx.lineWidth=Math.max(1,r*.22);cx.beginPath();cx.arc(-r*1.05,0,r*.95,-.85,.85);cx.stroke();cx.beginPath();cx.arc(r*1.05,0,r*.95,Math.PI-.85,Math.PI+.85);cx.stroke();cx.restore()}
+function ball(s,t,J){const pos=ballPos(s,t,J);if(!pos)return;const tc=s.tc,g=proj([pos[0],0,pos[2]]),p=proj(pos),hh=Math.min(1,pos[1]/4);
+cx.fillStyle='rgba(0,0,0,'+(.28-.14*hh)+')';cx.beginPath();cx.ellipse(g[0],g[1],.06*SCL*(1+hh*.6),.02*SCL*(1+hh*.6),0,0,7);cx.fill();
+const sg=st.shot&&st.shot[7]<0?-1:1,sq=Math.max(pos[1]<.05?.25:0,Math.abs(t-tc)<.03?.3:0);
+drawBall(p,Math.max(.05*SCL,4),(t-tc)*sg*10,sq);
+if(!st.clean&&Math.abs(t-tc)<.12){cx.strokeStyle='#ffb300';cx.lineWidth=3;cx.beginPath();cx.arc(p[0],p[1],.13*SCL*(1+(t-tc)*5),0,7);cx.stroke()}}
+const VEC={Rotação:1,Peso:1,Cadeia:1};
+function motion(s,t){const e=.03,ta=(t-e+s.dur)%s.dur,tb=(t+e)%s.dur,oa=evalPose(s,ta),ob=evalPose(s,tb),a=joints(oa),b=joints(ob),sp=(x,y)=>V.len(V.sub(y,x))/(2*e);
+return{whip:(ob.hy-oa.hy)/(2*e),wsh:(ob.sy-oa.sy)/(2*e),ch:[sp(a.pel,b.pel),Math.abs(ob.hy-oa.hy)/(2*e),Math.abs(ob.sy-oa.sy)/(2*e),sp(a.RW,b.RW),sp(a.RKH,b.RKH)],vp:V.mul(V.sub(b.pel,a.pel),1/(2*e))}}
+function chmax(s){if(s.cm)return s.cm;const m=[1e-6,1e-6,1e-6,1e-6,1e-6],tp=[0,0,0,0,0];for(let i=0;i<120;i++){const t=(s.tc-.5+i/120*.9+s.dur)%s.dur;motion(s,t).ch.forEach((v,k)=>{if(v>m[k]){m[k]=v;tp[k]=t}})}s.cm=m;s.tp=tp;return m}
+function arrow(a,b,col,lw){const p=proj(a),q=proj(b),an=Math.atan2(q[1]-p[1],q[0]-p[0]);cx.strokeStyle=cx.fillStyle=col;cx.lineWidth=lw;cx.lineCap='round';cx.beginPath();cx.moveTo(p[0],p[1]);cx.lineTo(q[0],q[1]);cx.stroke();cx.beginPath();cx.moveTo(q[0],q[1]);cx.lineTo(q[0]-11*Math.cos(an-.45),q[1]-11*Math.sin(an-.45));cx.lineTo(q[0]-11*Math.cos(an+.45),q[1]-11*Math.sin(an+.45));cx.closePath();cx.fill()}
+function label(p3,t,col){const p=proj(p3);cx.font='700 11px system-ui';cx.lineWidth=3;cx.strokeStyle='#fffc';cx.strokeText(t,p[0]+6,p[1]-6);cx.fillStyle=col;cx.fillText(t,p[0]+6,p[1]-6)}
+function arc(c,r,ph,w,col){if(Math.abs(w)<25)return;const dl=Math.max(-2.4,Math.min(2.4,rad(w*.14))),P=[];for(let i=0;i<=14;i++){const f=rad(ph)+dl*i/14;P.push(V.add(c,[Math.cos(f)*r,0,-Math.sin(f)*r]))}cx.strokeStyle=col;cx.lineWidth=4;cx.beginPath();P.forEach((p,i)=>{const q=proj(p);i?cx.lineTo(q[0],q[1]):cx.moveTo(q[0],q[1])});cx.stroke();arrow(P[12],P[14],col,4)}
+function overlays(s,J){if(st.clean)return;const m=motion(s,st.t),o=evalPose(s,st.t),hv=[Math.cos(rad(o.hy)),0,-Math.sin(rad(o.hy))],sv=[Math.cos(rad(o.sy)),0,-Math.sin(rad(o.sy))];
+if(VEC.Rotação){arrow(V.sub(J.pel,V.mul(hv,.38)),V.add(J.pel,V.mul(hv,.38)),'#e040fb',4);arrow(V.sub(J.neck,V.mul(sv,.42)),V.add(J.neck,V.mul(sv,.42)),'#00bcd4',4);arc(J.pel,.4,o.hy,m.whip,'#e040fb');arc(J.neck,.45,o.sy,m.wsh,'#00bcd4');label(V.add(J.pel,V.mul(hv,.4)),'Quadril '+Math.round(o.hy)+'°','#a21caf');label(V.add(J.neck,V.mul(sv,.44)),'Ombros '+Math.round(o.sy)+'°','#0e7490');label(V.add(J.head,[0,.22,0]),'X-factor '+Math.round(o.sy-o.hy)+'°','#6d28d9')}
+if(VEC.Peso){const g=p=>[p[0],0,p[2]],d=[J.LA[0]-J.RA[0],0,J.LA[2]-J.RA[2]],u=Math.max(0,Math.min(1,V.dot([J.pel[0]-J.RA[0],0,J.pel[2]-J.RA[2]],d)/(V.dot(d,d)||1)));let wR=(1-u)/(1+Math.max(0,J.RA[1]-.06)*8),wL=u/(1+Math.max(0,J.LA[1]-.06)*8);const sm=wR+wL;wR/=sm;wL/=sm;st.wR=wR;
+line(g(J.RA),g(J.LA),'#ffffffaa',3);const pc=proj(V.add(g(J.RA),V.mul(d,u)));cx.fillStyle='#ff6d00';cx.beginPath();cx.arc(pc[0],pc[1],6,0,7);cx.fill();
+arrow(g(J.RA),V.add(g(J.RA),[0,wR*1.1+.05,0]),'#2ecc71',5);arrow(g(J.LA),V.add(g(J.LA),[0,wL*1.1+.05,0]),'#2ecc71',5);label(V.add(g(J.RA),[0,wR*1.1,0]),'D '+Math.round(wR*100)+'%','#15803d');label(V.add(g(J.LA),[0,wL*1.1,0]),'E '+Math.round(wL*100)+'%','#15803d');
+const hs=Math.hypot(m.vp[0],m.vp[2]);if(hs>.25)arrow(g(J.pel),V.add(g(J.pel),V.mul(V.norm([m.vp[0],0,m.vp[2]]),Math.min(.9,hs*.5))),'#ff6d00',4)}}
+function hud(s){if(st.clean)return;if(VEC.Cadeia){const mx=chmax(s),c=motion(s,st.t).ch,N=['Pernas','Quadril','Tronco','Braço','Raquete'],cl=['#2ecc71','#e040fb','#00bcd4','#ffb300','#ef4444'],ord=s.tp.map((t,i)=>[t,i]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]),x=W-150,y=8;cx.fillStyle='#ffffffe6';cx.fillRect(x-8,y,154,128);cx.font='700 10px system-ui';cx.fillStyle='#12303d';cx.fillText('CADEIA CINÉTICA (nº = ordem)',x-4,y+13);cx.fillStyle='#12303d';cx.font='9px system-ui';cx.fillText('Contato: '+Math.round((st.t-s.tc)*1000)+' ms',x-4,y+116);if(['fh','bh','b1','sl','ap'].includes(st.id))cx.fillText('Ref: pelve -75 · tronco -57 ms',x-4,y+126);N.forEach((n,i)=>{const yy=y+22+i*16,v=Math.min(1,c[i]/mx[i]);cx.fillStyle='#12303d';cx.font='11px system-ui';cx.fillText((ord.indexOf(i)+1)+' '+n,x-4,yy+10);cx.fillStyle='#0001';cx.fillRect(x+58,yy,80,10);cx.fillStyle=cl[i];cx.fillRect(x+58,yy,80*v,10)})}
+if(VEC.Peso&&st.wR!=null){cx.fillStyle='#ffffffe6';cx.fillRect(6,8,146,40);cx.fillStyle='#12303d';cx.font='700 10px system-ui';cx.fillText('PESO · DIREITA ◂ ▸ ESQUERDA',12,21);cx.fillStyle='#e5e7eb';cx.fillRect(12,28,134,10);cx.fillStyle='#2ecc71';cx.fillRect(12,28,134*st.wR,10)}}
+function dot(P,r,c){const p=proj(P);cx.fillStyle=c;cx.beginPath();cx.arc(p[0],p[1],r*SCL,0,7);cx.fill()}
+
+// ============================================================================
+// MODELO ARTICULADO REFINADO DO JOGADOR (TRONCO 3D, CABEÇA, PUNHOS, 5 DEDOS E EMPUNHADURA)
+// ============================================================================
+const GRIPS = {
+  'Continental': { ang: 0, label: 'Continental' },
+  'Eastern': { ang: 35, label: 'Eastern' },
+  'Semi-Western': { ang: 65, label: 'Semi-Western' }
+};
+st.grip = 'Eastern';
+
+function vCross(a, b) {
+  return [a[1]*b[2] - a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0]];
+}
+
+function rotAroundAxis(v, k, theta) {
+  const c = Math.cos(theta), s = Math.sin(theta);
+  const kxv = vCross(k, v);
+  const kdv = V.dot(k, v);
+  return V.add(V.add(V.mul(v, c), V.mul(kxv, s)), V.mul(k, kdv * (1 - c)));
+}
+
+function drawCapsule3D(a, b, r1, r2, colBase, colDark, colLight) {
+  const p = proj(a), q = proj(b);
+  const dx = q[0] - p[0], dy = q[1] - p[1];
+  const len = Math.hypot(dx, dy);
+  if (len < 0.5) {
+    cx.fillStyle = colBase;
+    cx.beginPath(); cx.arc(p[0], p[1], r1 * SCL, 0, Math.PI * 2); cx.fill();
+    return;
+  }
+  const an = Math.atan2(dy, dx);
+  const nx = -Math.sin(an), ny = Math.cos(an);
+  const R1 = Math.max(1.5, r1 * SCL), R2 = Math.max(1.5, r2 * SCL);
+
+  // Sombra / volume base
+  cx.fillStyle = colBase;
+  cx.beginPath();
+  cx.moveTo(p[0] + nx * R1, p[1] + ny * R1);
+  cx.lineTo(q[0] + nx * R2, q[1] + ny * R2);
+  cx.arc(q[0], q[1], R2, an + Math.PI / 2, an - Math.PI / 2, true);
+  cx.lineTo(p[0] - nx * R1, p[1] - ny * R1);
+  cx.arc(p[0], p[1], R1, an - Math.PI / 2, an + Math.PI / 2, true);
+  cx.closePath();
+  cx.fill();
+
+  // Contorno sutil 3D
+  cx.strokeStyle = colDark;
+  cx.lineWidth = Math.max(1, SCL * 0.008);
+  cx.stroke();
+
+  // Brilho muscular / volumétrico
+  if (colLight) {
+    cx.strokeStyle = colLight;
+    cx.lineWidth = Math.max(1.2, R2 * 0.42);
+    cx.lineCap = 'round';
+    cx.beginPath();
+    cx.moveTo(p[0] - nx * R1 * 0.35, p[1] - ny * R1 * 0.35);
+    cx.lineTo(q[0] - nx * R2 * 0.35, q[1] - ny * R2 * 0.35);
+    cx.stroke();
+  }
+}
+
+function drawJointSphere(P, r, colFill, colRing) {
+  const p = proj(P);
+  const R = Math.max(2, r * SCL);
+  cx.fillStyle = colFill;
+  cx.beginPath();
+  cx.arc(p[0], p[1], R, 0, Math.PI * 2);
+  cx.fill();
+  if (colRing) {
+    cx.strokeStyle = colRing;
+    cx.lineWidth = Math.max(1, R * 0.25);
+    cx.stroke();
+  }
+}
+
+function drawTorsoRefined(J) {
+  const a = (c, d, w) => V.add(c, V.mul(d, w));
+  // Short / Quadril
+  const hipPts = [
+    a(J.pel, J.hv, -0.145),
+    V.add(a(J.pel, J.hv, -0.155), [0, -0.14, 0]),
+    V.add(a(J.pel, J.hv, 0.155), [0, -0.14, 0]),
+    a(J.pel, J.hv, 0.145)
+  ].map(proj);
+  cx.beginPath();
+  hipPts.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1]));
+  cx.closePath();
+  cx.fillStyle = '#182438';
+  cx.fill();
+  cx.strokeStyle = '#0f172a';
+  cx.lineWidth = 1.5;
+  cx.stroke();
+
+  // Camisa atlética (Tronco em V com ombros definidos)
+  const P = [
+    a(J.pel, J.hv, -0.135),
+    a(J.M, J.mv, -0.125),
+    V.add(a(J.neck, J.sv, -0.21), [0, -0.02, 0]),
+    V.add(J.neck, [0, 0.02, 0]),
+    V.add(a(J.neck, J.sv, 0.21), [0, -0.02, 0]),
+    a(J.M, J.mv, 0.125),
+    a(J.pel, J.hv, 0.135)
+  ].map(proj);
+
+  cx.beginPath();
+  P.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1]));
+  cx.closePath();
+  cx.fillStyle = '#1d4ed8';
+  cx.strokeStyle = '#1e3a8a';
+  cx.lineJoin = 'round';
+  cx.lineWidth = Math.max(2, 0.03 * SCL);
+  cx.fill();
+  cx.stroke();
+
+  // Faixa esportiva diagonal / detalhe na camisa
+  const pNeck = proj(J.neck), pPel = proj(J.pel), pM = proj(J.M);
+  cx.strokeStyle = '#38bdf8';
+  cx.lineWidth = Math.max(1.5, 0.018 * SCL);
+  cx.beginPath();
+  cx.moveTo(pPel[0], pPel[1]);
+  cx.quadraticCurveTo(pM[0], pM[1], pNeck[0], pNeck[1]);
+  cx.stroke();
+}
+
+function drawHeadRefined(J) {
+  const p = proj(J.head);
+  const g = proj(V.add(J.head, J.gz));
+  const r = 0.105 * SCL;
+  const fx = (g[0] - p[0]) / SCL;
+  const fy = (g[1] - p[1]) / SCL;
+  const facingFront = (g[2] - p[2]) < 0;
+
+  // Cabeça (pele)
+  cx.fillStyle = '#e0ac82';
+  cx.strokeStyle = '#9c6b43';
+  cx.lineWidth = 1.2;
+  cx.beginPath();
+  cx.ellipse(p[0], p[1], r * 0.86, r * 1.06, 0, 0, Math.PI * 2);
+  cx.fill();
+  cx.stroke();
+
+  // Cabelo
+  cx.fillStyle = '#231710';
+  cx.beginPath();
+  cx.ellipse(p[0] - fx * r * 0.35, p[1] - fy * r * 0.35 - r * 0.16, r * 0.94, r * 1.0, 0, facingFront ? Math.PI : 0, facingFront ? 0 : Math.PI * 2, facingFront);
+  cx.fill();
+
+  // Testeira (Headband esportiva branca)
+  if (facingFront) {
+    cx.fillStyle = '#ffffff';
+    cx.fillRect(p[0] - r * 0.86, p[1] - r * 0.32, r * 1.72, r * 0.22);
+    cx.strokeStyle = '#cbd5e1';
+    cx.lineWidth = 1;
+    cx.strokeRect(p[0] - r * 0.86, p[1] - r * 0.32, r * 1.72, r * 0.22);
+  }
+}
+
+// Desenha mão anatômica articulada com punho, metacarpo, 5 dedos individuais (3 falanges cada) e juntas
+function drawHandWithFingers(wristPos, forearmDir, gripAxis, palmNormal, isRightHand, isTwoHanded) {
+  const skin = '#e0ac82';
+  const skinDark = '#9c6b43';
+  const jointCol = '#facc15'; // Juntas esféricas amarelas de precisão
+
+  // Punho articulado (Wrist joint)
+  drawJointSphere(wristPos, 0.028, '#ffffff', '#2563eb');
+
+  // Eixo longitudinal da mão e largura da palma
+  const handDir = isRightHand ? gripAxis : V.norm(V.add(forearmDir, [0, -0.1, 0]));
+  const sideVec = V.norm(vCross(handDir, palmNormal));
+  const palmLen = 0.075;
+  const palmCenter = V.add(wristPos, V.mul(handDir, palmLen * 0.55));
+  const knucklesBase = V.add(wristPos, V.mul(handDir, palmLen));
+
+  // Palma da mão
+  drawCapsule3D(wristPos, knucklesBase, 0.026, 0.032, skin, skinDark, '#f3c69f');
+
+  if (isRightHand) {
+    // Mão direita segurando o cabo da raquete com os 5 dedos individuais articulados!
+    // Posições dos 4 dedos (Indicador, Médio, Anelar, Mínimo) ao longo do cabo
+    const fingerSpecs = [
+      { name: 'indicador', offset: 0.048, len: [0.026, 0.020, 0.015], r: 0.0085 },
+      { name: 'medio',     offset: 0.028, len: [0.029, 0.022, 0.016], r: 0.0090 },
+      { name: 'anelar',    offset: 0.008, len: [0.027, 0.020, 0.015], r: 0.0085 },
+      { name: 'minimo',    offset: -0.012, len: [0.021, 0.016, 0.013], r: 0.0075 }
+    ];
+
+    fingerSpecs.forEach((f, idx) => {
+      // Base do dedo (MCP joint) na lateral do cabo
+      const mcp = V.add(V.add(wristPos, V.mul(gripAxis, 0.035 + f.offset)), V.mul(sideVec, 0.022));
+      drawJointSphere(mcp, f.r * 1.05, jointCol, skinDark);
+
+      // Falange proximal envolvendo o cabo (curvando em direção a palmNormal)
+      const d1 = V.norm(V.add(V.mul(palmNormal, 0.85), V.mul(sideVec, -0.35)));
+      const pip = V.add(mcp, V.mul(d1, f.len[0]));
+      drawCapsule3D(mcp, pip, f.r, f.r * 0.92, skin, skinDark);
+      drawJointSphere(pip, f.r * 0.95, jointCol, skinDark);
+
+      // Falange média fechando o grip
+      const d2 = V.norm(V.add(V.mul(sideVec, -0.9), V.mul(palmNormal, 0.2)));
+      const dip = V.add(pip, V.mul(d2, f.len[1]));
+      drawCapsule3D(pip, dip, f.r * 0.92, f.r * 0.85, skin, skinDark);
+      drawJointSphere(dip, f.r * 0.88, jointCol, skinDark);
+
+      // Falange distal (ponta do dedo tocando o outro lado do cabo)
+      const d3 = V.norm(V.add(V.mul(palmNormal, -0.75), V.mul(sideVec, -0.45)));
+      const tip = V.add(dip, V.mul(d3, f.len[2]));
+      drawCapsule3D(dip, tip, f.r * 0.85, f.r * 0.72, skin, skinDark);
+    });
+
+    // Polegar opositor (Thumb - 3 articulações: CMC, MCP, IP) fechando por cima
+    const cmc = V.add(wristPos, V.mul(sideVec, -0.018));
+    drawJointSphere(cmc, 0.010, jointCol, skinDark);
+    const tDir1 = V.norm(V.add(V.mul(gripAxis, 0.65), V.add(V.mul(palmNormal, 0.55), V.mul(sideVec, -0.3))));
+    const tmcp = V.add(cmc, V.mul(tDir1, 0.025));
+    drawCapsule3D(cmc, tmcp, 0.010, 0.0095, skin, skinDark);
+    drawJointSphere(tmcp, 0.0095, jointCol, skinDark);
+
+    const tDir2 = V.norm(V.add(V.mul(palmNormal, 0.75), V.mul(sideVec, 0.55)));
+    const tipThumb = V.add(tmcp, V.mul(tDir2, 0.022));
+    drawCapsule3D(tmcp, tipThumb, 0.0095, 0.0085, skin, skinDark);
+    drawJointSphere(tipThumb, 0.0085, jointCol, skinDark);
+
+  } else {
+    // Mão esquerda (livre para equilíbrio/toss ou apoiada no cabo no Backhand de 2 mãos)
+    const curl = isTwoHanded ? 0.85 : 0.35;
+    const fingerOffsets = [-0.022, -0.007, 0.008, 0.022];
+    const fingerLens = [0.024, 0.028, 0.026, 0.020];
+
+    fingerOffsets.forEach((off, idx) => {
+      const mcp = V.add(knucklesBase, V.mul(sideVec, off));
+      drawJointSphere(mcp, 0.0075, jointCol, skinDark);
+      const d1 = V.norm(V.add(V.mul(handDir, 1 - curl * 0.5), V.mul(palmNormal, curl)));
+      const pip = V.add(mcp, V.mul(d1, fingerLens[idx] * 0.55));
+      drawCapsule3D(mcp, pip, 0.0075, 0.0068, skin, skinDark);
+      drawJointSphere(pip, 0.0068, jointCol, skinDark);
+
+      const d2 = V.norm(V.add(V.mul(handDir, 0.3 - curl * 0.6), V.mul(palmNormal, 0.9)));
+      const tip = V.add(pip, V.mul(d2, fingerLens[idx] * 0.55));
+      drawCapsule3D(pip, tip, 0.0068, 0.0058, skin, skinDark);
+    });
+
+    // Polegar esquerdo
+    const tmcp = V.add(V.add(wristPos, V.mul(handDir, 0.032)), V.mul(sideVec, -0.028));
+    drawJointSphere(tmcp, 0.0085, jointCol, skinDark);
+    const ttip = V.add(tmcp, V.mul(V.norm(V.add(V.mul(handDir, 0.7), V.mul(palmNormal, 0.5))), 0.028));
+    drawCapsule3D(tmcp, ttip, 0.0085, 0.0075, skin, skinDark);
+  }
+}
+
+function racketDrawRefined(J) {
+  const gripAxis = V.norm(V.sub(J.RKH, J.RW));
+  let baseNormal = J.RN || [0, 0, 1];
+  // Aplica a rotação da empunhadura escolhida (Continental / Eastern / Semi-Western) ao redor do eixo do cabo
+  const gripRad = rad(GRIPS[st.grip].ang);
+  const n = V.norm(rotAroundAxis(baseNormal, gripAxis, gripRad));
+  const w = V.norm(vCross(gripAxis, n));
+
+  const A = 0.165; // Semi-eixo maior da cabeça
+  const B = 0.125; // Semi-eixo menor da cabeça
+  const C = J.RKH; // Centro da cabeça da raquete
+  const throatBase = V.sub(C, V.mul(gripAxis, A * 1.45));
+  const handleStart = V.sub(J.RW, V.mul(gripAxis, 0.045)); // Butt cap sobressaindo abaixo do punho
+
+  const M = (x, y) => V.add(C, V.add(V.mul(gripAxis, x), V.mul(w, y)));
+
+  // 1. Butt Cap (base do cabo)
+  drawCapsule3D(handleStart, V.add(handleStart, V.mul(gripAxis, 0.022)), 0.022, 0.019, '#111827', '#000000');
+
+  // 2. Cabo (Grip com overgrip branco/preto texturizado)
+  drawCapsule3D(V.add(handleStart, V.mul(gripAxis, 0.02)), throatBase, 0.017, 0.016, '#f8fafc', '#475569', '#ffffff');
+
+  // 3. Coração / Garganta (Throat em Y)
+  const leftThroat = M(-A * 0.78, -B * 0.58);
+  const rightThroat = M(-A * 0.78, B * 0.58);
+  drawCapsule3D(throatBase, leftThroat, 0.014, 0.011, '#1e293b', '#0f172a');
+  drawCapsule3D(throatBase, rightThroat, 0.014, 0.011, '#1e293b', '#0f172a');
+  drawCapsule3D(leftThroat, rightThroat, 0.010, 0.010, '#334155', '#0f172a');
+
+  // 4. Aro e Encordoamento
+  const P = [];
+  for (let i = 0; i <= 32; i++) {
+    const f = (i / 32) * Math.PI * 2;
+    P.push(proj(M(Math.cos(f) * A, Math.sin(f) * B)));
+  }
+
+  // Fundo translúcido das cordas
+  cx.beginPath();
+  P.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1]));
+  cx.closePath();
+  cx.fillStyle = 'rgba(255, 255, 255, 0.22)';
+  cx.fill();
+
+  // Cordas verticais (Mains) e horizontais (Crosses)
+  cx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+  cx.lineWidth = Math.max(0.8, 0.004 * SCL);
+  for (const k of [-0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75]) {
+    const q = Math.sqrt(Math.max(0, 1 - k * k));
+    line(M(-A * q, B * k), M(A * q, B * k), 'rgba(255,255,255,0.75)', cx.lineWidth);
+    line(M(A * k, -B * q), M(A * k, B * q), 'rgba(255,255,255,0.75)', cx.lineWidth);
+  }
+
+  // Aro externo aerodinâmico
+  cx.beginPath();
+  P.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1]));
+  cx.closePath();
+  cx.strokeStyle = '#dc2626';
+  cx.lineWidth = Math.max(2.5, 0.018 * SCL);
+  cx.stroke();
+  cx.strokeStyle = '#1e293b';
+  cx.lineWidth = Math.max(1, 0.006 * SCL);
+  cx.stroke();
+
+  return { gripAxis, palmNormal: n };
+}
+
+function drawPlayer(J, hl) {
+  const it = [];
+  const shortCol = '#1e293b', shortDark = '#0f172a', shortHi = '#334155';
+  const skin = '#e0ac82', skinDark = '#9c6b43', skinHi = '#f3c69f';
+  const sockCol = '#f8fafc', sockDark = '#cbd5e1';
+  const shoeCol = '#ffffff', shoeAccent = '#2563eb';
+  const zz = (a, b) => (proj(a)[2] + proj(b)[2]) / 2;
+
+  const L = (a, b, r1, r2, c, d, hi) => it.push({
+    z: zz(a, b),
+    f() { drawCapsule3D(a, b, r1, r2, c, d, hi); }
+  });
+  const C = (P, r, c, ring, dz) => it.push({
+    z: proj(P)[2] + (dz || 0),
+    f() { drawJointSphere(P, r, c, ring); }
+  });
+
+  // Perna Esquerda (Coxa -> Joelho -> Canela/Meia -> Tênis)
+  const midLShin = V.add(V.mul(J.LKN, 0.45), V.mul(J.LA, 0.55));
+  L(J.HL, J.LKN, 0.082, 0.056, shortCol, shortDark, shortHi);
+  C(J.LKN, 0.052, skin, skinDark);
+  L(J.LKN, midLShin, 0.052, 0.042, skin, skinDark, skinHi);
+  L(midLShin, J.LA, 0.043, 0.036, sockCol, sockDark);
+  L(J.LHL, J.LTO, 0.044, 0.034, shoeCol, '#64748b', shoeAccent);
+
+  // Perna Direita (Coxa -> Joelho -> Canela/Meia -> Tênis)
+  const midRShin = V.add(V.mul(J.RKN, 0.45), V.mul(J.RA, 0.55));
+  L(J.HR, J.RKN, 0.084, 0.058, shortCol, shortDark, shortHi);
+  C(J.RKN, 0.054, skin, skinDark);
+  L(J.RKN, midRShin, 0.054, 0.043, skin, skinDark, skinHi);
+  L(midRShin, J.RA, 0.044, 0.037, sockCol, sockDark);
+  L(J.RHL, J.RTO, 0.044, 0.034, shoeCol, '#64748b', shoeAccent);
+
+  // Braço Esquerdo (Ombro/Manga -> Cotovelo -> Antebraço)
+  const midLArm = V.add(V.mul(J.SL, 0.55), V.mul(J.LE, 0.45));
+  L(J.SL, midLArm, 0.056, 0.048, '#1d4ed8', '#1e3a8a', '#3b82f6');
+  L(midLArm, J.LE, 0.046, 0.040, skin, skinDark, skinHi);
+  C(J.LE, 0.038, skin, skinDark);
+  L(J.LE, J.LW, 0.039, 0.028, skin, skinDark, skinHi);
+
+  // Braço Direito (Ombro/Manga -> Cotovelo -> Antebraço)
+  const midRArm = V.add(V.mul(J.SR, 0.55), V.mul(J.RE, 0.45));
+  L(J.SR, midRArm, 0.058, 0.050, '#1d4ed8', '#1e3a8a', '#3b82f6');
+  L(midRArm, J.RE, 0.048, 0.042, skin, skinDark, skinHi);
+  C(J.RE, 0.040, skin, skinDark);
+  L(J.RE, J.RW, 0.041, 0.029, skin, skinDark, skinHi);
+
+  // Pescoço e Tronco
+  L(J.neck, J.head, 0.042, 0.038, skin, skinDark);
+  it.push({ z: zz(J.pel, J.neck), f() { drawTorsoRefined(J); } });
+  C(J.SL, 0.056, '#1d4ed8', '#1e3a8a');
+  C(J.SR, 0.058, '#1d4ed8', '#1e3a8a');
+
+  // Raquete + Mãos Articuladas com 5 Dedos Individuais
+  const gripAxis = V.norm(V.sub(J.RKH, J.RW));
+  const gripRad = rad(GRIPS[st.grip].ang);
+  const palmNormal = V.norm(rotAroundAxis(J.RN || [0, 0, 1], gripAxis, gripRad));
+  const forearmDirL = V.norm(V.sub(J.LW, J.LE));
+  const isTwoHanded = (st.id === 'bh');
+
+  it.push({
+    z: proj(J.RKH)[2] - 0.08,
+    f() {
+      racketDrawRefined(J);
+      // Mão direita com 5 dedos individuais abraçando o cabo
+      drawHandWithFingers(J.RW, V.norm(V.sub(J.RW, J.RE)), gripAxis, palmNormal, true, false);
+    }
+  });
+
+  it.push({
+    z: proj(J.LW)[2] - 0.04,
+    f() {
+      // Mão esquerda com 5 dedos individuais articulados
+      drawHandWithFingers(J.LW, forearmDirL, gripAxis, palmNormal, false, isTwoHanded);
+    }
+  });
+
+  // Cabeça
+  it.push({ z: proj(J.head)[2] - 0.05, f() { drawHeadRefined(J); } });
+
+  // Ordenação Z-Buffer e renderização
+  it.sort((a, b) => b.z - a.z).forEach(i => i.f());
+
+  // Marcadores biomecânicos e destaques do treinador
+  if (!st.clean) {
+    ['SR', 'SL', 'RE', 'LE', 'RW', 'LW', 'HR', 'HL', 'RKN', 'LKN', 'RA', 'LA'].forEach(k => dot(J[k], 0.014, '#ffffffcc'));
+    hl.forEach(k => {
+      if (!J[k]) return;
+      const p = proj(J[k]), r = (0.09 + 0.05 * Math.sin(st.pulse * 5)) * SCL;
+      cx.strokeStyle = '#ffb300';
+      cx.lineWidth = 3;
+      cx.beginPath();
+      cx.arc(p[0], p[1], r, 0, Math.PI * 2);
+      cx.stroke();
+      cx.fillStyle = '#ffb30033';
+      cx.fill();
+    });
+  }
+}
+
+const SH=[
+['fh','Cruzado profundo',2.2,-1.2,-3.3,22.3,32,2700,18,11,'Padrão de rali: o cruzado passa pela parte mais baixa da rede e usa a diagonal, que é a mais longa. Federer: ~2.700 rpm em média.'],
+['fh','Paralela',2.2,-1.2,3.6,22,34,2700,16,9,'Mudança de direção: mais risco (rede mais alta, quadra mais curta). Funciona quando o rival já correu para o cruzado.'],
+['fh','Inside-out',-1.8,-1.2,3.6,22,35,3000,18,11,'Contorna o backhand e bate o forehand na diagonal para o backhand do rival. Padrão clássico de Federer.'],
+['fh','Topspin pesado',2.2,-1.8,-3.3,22.8,30,3200,18,15,'Face ~15° fechada e caminho ~+18° (medido em Nadal). Média ~3.200 rpm; a bola quica alto e empurra o rival para trás.'],
+['bh','Cruzado 2 mãos',-2.2,-1.2,3.3,22.3,30,2400,16,10,'A mão esquerda comanda o golpe. O cruzado profundo é o padrão de rali do backhand.'],
+['bh','Paralela 2 mãos',-2.2,-1.2,-3.6,22,31,2400,14,9,'Troca de direção atrás de quem já se moveu para o cruzado.'],
+['b1','Cruzado 1 mão',-2.2,-1.2,3.3,22.3,31,2000,14,9,'Estilo Federer: contato mais à frente com o braço estendido e o outro braço para trás como contrapeso.'],
+['b1','Paralela 1 mão',-2.2,-1.2,-3.6,22,32,2000,12,8,'Arma de troca de direção. Mantenha o contato à frente do corpo.'],
+['sl','Slice curto cruzado',-1.8,-1,3.2,15.5,20,-2200,-12,-16,'Bola baixa que obriga o rival a subir até a rede. Combinação clássica de Federer para abrir a quadra.'],
+['sl','Slice fundo paralela',-1.8,-1,-3.6,21.5,24,-2200,-10,-14,'Mantém a bola baixa e funda; prepara a aproximação ou a troca de ritmo.'],
+['sv','T no lado par',1,-.6,-.3,17.7,52,1800,10,5,'Federer: ~49% no T no 1º saque do lado par (amostra de dados charting). A rota do braço muda pouco: o timing da rotação define a direção.'],
+['sv','Aberto no lado par',1,-.6,-3.9,17.7,50,2200,10,5,'~45% dos primeiros saques de Federer no lado par (amostra). Abre a quadra para o forehand seguinte.'],
+['sv','T no lado ímpar',-1,-.6,.3,17.7,52,1800,10,5,'~39% dos primeiros saques de Federer no lado ímpar foram no T (amostra).'],
+['sv','Aberto no lado ímpar',-1,-.6,3.9,17.7,50,2400,10,5,'~57% dos primeiros saques de Federer no lado ímpar foram abertos (amostra), na direção do backhand do rival.'],
+['sm','Smash cruzado',.5,6.5,-3,20.5,36,600,-20,16,'Contato alto, braço estendido e finalização cruzando o corpo. Mire o lado aberto da quadra.'],
+['vl','Voleio cruzado',1,9.3,-3,18.5,22,-900,-5,-8,'Bloqueio curto com backspin, direção ao espaço aberto.'],
+['vl','Voleio paralelo',1,9.3,3,18.5,22,-900,-5,-8,'Tire o rival do centro. Mantenha a raquete à frente.'],
+['sv','Slice no lado par',1,-.6,-3.9,17.7,47,2200,8,5,'Mais spin (~2.200 rpm) e menos velocidade (~170 km/h) que o saque plano: a bola curva e quica baixo.'],
+['kk','Kick aberto no lado ímpar',-1,-.6,3.8,17.5,41.7,3200,30,0,'Kick: ~150 km/h e ~3.200 rpm. A bola cai mais no fim e quica alto, empurrando o rival para trás.'],
+['kk','Kick no corpo lado par',1,-.6,-1.2,17.5,41.7,3200,30,0,'Kick no corpo: o quique alto tira o tempo de reação e a bola sobe na altura do ombro.'],
+['rt','Cruzada profunda',1.8,-2.4,-3,22,30,2400,16,10,'Devolução cruzada funda: usa a diagonal e tira o ângulo do sacador na terceira bola.'],
+['rt','Centro (segura)',1.8,-2.4,0,21.5,28,2000,14,9,'Devolução funda pelo centro: pouco ângulo para o sacador. Opção segura contra saques fortes.'],
+['rt','Chip aos pés',1.8,-2.2,-1.5,19.5,22,-1800,-8,-12,'Chip: bloqueio curto com backspin e baixo, aos pés de quem sobe à rede.'],
+['lb','Lob de topspin',2,-1.5,-1.5,21.5,22,2200,40,10,'Lob de ataque: a bola sobe rápido e cai antes da linha, com topspin, atrás de quem está na rede.'],
+['lb','Lob defensivo',2,-1.5,1.5,21.5,20,-800,30,-25,'Lob defensivo: face aberta, alto e profundo para ganhar tempo e reposicionar.'],
+['dp','Drop cruzado',-1,4,3,14.8,13,-2200,-15,-22,'Drop shot: backspin forte e contato macio fazem a bola morrer logo depois da rede. Disfarce é essencial.'],
+['ap','Aproximação paralela',1.5,3,3.6,21.5,28,2000,16,9,'Bola funda na paralela encurta o caminho até a rede e cobre a passada. Cerca de 96% das aproximações de elite caem dentro (dados charting).']];
+function gripAt(s,t){if(!s.gr)return[0,0];let sw=0,sl=0;const E=(a,b,x)=>{const u=Math.min(1,Math.max(0,(x-a)/(b-a||1)));return u*u*(3-2*u)};for(const g of s.gr){const w=E(g[0],g[1],t)*(1-E(g[2],g[3],t));sw+=w;sl+=w*g[4]}return sw>0?[Math.min(1,sw),sl/sw]:[0,0]}
+const RUNS=['fh','bh','b1','sl','rt','lb','dp'],SLEN=.95,sm3=u=>u*u*(3-2*u);
+function runInfo(s,t){const P=st.po||[0,0];if(!RUNS.includes(s.id))return{O:P,g:0,ph:0,dir:[0,1]};
+const rt=s.id=='rt',a0=rt?.55:.42,a1=s.tc-(rt?.15:.4),b0=s.tc+.45,b1=Math.min(s.dur-.1,s.tc+1.15),v0=[P[0],P[1]+1.5],L=Math.hypot(v0[0],v0[1])||1e-6,Lm=Math.min(3.2,4.2*(a1-a0)),k=L>Lm?Lm/L:1,vv=[v0[0]*k,v0[1]*k],D=Math.hypot(vv[0],vv[1]);
+const E=(a,b,x)=>sm3(Math.min(1,Math.max(0,(x-a)/(b-a)))),F=x=>E(a0,a1,x)-E(b0,b1,x),f=F(t),sp=D*Math.abs(F(t+.02)-F(t-.02))/.04,sg=t>=b0?-1:1;
+return{O:[P[0]-vv[0]*(1-f),P[1]-vv[1]*(1-f)],g:Math.min(1,sp/.7),ph:D*(E(a0,a1,t)+E(b0,b1,t))/SLEN,dir:[sg*vv[0]/(D||1),sg*vv[1]/(D||1)]}}
+function gait(o,R){const d=R.dir,pp=[d[1],-d[0]],B=R.O;[['ra',1,0],['la',-1,.5]].forEach(([f,sd,po])=>{const fr=(R.ph+po)%1;let off,lift=0;if(fr<.6)off=SLEN*(.3-fr);else{const u=(fr-.6)/.4;off=SLEN*(-.3+.6*sm3(u));lift=.14*Math.sin(Math.PI*u)}
+const x=B[0]+pp[0]*sd*.18+d[0]*off,z=B[1]+pp[1]*sd*.18+d[1]*off,a=o[f],g=R.g;o[f]=[a[0]+(x-a[0])*g,Math.max(.05,a[1]+(.05+lift-a[1])*g),a[2]+(z-a[2])*g]});o.p[1]+=R.g*.03*Math.abs(Math.sin(Math.PI*2*R.ph))}
+const aimOf=h=>Math.atan2(h[4]-h[2],h[5]-h[3])*180/Math.PI;
+const pose=(s,t)=>{const o=evalPose(s,t),R=runInfo(s,t),O=R.O;{const w=Math.exp(-Math.pow((t-s.tc)/.22,2)),da=st.da||0;o.hy+=da*.45*w;o.sy+=da*.6*w;o.rk=[o.rk[0]+da*.006*w,o.rk[1],o.rk[2]]}{const g=gripAt(s,t);o.lg=g[0];o.lo=g[1]}o.p=[o.p[0]+O[0],o.p[1],o.p[2]+O[1]];o.ra=[o.ra[0]+O[0],o.ra[1],o.ra[2]+O[1]];o.la=[o.la[0]+O[0],o.la[1],o.la[2]+O[1]];if(R.g>0)gait(o,R);const hy=rad(o.hy),hx=Math.cos(hy)*.1,hz=-Math.sin(hy)*.1,py=.95-o.b+o.p[1];let mx=py;[['ra',1],['la',-1]].forEach(([f,sg])=>{const a=o[f],dx=o.p[0]+sg*hx-a[0],dz=o.p[2]+sg*hz-a[2];mx=Math.min(mx,a[1]+Math.sqrt(Math.max(0,.93*.93-dx*dx-dz*dz)))});if(py>mx)o.b+=py-mx;return o};
+function sim(c,v,th,az,rpm,full){
+const R=0.0335,m=0.057,rho=1.225,A=Math.PI*R*R;
+const w0=rpm*Math.PI/30;
+const w=[w0*az[1],0,-w0*az[0]];
+let p=[...c],u=[Math.cos(th)*az[0]*v,Math.sin(th)*v,Math.cos(th)*az[1]*v],t=0,nb=0,B=null,N=null,net=0,pk=c[1];
+const P=[[0,...p]];
+const dt=.002;
+for(let i=0;i<2000;i++){
+const sp=V.len(u)||1e-6;
+const spinRate=V.len(w);
+const Sr=spinRate>1?R*spinRate/sp:0,Cd=0.55+0.1*Math.min(1,Sr/0.4);
+const Cl=spinRate>1?1/(2.02+0.98*(sp/(R*spinRate))):0;
+const fDrag=-(0.5*rho*A*Cd*sp)/m;
+const cr=[w[1]*u[2]-w[2]*u[1],w[2]*u[0]-w[0]*u[2],w[0]*u[1]-w[1]*u[0]];
+const clLen=V.len(cr)||1;
+const fMag=(0.5*rho*A*Cl*sp*sp)/(m*clLen);
+const a=[fDrag*u[0]+fMag*cr[0],-9.81+fDrag*u[1]+fMag*cr[1],fDrag*u[2]+fMag*cr[2]];
+u=V.add(u,V.mul(a,dt));
+const q=V.add(p,V.mul(u,dt));
+if(p[2]<11.885&&q[2]>=11.885){const fN=(11.885-p[2])/(q[2]-p[2]||1);N=p[1]+(q[1]-p[1])*fN;const nx=p[0]+(q[0]-p[0])*fN;if(N<.914+.0043*nx*nx+R){net=1;u=[u[0]*.2,0,-Math.abs(u[2])*.12];q[2]=11.885-.02}}
+const p0=p;p=q;if(q[1]<=R&&u[1]<0&&p0[1]>R){const fr=(p0[1]-R)/(p0[1]-q[1]);p=V.add(p0,V.mul(V.sub(q,p0),fr))}t+=dt;pk=Math.max(pk,p[1]);
+if(p[1]<=R+1e-6&&u[1]<0){
+if(!B)B=[...p];
+nb++;
+const vyIn=-u[1];
+const corY=Math.max(0.68,0.78-0.004*vyIn);
+const slipX=u[0]+w[2]*R;
+const slipZ=u[2]-w[0]*R;
+const slipSp=Math.hypot(slipX,slipZ);
+const mu=0.55;
+const maxImpulse=mu*(1+corY)*vyIn;
+if(slipSp>1e-4){
+const rollImpulse=0.4*slipSp;
+const J=Math.min(maxImpulse,rollImpulse);
+const dirX=slipX/slipSp,dirZ=slipZ/slipSp;
+u[0]-=J*dirX;
+u[2]-=J*dirZ;
+const dW=J/(0.62*R);
+w[2]-=dW*dirX;
+w[0]+=dW*dirZ;
+}
+u[1]=vyIn*corY;
+p[1]=R+1e-4;
+}
+if(i%6==0||nb>0&&i%3==0)P.push([t,...p]);
+if(!full&&nb>=1)break;
+if(nb>=2||t>3.2)break
+}
+return{P,B,N,net,pk,T:t}}
+function solve(c,tx,tz,v,rpm){const dx=tx-c[0],dz=tz-c[2],D=Math.hypot(dx,dz),az=[dx/D,dz/D];let lo=-.35,hi=.7,m=0;for(let i=0;i<26;i++){m=(lo+hi)/2;const r=sim(c,v,m,az,rpm,0),d=r.B?Math.hypot(r.B[0]-c[0],r.B[2]-c[2]):1e3;d>D?hi=m:lo=m}const r=sim(c,v,m,az,rpm,1);r.th=m*180/Math.PI;return r}
+function flightPos(u){const f=st.fl,P=f.P;if(u>f.T)return null;for(let i=1;i<P.length;i++)if(P[i][0]>=u){const a=P[i-1],b=P[i],k=(u-a[0])/(b[0]-a[0]||1);return[0,1,2].map(j=>a[j+1]+(b[j+1]-a[j+1])*k)}return null}
+function setShot(id,i){const s=S[id],L=SH.filter(h=>h[0]==id);if(!L.length)return;const h=L[i];s.id=id;st.shot=h;st.po=[h[2],h[3]];st.da=aimOf(h)-aimOf(L[0]);s.c=joints(pose(s,s.tc)).RKH;st.fl=solve(s.c,h[4],h[5],h[6],h[7]);const e=$('#shots');e.innerHTML='';L.forEach((q,j)=>{const b=document.createElement('button');b.className='c'+(j==i?' on':'');b.textContent=q[1];b.onclick=()=>{setShot(id,j);st.t=0;st.trail=[];st.hitPlayed=false;st.bouncePlayed=false;$('#cap h3').textContent=q[1];$('#cap p').textContent=q[10]};e.appendChild(b)})}
+function drawFlight(){const f=st.fl;if(!f||st.clean)return;const sv=st.id=='sv'||st.id=='kk';cx.lineCap='round';cx.strokeStyle='#0003';cx.lineWidth=2;cx.beginPath();f.P.forEach((p,i)=>{const q=proj([p[1],0,p[3]]);i?cx.lineTo(q[0],q[1]):cx.moveTo(q[0],q[1])});cx.stroke();cx.strokeStyle='#ffb300cc';cx.setLineDash([6,5]);cx.lineWidth=2.5;cx.beginPath();f.P.forEach((p,i)=>{const q=proj([p[1],p[2],p[3]]);i?cx.lineTo(q[0],q[1]):cx.moveTo(q[0],q[1])});cx.stroke();cx.setLineDash([]);
+if(f.net)label([f.B?f.B[0]:0,1.1,11.885],'NA REDE!','#b91c1c');if(f.B&&!f.net){const q=proj([f.B[0],0,f.B[2]]),r=(.2+.06*Math.sin(st.pulse*5))*SCL;cx.strokeStyle='#ff3d00';cx.lineWidth=3;cx.beginPath();cx.ellipse(q[0],q[1],Math.max(8,r*1.6),Math.max(4,r*.7),0,0,7);cx.stroke();label(f.B,'Quique '+(sv?18.285-f.B[2]:23.77-f.B[2]).toFixed(1).replace('.',',')+' m da linha de '+(sv?'saque':'fundo'),'#b91c1c')}
+const nb=f.P.find(p=>p[3]>=11.885);if(nb&&f.N!=null)label([nb[1],nb[2],11.885],'Rede +'+(f.N-.914).toFixed(2).replace('.',',')+' m','#92400e')}
+function inset(s){if(st.clean)return;const h=st.shot,f=st.fl;if(!h||!f)return;const bw=156,bh=104,x0=8,y0=H-bh-26;cx.fillStyle='#ffffffe8';cx.fillRect(x0,y0,bw,bh);cx.save();cx.translate(x0,y0);cx.beginPath();cx.rect(0,0,bw,bh);cx.clip();
+const ph=Math.max(-1,Math.min(1,(st.t-s.tc)/.14)),ang=rad(h[8]),tl=rad(h[9]),X=70,Y=66,th=rad(f.th),sg=h[7]>0?1:-1;cx.fillStyle='#12303d';cx.font='700 9px system-ui';cx.fillText('CONTATO · RAQUETE / BOLA',6,12);cx.font='9px system-ui';cx.fillText('Face '+(h[9]>0?'fechada ':'aberta ')+Math.abs(h[9])+'° · caminho '+(h[8]>0?'+':'')+h[8]+'°',6,24);cx.fillText(Math.abs(h[7])+' rpm '+(sg>0?'topspin':'backspin')+' · '+Math.round(h[6]*3.6)+' km/h',6,35);cx.fillText('Lançamento '+f.th.toFixed(0)+'°',6,46);
+cx.strokeStyle='#4b93b5';cx.lineWidth=2;cx.beginPath();cx.moveTo(0,bh-6);cx.lineTo(bw,bh-6);cx.stroke();cx.setLineDash([3,3]);cx.strokeStyle='#ffb300';cx.beginPath();cx.moveTo(X-45*Math.cos(ang),Y+45*Math.sin(ang));cx.lineTo(X+45*Math.cos(ang),Y-45*Math.sin(ang));cx.stroke();cx.setLineDash([]);
+cx.save();cx.translate(X-9+Math.cos(ang)*ph*34,Y-Math.sin(ang)*ph*34);cx.rotate(tl);cx.strokeStyle='#e24a4a';cx.lineWidth=5;cx.lineCap='round';cx.beginPath();cx.moveTo(0,-24);cx.lineTo(0,24);cx.stroke();cx.strokeStyle='#444';cx.lineWidth=3;cx.beginPath();cx.moveTo(-2,24);cx.lineTo(-10,44);cx.stroke();cx.restore();
+const bx=ph<0?X-ph*42:X+ph*42,by=ph<0?Y:Y-Math.sin(th)*ph*42,sq=Math.max(0,1-Math.abs(ph)/.18)*.3;cx.save();cx.translate(bx,by);cx.rotate(st.t*9*sg);cx.fillStyle='#d7ec3c';cx.beginPath();cx.ellipse(0,0,9*(1-sq),9,0,0,7);cx.fill();cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.beginPath();cx.arc(-9,0,9,-.9,.9);cx.stroke();cx.beginPath();cx.moveTo(0,-14);cx.lineTo(sg*6,-14);cx.lineTo(sg*3,-18);cx.moveTo(sg*6,-14);cx.lineTo(sg*3,-10);cx.strokeStyle='#ff6d00';cx.stroke();cx.restore();cx.restore()}
+let last=performance.now();
+
+// ============================================================================
+// MOTOR DE ÁUDIO PROCEDURAL (WEB AUDIO API) - IMPACTO RAQUETE/BOLA E QUIQUE
+// ============================================================================
+let audioCtx=null;
+function ensureAudio(){
+  if(!audioCtx){
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(AC)audioCtx=new AC();
+  }
+  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
+  return audioCtx;
+}
+function playRacketHit(speedMs=22,spinRpm=2000){
+  if(!st.sound)return;
+  const ctx=ensureAudio();
+  if(!ctx)return;
+  const now=ctx.currentTime;
+  const intensity=Math.min(1.3,Math.max(0.45,(speedMs||20)/22));
+  const isSlice=(spinRpm||0)<-500;
+
+  // 1. Ressonância das cordas (ping elástico curto ~165-210 Hz)
+  const osc=ctx.createOscillator();
+  const oscGain=ctx.createGain();
+  osc.type='triangle';
+  const baseFreq=isSlice?155:195;
+  osc.frequency.setValueAtTime(baseFreq*1.25,now);
+  osc.frequency.exponentialRampToValueAtTime(baseFreq*0.62,now+0.085);
+  oscGain.gain.setValueAtTime(0.32*intensity,now);
+  oscGain.gain.exponentialRampToValueAtTime(0.001,now+0.09);
+  osc.connect(oscGain);
+  oscGain.connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now+0.095);
+
+  // 2. Impacto seco do feltro nas cordas (ruído filtrado em banda)
+  const bufSize=Math.floor(ctx.sampleRate*0.075);
+  const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
+  const data=buf.getChannelData(0);
+  for(let i=0;i<bufSize;i++){
+    data[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.016));
+  }
+  const noise=ctx.createBufferSource();
+  noise.buffer=buf;
+  const filter=ctx.createBiquadFilter();
+  filter.type='bandpass';
+  filter.frequency.setValueAtTime(isSlice?950:1250,now);
+  filter.Q.setValueAtTime(1.8,now);
+  const nGain=ctx.createGain();
+  nGain.gain.setValueAtTime(0.55*intensity,now);
+  nGain.gain.exponentialRampToValueAtTime(0.001,now+0.072);
+  noise.connect(filter);
+  filter.connect(nGain);
+  nGain.connect(ctx.destination);
+  noise.start(now);
+}
+function playCourtBounce(){
+  if(!st.sound)return;
+  const ctx=ensureAudio();
+  if(!ctx)return;
+  const now=ctx.currentTime;
+  const osc=ctx.createOscillator();
+  const gain=ctx.createGain();
+  osc.type='sine';
+  osc.frequency.setValueAtTime(135,now);
+  osc.frequency.exponentialRampToValueAtTime(68,now+0.06);
+  gain.gain.setValueAtTime(0.18,now);
+  gain.gain.exponentialRampToValueAtTime(0.001,now+0.065);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now+0.07);
+}
+
+function speak(tip,done){const tx=tip.h+'. '+tip.x;if(!('speechSynthesis' in window)){setTimeout(done,3500);return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(tx);u.lang='pt-BR';u.rate=1;const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('pt'));if(v)u.voice=v;let d=0;const f=()=>{if(!d){d=1;done()}};u.onend=f;u.onerror=f;setTimeout(f,15000);speechSynthesis.speak(u)}
+function showTip(tip){if(st.tip===tip)return;st.tip=tip;$('#cap h3').textContent=tip.h;$('#cap p').textContent=tip.x}
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!W){rs()}const s=S[st.id];s.id=st.id;st.pulse+=dt;
+if(st.play&&!st.hold){const pt=st.t;st.t+=dt*st.spd;
+if(!st.hitPlayed&&st.t>=s.tc){st.hitPlayed=true;const h=st.shot;playRacketHit(h?h[6]:20,h?h[7]:2000);}
+if(st.fl&&st.fl.P&&!st.fl.net&&!st.bouncePlayed&&st.t>s.tc){
+  const bPt=st.fl.P.find(p=>p[2]<=0.036);
+  if(bPt&&(st.t-s.tc)>=bPt[0]){st.bouncePlayed=true;playCourtBounce();}
+}
+if(st.coach)for(const tp of s.tips)if(!st.done.has(tp)&&st.t>=tp.t){st.done.add(tp);st.t=tp.t;st.hold=1;showTip(tp);speak(tp,()=>{st.hold=0});break}
+if(st.t>=s.dur){st.t-=s.dur;st.trail=[];st.done.clear();st.hitPlayed=false;st.bouncePlayed=false;if(s.hold)st.flash=1}}
+const o=pose(s,st.t),J=joints(o);let tip=s.tips[0];for(const tp of s.tips)if(tp.t<=st.t)tip=tp;showTip(tip);
+{const bp=ballPos(s,st.t,J),tc=s.tc,tt=st.t,tg=tt<tc+.04&&bp?bp:s.c,w=Math.max(0,Math.min(1,1-(tt-tc-.45)/.4)),hz=[tg[0]-J.head[0],tg[2]-J.head[2]],l=Math.hypot(hz[0],hz[1])||1,f=J.gz;J.gz=V.norm([f[0]*(1-w)+hz[0]/l*w,0,f[2]*(1-w)+hz[1]/l*w])}
+const [pk,zm]=PARTS[st.part];let tg=pk=='legs'?V.mul(V.add(J.LKN,J.RKN),.5):pk=='pel'?[J.pel[0],.9,J.pel[2]]:J[pk];if(st.part=='Corpo todo')tg=[J.pel[0],.85,J.pel[2]+.2];if(pk=='court')tg=[0,0,11.885];
+st.cam=st.cam.map((v,i)=>v+(tg[i]-v)*Math.min(1,dt*5));st.sc+=(zm-st.sc)*Math.min(1,dt*5);
+let dy=st.tyaw-st.yaw;if(!st.drag)st.yaw+=dy*Math.min(1,dt*6);
+PH+=((st.part=='Quadra toda'?rad(52):rad(20))-PH)*Math.min(1,dt*4);SCL=Math.min(W/2.6,H/2.1)*st.sc*st.zoom;
+court();drawFlight();shadow(J);
+if(!st.clean){st.trail.push([...J.RKH]);if(st.trail.length>16)st.trail.shift();const TR=st.trail.map(proj);
+cx.lineCap='round';for(let i=1;i<TR.length;i++){cx.strokeStyle=`rgba(255,179,0,${i/TR.length*.55})`;cx.lineWidth=i*.7;cx.beginPath();cx.moveTo(TR[i-1][0],TR[i-1][1]);cx.lineTo(TR[i][0],TR[i][1]);cx.stroke()}}
+{const K2=joints(pose(s,(st.t-.03+s.dur)%s.dur)),d=V.norm(V.sub(J.RKH,J.RW)),v=V.sub(V.sub(J.RKH,K2.RKH),V.sub(J.pel,K2.pel)),vn=V.sub(v,V.mul(d,V.dot(v,d))),l=V.len(vn);J.RN=l>.012?V.mul(vn,1/l):(st.rn||[0,0,1]);st.rn=J.RN}
+drawPlayer(J,st.tip?st.tip.j:[]);overlays(s,J);ball(s,st.t,J);hud(s);inset(s);
+if(!st.clean){cx.fillStyle='#12303dbb';cx.font='600 12px system-ui';cx.fillText(s.n+' · '+(st.hold?'⏸ explicando':st.t.toFixed(1)+'s'),12,H-12)}
+if(st.flash>0){cx.fillStyle='rgba(255,255,255,'+st.flash*.7+')';cx.fillRect(0,0,W,H);st.flash=Math.max(0,st.flash-dt*3)}requestAnimationFrame(frame)}
+function chips(el,items,cb,cur){const e=$(el);e.innerHTML='';items.forEach(k=>{const b=document.createElement('button');b.className='c'+(k==cur?' on':'');b.textContent=k;b.onclick=()=>{cb(k);[...e.children].forEach(c=>c.classList.toggle('on',c===b))};e.appendChild(b)})}
+const stb=$('#stb'),stkMenu=$('#stk-menu');
+function renderStkMenu(){
+  stkMenu.innerHTML='';
+  Object.keys(S).forEach(k=>{
+    const b=document.createElement('button');
+    const active=(st.id===k);
+    b.className=active?'on':'';
+    b.innerHTML='<span>'+S[k].n+'</span>'+(active?'<span>✓</span>':'');
+    b.onclick=ev=>{ev.stopPropagation();pick(k);stkMenu.classList.remove('open')};
+    stkMenu.appendChild(b);
+  });
+}
+const cmb=$('#cmb'),camMenu=$('#cam-menu');
+function renderCamMenu(){
+  camMenu.innerHTML='';
+  Object.keys(PARTS).forEach(k=>{
+    const b=document.createElement('button');
+    const active=(st.part===k);
+    b.className=active?'on':'';
+    b.innerHTML='<span>'+k+'</span>'+(active?'<span>✓</span>':'');
+    b.onclick=ev=>{
+      ev.stopPropagation();
+      st.part=k;
+      if(k==='Quadra toda')st.tyaw=0;
+      renderCamMenu();
+      camMenu.classList.remove('open');
+    };
+    camMenu.appendChild(b);
+  });
+}
+renderCamMenu();
+cmb.addEventListener('pointerdown',e=>{e.stopPropagation();renderCamMenu();mnb.classList.remove('open');stkMenu.classList.remove('open');spdMenu.classList.remove('open');camMenu.classList.toggle('open')});
+stb.addEventListener('pointerdown',e=>{e.stopPropagation();renderStkMenu();mnb.classList.remove('open');camMenu.classList.remove('open');spdMenu.classList.remove('open');stkMenu.classList.toggle('open')});
+function pick(id){window.speechSynthesis&&speechSynthesis.cancel();st.hold=0;st.done.clear();st.id=id;st.t=0;st.trail=[];st.tip=null;st.hitPlayed=false;st.bouncePlayed=false;setShot(id,0);renderStkMenu();$('#cap h3').textContent=S[id].n;$('#cap p').textContent=S[id].intro;if(st.coach){const s=S[id];st.hold=1;speak({h:s.n,x:s.intro},()=>{st.hold=0})}}
+const SCI={g:['Cadeia no forehand (Landlinger e cols., 2010; 6 profissionais ATP, Vicon 400 Hz): pico de rotação da pelve ~75 ms antes do contato, tronco ~57 ms antes, rotação interna do ombro ~24 ms depois e extensão do cotovelo ~35 ms depois.','O timing separou elite de jovens de alto nível: picos de pelve e tronco mais tardios (-75 vs -93 ms e -57 vs -75 ms). Velocidade horizontal da raquete no impacto: ~33 m/s vs ~31 m/s.','Principais motores do forehand (Reid, Elliott e Crespo, 2013): rotação axial de pelve e tronco, adução horizontal e rotação interna do ombro.','Stance aberto x fechado: velocidade da raquete e do tronco praticamente iguais (Knudson; Kawamoto e cols., 2019). A aberta gira mais o tronco, a fechada usa mais transferência de peso.','Topspin: depende do ângulo da face e da trajetória da raquete perto do impacto; contato mais longo com a bola ajuda (J Sports Sci Med, 2017).'],s:['Contribuições à velocidade horizontal da raquete (66 sacadores; Tanabe e Ito, 2007): rotação interna do ombro 41%, flexão palmar do punho 32%. A rotação interna foi o que distinguiu sacadores rápidos de lentos.','Gordon e Dapena (2006): extensão do cotovelo e flexão do punho têm contribuições grandes; a pronção do antebraço dá contribuição breve e negativa.','Elliott e cols.: a velocidade linear das articulações cresce em sequência joelho, quadril, ombro, cotovelo e punho.','Pré-estiramento elástico (rotação externa seguida da interna) melhora o desempenho em ~20%. Uma pausa de 1,5 s reduz a velocidade de rotação interna em ~20%: não pare entre armar e acelerar (Elliott).','Profissionais com IMU (Frontiers, 2025; 8 jogadores): pelve, tronco e braço giram mais rápido no 1º saque que no 2º, e nem sempre seguem sequência proximal-distal estrita.'],a:['Aproximação (dados charting): ~96% caem dentro; se a bola volta, quem está na rede vence ~58,6%. A paralela é mais arriscada, mas cobre a passada reta.','Split step: pouso no momento em que o rival bate, para sair com a perna de fora e o primeiro passo na direção da bola.'],v:['Sem estudo biomecânico específico incluído nesta versão. Vale o princípio geral: sequência pernas, tronco, ombro, cotovelo e punho.'],k:['Velocidade x spin (Sports Health; dados de Elliott e Sakurai): saque plano ~190 km/h e ~1.200 rpm, slice ~170 km/h e ~2.200 rpm, kick ~150 km/h e ~3.200 rpm. Existe relação inversa entre velocidade e spin.','Toss do kick (guias de treinadores): ligeiramente atrás da cabeça e para o lado não dominante; a raquete sobe pela parte de trás da bola, de ~7h a ~1h.','Estudo com 7 atletas universitários: o kick gerou maiores forças nas costas e no ombro que o plano e o slice; o slice teve as menores forças.'],r:['Split step: pouse exatamente no contato do sacador, com pausa breve só para identificar a direção (Bollettieri; guias de treinadores).','Backswing de cerca de 2/3 do normal; quanto maior o saque, menor o backswing. A devolução ofensiva é um groundstroke compacto e o chip/block lembra um voleio.','Contato à frente do centro de gravidade e com o corpo indo para frente.'],l:['Lob de ataque (guias de treinadores): parece um groundstroke, com subida mais íngreme de baixo para cima; o disfarce é essencial.','Chip lob na devolução: swing de voleio com a face mais aberta, em torno de 45° (Tennis.com).'],d:['Drop shot: passar por baixo da bola com a face para criar underspin e fazer a bola morrer curta; sem disfarce perde o efeito surpresa (Tennis.com).','Misturar lob, drop e devoluções fortes em segundos saques fracos põe o sacador na defensiva (TennisOne).']},SK={fh:'g',bh:'g',b1:'g',sl:'g',sv:'s',sm:'s',ap:'a',vl:'v',kk:'k',rt:'r',lb:'l',dp:'d'};
+
+const mnb=$('#main-menu'),mnBtn=$('#mnb');
+function toggleSci(){
+  const e=$('#sci');
+  if(e.style.display==='block'){e.style.display='none';return false}
+  e.innerHTML='<b>'+S[st.id].n+' · o que dizem os estudos</b><ul>'+SCI[SK[st.id]].map(x=>'<li>'+x+'</li>').join('')+'</ul><small>Toque em Estudos no menu para fechar.</small>';
+  e.style.display='block';
+  return true;
+}
+function toggleDrill(){
+  const dp=$('#drill-panel');
+  if(dp.style.display==='block'){dp.style.display='none';return false}
+  const sName=S[st.id].n;
+  dp.innerHTML=`<h2>📋 Guia Prático de Drills: ${sName}</h2>
+  <div class="dr-card"><h4>1. Shadow Swing (Sem Bola)</h4><p>Faça 3 séries de 10 repetições focando na rotação da pelve e no timing do golpe em frente ao espelho.</p></div>
+  <div class="dr-card"><h4>2. Ajuste de Pés (Footwork)</h4><p>Treine o Split Step seguido de 2 passos de ajuste rápidos em direção ao ponto de impacto simulado.</p></div>
+  <div class="dr-card"><h4>3. Controle de Alvo</h4><p>Em quadra real, posicione cones nas zonas profundas e busque 8 acertos consecutivos cruzados.</p></div>
+  <small style="color:var(--mut);cursor:pointer;" onclick="document.getElementById('drill-panel').style.display='none';renderMainMenu()">✕ Fechar painel de treinos</small>`;
+  dp.style.display='block';
+  return true;
+}
+function renderMainMenu(){
+  mnb.innerHTML='';
+  const sciOpen=$('#sci').style.display==='block';
+  const drillOpen=$('#drill-panel').style.display==='block';
+  const items=[
+    {label:'🔊 Som Impacto',on:st.sound,badge:st.sound?'ON':'OFF',act:()=>{
+      st.sound=!st.sound;
+      if(st.sound)ensureAudio();
+    }},
+    {label:'Texto',on:st.showText,badge:st.showText?'ON':'OFF',act:()=>{
+      st.showText=!st.showText;
+      document.body.classList.toggle('hide-cap',!st.showText);
+      rs();
+    }},
+    {label:st.coach?'🔊 Treinador On':'🔊 Treinador Off',on:!!st.coach,badge:st.coach?'ON':'OFF',act:()=>{
+      st.coach=!st.coach;st.hold=0;st.done.clear();
+      window.speechSynthesis&&speechSynthesis.cancel();
+      if(st.coach)st.t=0;
+    }},
+    {label:'Rotação',on:!!VEC.Rotação,badge:VEC.Rotação?'ON':'OFF',act:()=>{VEC.Rotação=!VEC.Rotação}},
+    {label:'Peso',on:!!VEC.Peso,badge:VEC.Peso?'ON':'OFF',act:()=>{VEC.Peso=!VEC.Peso}},
+    {label:'Cadeia',on:!!VEC.Cadeia,badge:VEC.Cadeia?'ON':'OFF',act:()=>{VEC.Cadeia=!VEC.Cadeia}},
+    {label:'🎯 Tática',on:st.tactics,badge:st.tactics?'ON':'OFF',act:()=>{st.tactics=!st.tactics}},
+    {label:'🔬 Estudos',on:sciOpen,badge:sciOpen?'ON':'OFF',act:()=>{toggleSci()}},
+    {label:'📋 Drill',on:drillOpen,badge:drillOpen?'ON':'OFF',act:()=>{toggleDrill()}},
+    {label:'🎾 Pegada',on:true,badge:st.grip,act:()=>{
+      const keys=Object.keys(GRIPS);
+      st.grip=keys[(keys.indexOf(st.grip)+1)%keys.length];
+    }}
+  ];
+  items.forEach(it=>{
+    const b=document.createElement('button');
+    b.className=it.on?'on':'';
+    b.innerHTML='<span>'+it.label+'</span><span style="font-size:11px;opacity:.9">'+it.badge+'</span>';
+    b.onclick=ev=>{
+      ev.stopPropagation();
+      it.act();
+      renderMainMenu();
+    };
+    mnb.appendChild(b);
+  });
+}
+renderMainMenu();
+mnBtn.addEventListener('pointerdown',e=>{
+  e.stopPropagation();
+  renderMainMenu();
+  camMenu.classList.remove('open');
+  stkMenu.classList.remove('open');
+  spdMenu.classList.remove('open');
+  mnb.classList.toggle('open');
+});
+
+
+// Botão Play/Pause discreto (#ppb) com clique longo para menu de velocidades
+const ppb=$('#ppb'),spdMenu=$('#spd-menu'),spList=[.25,.5,.75,1,1.25];
+function renderSpdMenu(){
+  spdMenu.innerHTML='';
+  spList.forEach(v=>{
+    const b=document.createElement('button');
+    b.className=Math.abs(st.spd-v)<.01?'on':'';
+    b.innerHTML='<span>'+String(v).replace('.',',')+'×</span>'+(Math.abs(st.spd-v)<.01?'<span>✓</span>':'');
+    b.onclick=ev=>{ev.stopPropagation();st.spd=v;renderSpdMenu();spdMenu.classList.remove('open')};
+    spdMenu.appendChild(b);
+  });
+}
+renderSpdMenu();
+function togglePlay(){
+  st.play=!st.play;
+  ppb.textContent=st.play?'⏸':'▶';
+  ppb.setAttribute('aria-label',st.play?'Pausar':'Continuar');
+}
+let lpTimer=null,lpTriggered=false;
+ppb.addEventListener('pointerdown',e=>{
+  e.stopPropagation();
+  lpTriggered=false;
+  clearTimeout(lpTimer);
+  lpTimer=setTimeout(()=>{
+    lpTriggered=true;
+    mnb.classList.remove('open');
+    stkMenu.classList.remove('open');
+    camMenu.classList.remove('open');
+    renderSpdMenu();
+    spdMenu.classList.toggle('open');
+  },420);
+});
+ppb.addEventListener('pointerup',e=>{
+  e.stopPropagation();
+  clearTimeout(lpTimer);
+  if(!lpTriggered){
+    if(spdMenu.classList.contains('open'))spdMenu.classList.remove('open');
+    else togglePlay();
+  }
+});
+ppb.addEventListener('pointercancel',()=>clearTimeout(lpTimer));
+ppb.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('pointerdown',e=>{if(!spdMenu.contains(e.target)&&e.target!==ppb)spdMenu.classList.remove('open');if(!stkMenu.contains(e.target)&&e.target!==stb)stkMenu.classList.remove('open');if(!camMenu.contains(e.target)&&e.target!==cmb)camMenu.classList.remove('open');if(!mnb.contains(e.target)&&e.target!==mnBtn)mnb.classList.remove('open')});
+
+
+function toggleClean(){st.clean=!st.clean;document.body.classList.toggle('clean',st.clean);$('#uib').textContent=st.clean?'🙈':'👁';rs()}
+$('#uib').onclick=toggleClean;
+addEventListener('keydown',e=>{if(e.key==='h'||e.key==='H')toggleClean();if(e.code==='Space'){e.preventDefault();togglePlay()}});
+
+// Gestos no Canvas: 1 dedo rotaciona a câmera, 2 dedos (pinça) controlam zoom in/out
+const activePtrs=new Map();
+let pinchDist0=0,pinchZoom0=1,lastSingleX=0;
+cv.addEventListener('pointerdown',e=>{
+  cv.setPointerCapture(e.pointerId);
+  activePtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(activePtrs.size===1){
+    st.drag=1;
+    lastSingleX=e.clientX;
+  }else if(activePtrs.size===2){
+    st.drag=0;
+    const pts=[...activePtrs.values()];
+    pinchDist0=Math.hypot(pts[1].x-pts[0].x,pts[1].y-pts[0].y)||1;
+    pinchZoom0=st.zoom;
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!activePtrs.has(e.pointerId))return;
+  activePtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(activePtrs.size===1&&st.drag){
+    st.yaw+=(e.clientX-lastSingleX)*.6;
+    st.tyaw=st.yaw;
+    lastSingleX=e.clientX;
+  }else if(activePtrs.size===2){
+    const pts=[...activePtrs.values()];
+    const dist=Math.hypot(pts[1].x-pts[0].x,pts[1].y-pts[0].y);
+    if(pinchDist0>0){
+      st.zoom=Math.min(2.5,Math.max(.6,pinchZoom0*(dist/pinchDist0)));
+    }
+  }
+});
+function endPtr(e){
+  activePtrs.delete(e.pointerId);
+  if(activePtrs.size===1){
+    const rem=[...activePtrs.values()][0];
+    st.drag=1;
+    lastSingleX=rem.x;
+  }else{
+    st.drag=0;
+    pinchDist0=0;
+  }
+}
+cv.addEventListener('pointerup',endPtr);
+cv.addEventListener('pointercancel',endPtr);
+cv.addEventListener('wheel',e=>{st.zoom=Math.min(2.5,Math.max(.6,st.zoom-e.deltaY*.001))},{passive:true});
+$('#fsb').onclick=()=>{try{const r=document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();r&&r.catch&&r.catch(()=>{})}catch(e){}};
+$('#ball').onclick=()=>{ensureAudio();try{const r=document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();r&&r.catch&&r.catch(()=>{})}catch(e){}
+$('#start').style.display='none';$('#app').style.display='flex';rs();pick('fh');if('speechSynthesis' in window)speechSynthesis.getVoices();last=performance.now();requestAnimationFrame(frame)};
+</script></body></html>
