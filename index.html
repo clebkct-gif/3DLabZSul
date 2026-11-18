@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Tênis Lab - Me22</title>
+<title>Tênis Lab - Me23</title>
 <style>
 :root{--bg:#e8f4f8;--card:#ffffff;--tx:#12303d;--mut:#5b7a88;--ac:#2f9e6b;--ac2:#d7ec3c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f2230;--card:#17303f;--tx:#e6f3f8;--mut:#9bb8c6}}
@@ -47,6 +47,40 @@ body.clean #panel,body.clean #sci,body.clean #drill-panel{display:none!important
 #drill-panel .dr-card{background:color-mix(in srgb,var(--ac) 8%,transparent);border-left:4px solid var(--ac);padding:10px;border-radius:8px;margin-bottom:8px}
 #drill-panel .dr-card h4{margin:0 0 4px;font-size:14px}
 #drill-panel .dr-card p{margin:0;font-size:12.5px;color:var(--mut)}
+
+/* ===== Hub de treino + glossário ===== */
+#drill-panel{padding:0!important;height:min(84%,640px);overflow:hidden!important}
+.hub{display:flex;flex-direction:column;height:100%}
+.hub-h{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 2px}
+.hub-t{font-weight:700;font-size:15px;color:var(--ac)}
+.hub-x{border:0;background:transparent;color:var(--mut);font-size:19px;line-height:1;padding:6px 10px;cursor:pointer}
+.hub-tabs,.hub-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:4px 12px}
+.hub-tabs::-webkit-scrollbar,.hub-chips::-webkit-scrollbar{display:none}
+.hb-chip{flex:none;border:1px solid color-mix(in srgb,var(--ac) 45%,transparent);background:transparent;color:var(--tx);border-radius:999px;padding:6px 12px;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.hb-chip.on{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:600}
+.hb-chip.sm{padding:4px 9px;font-size:11.5px}
+.hub-tabs .hb-chip{padding:6px 9px;font-size:12px}
+.hub-b{flex:1;overflow:auto;padding:2px 12px 16px;-webkit-overflow-scrolling:touch}
+.hub-b h3{margin:12px 0 6px;font-size:13px;color:var(--ac);text-transform:uppercase;letter-spacing:.05em}
+.hub-note{font-size:12px;color:var(--mut);margin:6px 0 8px;line-height:1.4}
+details.hb-dr{background:color-mix(in srgb,var(--ac) 8%,transparent);border-left:4px solid var(--ac);border-radius:8px;margin-bottom:7px;padding:8px 10px}
+details.hb-dr summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:600;font-size:13.5px}
+details.hb-dr summary::-webkit-details-marker{display:none}
+details.hb-dr summary::after{content:"▾";color:var(--mut);margin-left:4px}
+details.hb-dr[open] summary::after{content:"▴"}
+.hb-lv{flex:none;font-size:10.5px;font-weight:600;border-radius:999px;padding:2px 8px;margin-left:auto;background:color-mix(in srgb,var(--ac) 18%,transparent);color:var(--tx)}
+.hb-lvM{background:color-mix(in srgb,#e0a800 28%,transparent)}.hb-lvA{background:color-mix(in srgb,#d64545 26%,transparent)}
+.hb-m{font-size:12px;color:var(--mut);margin:6px 0 2px}
+details.hb-dr p{margin:4px 0;font-size:12.8px;line-height:1.45}
+details.hb-dr p.f{color:var(--mut)}
+.hb-search{width:calc(100% - 24px);margin:4px 12px 2px;padding:9px 12px;border-radius:10px;border:1px solid color-mix(in srgb,var(--ac) 45%,transparent);background:var(--card);color:var(--tx);font-size:14px}
+.hb-count{font-size:11.5px;color:var(--mut);padding:2px 14px}
+.hb-let{position:sticky;top:0;background:var(--card);color:var(--ac);font-weight:700;font-size:13px;padding:6px 0 3px;border-bottom:1px solid color-mix(in srgb,var(--ac) 25%,transparent);z-index:1}
+.hb-gl{padding:8px 0;border-bottom:1px solid color-mix(in srgb,var(--mut) 20%,transparent)}
+.hb-gl b{font-size:13.5px}
+.hb-gc{display:inline-block;font-size:10px;color:var(--mut);border:1px solid color-mix(in srgb,var(--mut) 40%,transparent);border-radius:999px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+.hb-gl p{margin:3px 0 0;font-size:12.8px;line-height:1.45}
+.hb-empty{padding:18px 4px;color:var(--mut);font-size:13px;text-align:center}
 #panel{background:var(--card);border-radius:14px 14px 0 0;padding:5px 8px 7px;box-shadow:0 -4px 14px rgba(0,0,0,.12);max-height:42%;overflow:auto}
 .row{display:flex;gap:6px;overflow-x:auto;padding:2px 0;scrollbar-width:none}.row::-webkit-scrollbar{display:none}
 .lb{font-size:11px;color:var(--mut);margin:6px 0 0;text-transform:uppercase;letter-spacing:.05em}
@@ -55,7 +89,7 @@ body.clean #panel,body.clean #sci,body.clean #drill-panel{display:none!important
 #cap{margin-top:4px;padding:6px 10px;border-radius:12px;background:color-mix(in srgb,var(--ac) 13%,transparent);border-left:4px solid var(--ac);min-height:52px}
 #cap h3{margin:0 0 2px;font-size:14px}#cap p{margin:0;font-size:13px;line-height:1.35}
 </style></head><body>
-<div id="start"><h1>🎾 Tênis Lab</h1><p>Toque na bola para começar</p><button id="ball" aria-label="Iniciar"><span></span><b>INICIAR</b></button><span class="ver-tag">Versão Me22</span></div>
+<div id="start"><h1>🎾 Tênis Lab</h1><p>Toque na bola para começar</p><button id="ball" aria-label="Iniciar"><span></span><b>INICIAR</b></button><span class="ver-tag">Versão Me23 (Lab 3D Avançado)</span></div>
 <div id="app">
 <div id="stage"><canvas id="cv"></canvas><div id="sci"></div><div id="drill-panel"></div><div id="main-menu" role="menu" aria-label="Menu de opções"></div><div id="cam-menu" role="menu" aria-label="Foco da câmera"></div><div id="stk-menu" role="menu" aria-label="Selecionar golpe"></div><div id="spd-menu" role="menu" aria-label="Velocidade da animação"></div><button id="mnb" aria-label="Menu de opções" title="Menu de opções">☰</button><button id="cmb" aria-label="Foco da câmera" title="Enquadramento da câmera">📷</button><button id="stb" aria-label="Selecionar golpe" title="Escolher golpe">🎾</button><button id="ppb" aria-label="Pausar ou continuar" title="Toque: Play/Pause · Segure: Velocidade">⏸</button><button id="uib" aria-label="Ocultar ou exibir interface" title="Ocultar/exibir controles e estatísticas (tecla H)">👁</button><button id="fsb" aria-label="Tela cheia" title="Tela cheia">⛶</button></div>
 <div id="panel">
@@ -82,7 +116,7 @@ function joints(o){
   const xFactor=clampBio(o.sy-hyDeg,-62,62);
   const syDeg=hyDeg+xFactor;
   const leanDeg=clampBio(o.l,-22,38);
-  const crouch=clampBio(o.b,-0.04,0.34);
+  const crouch=clampBio(o.b*0.85,-0.04,0.30); // flexão de joelhos realista (≈105–120° nas posições de preparo)
 
   const pel=[o.p[0],.95-crouch+o.p[1],o.p[2]],hy=rad(hyDeg),sy=rad(syDeg),lr=rad(leanDeg);
   const hv=[Math.cos(hy),0,-Math.sin(hy)],sv=[Math.cos(sy),0,-Math.sin(sy)],fw=[Math.sin(hy),0,Math.cos(hy)];
@@ -95,27 +129,48 @@ function joints(o){
   const HR=V.add(pel,V.mul(hv,.1)),HL=V.add(pel,V.mul(hv,-.1));
   const head=V.add(neck,[0,.2*Math.cos(lr),.2*Math.sin(lr)+.02]);
 
-  // 2. Cinemática inversa com polos anatômicos que impedem hiperextensão/torção reversa de cotovelos e joelhos
+  // 2. Cinemática inversa com polos anatômicos para cotovelos e joelhos
   const fS=[Math.sin(sy),0,Math.cos(sy)];
-  const pR=V.add(V.add(V.mul(sv,.48),[0,-.72,0]),V.mul(fS,-.24));
-  const pL=V.add(V.add(V.mul(sv,-.48),[0,-.72,0]),V.mul(fS,-.24));
-  const [RE,RW]=ik(SR,V.add(pel,o.rw),.3,.28,pR);
+  // Polo do cotovelo estável (e anatômico): braço à frente/acima -> cotovelo para baixo/fora; braço pendurado -> cotovelo para trás.
+  // O polo do braço esquerdo apontava para dentro do corpo (+sv): agora aponta para fora (-sv).
+  const armPole=(S0,T0,sd)=>{const w=Math.max(0,Math.min(1,(S0[1]-T0[1])/.58));return V.add(V.add(V.mul(sv,.48*sd),[0,-.72*(1-w),0]),V.mul(fS,-(.24+.76*w)))};
+  const [RE,RW]=ik(SR,V.add(pel,o.rw),.3,.28,armPole(SR,V.add(pel,o.rw),1));
 
-  // 3. Limite fisiológico do punho (desvio radial/ulnar e flexão/extensão <= 78° em relação ao antebraço)
+  // 3. Articulação Avançada do Punho (Wrist Lag & Snap Anatômico)
   const forearmR=V.norm(V.sub(RW,RE));
   const rawRk=V.norm(o.rk);
-  const d=clampVecCone(rawRk,forearmR,rad(78));
+  // Adiciona inércia e flexão elástica natural do punho (lag) na fase de armação e liberação no impacto
+  const wristLagOffset=[rawRk[0]*0.92 + forearmR[0]*0.08, rawRk[1]*0.90 - 0.04, rawRk[2]*0.92 + forearmR[2]*0.08];
+  const d=clampVecCone(wristLagOffset,forearmR,rad(82));
 
   let lt=V.add(pel,o.lw);
   if(o.lg>0)lt=V.add(V.mul(lt,1-o.lg),V.mul(V.add(RW,V.mul(d,o.lo)),o.lg));
-  const [LE,LW]=ik(SL,lt,.3,.28,pL);
+  const [LE,LW]=ik(SL,lt,.3,.28,armPole(SL,lt,-1));
 
-  // 4. Joelhos sempre flexionam para frente (nunca hiperestendem para trás)
+  // 4. Articulação Avançada de Pés e Tornozelos (Anatomia de Solo, Flexão Plantar e Antropometria)
   const [RKN,RA]=ik(HR,o.ra,.47,.47,V.add(fw,V.mul(hv,.22)));
   const [LKN,LA]=ik(HL,o.la,.47,.47,V.add(fw,V.mul(hv,-.22)));
+  
+  // Pontos anatômicos refinados para os pés (Calcanhar e Metatarso articulados para absorção de impacto)
   const RKH=V.add(RW,V.mul(d,.56)),RKB=V.add(RW,V.mul(d,.3));
-  const ft=(A,s)=>[A[0]+fw[0]*s,Math.max(0,A[1]-(s>0?.2:.04)),A[2]+fw[2]*s];
-  return{pel,neck,head,SR,SL,HR,HL,RE,LE,RW,LW,RKN,LKN,RA,LA,RKH,RKB,M,mv,hv,sv,gz:[Math.sin(sy*.4),0,Math.cos(sy*.4)],RHD:V.add(RW,V.mul(d,.05)),RTO:ft(RA,.17),LTO:ft(LA,.17),RHL:ft(RA,-.08),LHL:ft(LA,-.08)}
+  // Pé articulado: orientação suavizada (30% do giro do quadril + abertura leve), nada de offset em z do mundo.
+  // Calcanhar (H) -> antepé/MTP (B) -> ponta (T); ao tirar o calcanhar do chão o pé dobra no antepé (flexão plantar).
+  const fy=side=>{const a=hy*.3+side*rad(8);return[Math.sin(a),0,Math.cos(a)]};
+  const fR=fy(1),fL=fy(-1);
+  const mkFoot=(A,f)=>{const lift=Math.max(0,A[1]-.05),th=Math.min(.9,lift*3.5),air=Math.max(0,lift-.28)*.8;
+    const B=[A[0]+f[0]*.10,.03+air,A[2]+f[2]*.10];
+    const hr=.15,H=[B[0]-f[0]*hr*Math.cos(th),B[1]+hr*Math.sin(th),B[2]-f[2]*hr*Math.cos(th)];
+    const tr=.05,T=[B[0]+f[0]*tr*Math.cos(th*.35),Math.max(.026,B[1]-tr*Math.sin(th*.35)),B[2]+f[2]*tr*Math.cos(th*.35)];
+    return{H,B,T}};
+  const fr=mkFoot(RA,fR),fl=mkFoot(LA,fL);
+  return{
+    pel,neck,head,SR,SL,HR,HL,RE,LE,RW,LW,RKN,LKN,RA,LA,RKH,RKB,M,mv,hv,sv,
+    gz:[Math.sin(sy*.4),0,Math.cos(sy*.4)],
+    RHD:V.add(RW,V.mul(d,.05)),
+    RTO:fr.T, RBL:fr.B, RHL:fr.H, LTO:fl.T, LBL:fl.B, LHL:fl.H, lg:o.lg||0,
+    ankleFlexR: Math.max(0, RA[1] - 0.08),
+    ankleFlexL: Math.max(0, LA[1] - 0.08)
+  }
 }
 const hm=(p0,p1,m0,m1,h,u)=>Array.isArray(p0)?p0.map((_,i)=>hm(p0[i],p1[i],m0[i],m1[i],h,u)):(2*u*u*u-3*u*u+1)*p0+(u*u*u-2*u*u+u)*h*m0+(-2*u*u*u+3*u*u)*p1+(u*u*u-u*u)*h*m1;
 const tg=(a,b,dt)=>Array.isArray(a)?a.map((_,i)=>tg(a[i],b[i],dt)):.72*(b-a)/dt;
@@ -130,7 +185,7 @@ bh:{n:'Backhand 2 mãos',dur:2.4,tc:1.25,inb:[-.3,.8,4],intro:'Backhand de duas 
 keys:[K(0,{}),K(.5,{hy:-50,sy:-85,l:12,p:[0,0,-.1],rw:[-.3,.2,-.2],lw:[-.35,.25,-.05],rk:[-.5,.7,-.5],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(.95,{hy:-30,sy:-80,b:.2,p:[0,0,-.1],l:15,rw:[-.25,0,-.4],lw:[-.35,.05,-.3],rk:[-.3,-.3,-.9],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(1.1,{hy:-20,sy:-66,b:.16,l:15,rw:[-.25,0,-.15],lw:[-.2,.1,-.05],rk:[-.2,-.2,-.9],p:[0,0,.12],ra:[.2,.05,.28],la:[-.25,.05,-.12]}),K(1.18,{hy:7,sy:-33,b:.14,l:15,rw:[-.25,.08,.25],lw:[-.15,.1,.2],rk:[-.1,-.21,-.8],p:[0,0,.16],ra:[.2,.05,.29],la:[-.25,.05,-.11]}),K(1.25,{hy:16,sy:-1,b:.12,l:15,rw:[-.1,.12,.55],lw:[-.05,.12,.5],rk:[0,.15,1],p:[0,0,.2],ra:[.2,.05,.3],la:[-.25,.05,-.1]}),K(1.3,{hy:17,sy:-1,b:.1,l:14,rw:[-.1,.4,.7],lw:[0,.35,.55],rk:[.22,.54,.63],p:[0,0,.22],ra:[.2,.05,.34],la:[-.25,.05,-.1]}),K(1.6,{hy:32,sy:52,b:.04,l:8,rw:[.3,.55,.3],lw:[.1,.5,.3],rk:[.5,.3,-.6],p:[0,0,.3],ra:[.2,.05,.4],la:[-.2,.15,.1]}),K(2,{hy:5,sy:10,rw:[.1,.2,.4],lw:[-.1,.15,.35],rk:[.2,.6,.8],p:[0,0,.1],ra:[.15,.05,.2],la:[-.15,.05,.1]})],
 tips:[[0,['HR','HL'],'Posição de espera','Base firme e raquete à frente. A empunhadura de duas mãos já fica pronta.'],[.5,['SR','LW','RW'],'Giro lateral','O ombro direito gira em direção à bola, as duas mãos levam a raquete para trás junto ao corpo.'],[.95,['RKH','LKN','RKN'],'Preparação baixa','Flexione os joelhos e deixe a raquete abaixo da bola. Mantenha as mãos próximas do tronco.'],[1.25,['LW','RW'],'Contato','Contato na frente do corpo. A mão esquerda conduz, o corpo desenrola do quadril para os ombros.'],[1.6,['SR','SL'],'Finalização alta','Termine com a raquete sobre o ombro, os braços alongados e o corpo equilibrado.'],[2,['RA','LA'],'Recuperação','Volte ao centro da quadra rapidamente.']]},
 sv:{n:'Saque',dur:3.2,tc:1.7,inb:[0,-1,0],intro:'Saque. Sequência: base firme no solo, lançamento cinemático do toss com braço estendido, flexão de joelhos para troféu, queda da raquete, salto e impacto no ponto mais alto.',
-keys:[K(0,{sy:55,hy:45,b:.06,rw:[.15,.1,.3],lw:[-.22,-.32,.25],rk:[.1,-.2,.7],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(.4,{sy:65,hy:52,b:.08,rw:[.25,.05,.1],lw:[-.18,.18,.35],rk:[.15,-.4,.4],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(.85,{sy:78,hy:58,b:.18,rw:[.32,.25,-.05],lw:[-.12,.82,.42],rk:[.05,.2,-.3],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(1.22,{sy:82,hy:62,b:.32,l:-6,rw:[.35,.52,-.18],lw:[-.08,1.15,.48],rk:[0,.75,-.75],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(1.52,{sy:52,hy:42,b:.10,l:14,p:[0,.12,.12],rw:[.22,.62,.05],lw:[-.28,.55,.25],rk:[0,.2,-.8],ra:[.25,.16,-.18],la:[-.25,.18,.22]}),K(1.7,{sy:10,hy:15,b:-.03,l:10,p:[0,.16,.28],rw:[.15,1.05,.3],lw:[-.3,.32,.28],rk:[0,1,.25],ra:[.24,.24,-.05],la:[-.25,.26,.34]}),K(1.78,{sy:9,hy:9,b:.08,l:25,p:[0,.10,.38],rw:[-.1,.6,.55],lw:[-.35,.2,.2],rk:[-.1,-.56,.72],ra:[.22,.22,.08],la:[-.25,.12,.45]}),K(2.1,{sy:-55,hy:-35,b:.12,l:32,p:[0,0,.55],rw:[-.3,.1,.5],lw:[-.4,.1,.1],rk:[-.3,-.7,.5],ra:[.20,.26,.12],la:[-.25,.05,.52]}),K(2.7,{sy:-10,b:.08,p:[0,0,.55],ra:[.18,.05,.62],la:[-.22,.05,.48]})],
+keys:[K(0,{sy:55,hy:45,b:.06,rw:[.15,.1,.3],lw:[-.22,-.32,.25],rk:[.1,-.2,.7],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(.4,{sy:65,hy:52,b:.08,rw:[.25,.05,.1],lw:[-.18,.18,.35],rk:[.15,-.4,.4],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(.85,{sy:78,hy:58,b:.18,rw:[.32,.25,-.05],lw:[-.12,.82,.42],rk:[.05,.2,-.3],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(1.22,{sy:82,hy:62,b:.32,l:-6,rw:[.35,.52,-.18],lw:[-.08,1.15,.48],rk:[0,.75,-.75],ra:[.25,.05,-.25],la:[-.25,.05,.15]}),K(1.52,{sy:52,hy:42,b:.10,l:14,p:[0,.12,.12],rw:[.3,.42,-.25],lw:[-.12,.42,.4],rk:[0,.2,-.8],ra:[.25,.16,-.18],la:[-.25,.18,.22]}),K(1.62,{sy:30,hy:30,b:.04,l:12,p:[0,.14,.2],rw:[.34,.78,-.1],lw:[-.12,.38,.38],rk:[0,.55,-.6],ra:[.25,.2,-.12],la:[-.25,.22,.28]}),K(1.7,{sy:10,hy:15,b:-.03,l:10,p:[0,.16,.28],rw:[.19,1.17,.2],lw:[-.3,.32,.28],rk:[0,1,.25],ra:[.24,.24,-.05],la:[-.25,.26,.34]}),K(1.78,{sy:9,hy:9,b:.08,l:25,p:[0,.10,.38],rw:[-.1,.6,.55],lw:[-.35,.2,.2],rk:[-.1,-.56,.72],ra:[.22,.22,.08],la:[-.25,.12,.45]}),K(2.1,{sy:-55,hy:-35,b:.12,l:32,p:[0,0,.55],rw:[-.3,.1,.5],lw:[-.4,.1,.1],rk:[-.3,-.7,.5],ra:[.20,.26,.12],la:[-.25,.05,.52]}),K(2.7,{sy:-10,b:.08,p:[0,0,.55],ra:[.18,.05,.62],la:[-.22,.05,.48]})],
 tips:[[0,['HR','HL'],'Postura inicial','Pés na largura dos ombros, corpo de lado para a rede, peso distribuído e ritmo calmo.'],[.6,['LW','SL'],'Lançamento','O braço esquerdo sobe reto e solta a bola à frente, um pouco acima do alcance da raquete.'],[1.1,['RW','RE','LKN','RKN'],'Posição de troféu','Joelhos flexionados, cotovelo alto e braço esquerdo apontando para a bola. É aqui que se armazena a energia.'],[1.4,['RKH','RE'],'Queda da raquete','A raquete cai atrás das costas, como um chicote, enquanto as pernas começam a empurrar.'],[1.7,['RW','RKH','RA','LA'],'Contato no ponto alto','Rotação interna do ombro (~41%) e flexão palmar do punho (~32%) geram a maior parte da velocidade da raquete. A pronção visível do antebraço é consequência da rotação interna, não um motor independente. Braço estendido e contato no ponto mais alto.'],[2.1,['SL','RA'],'Finalização','O braço cruza o corpo, e o pé de trás entra na quadra para você já ficar pronto.'],[2.7,['RA','LA'],'Recuperação','Equilibre-se e volte à posição de espera.']]},
 b1:{n:'Backhand 1 mão',dur:2.4,tc:1.25,inb:[-.3,.8,4],intro:'Backhand de uma mão. O braço esquerdo se estende para trás como contrapeso, e o braço da raquete fica alongado no contato.',
 keys:[K(0,{}),K(.5,{hy:-50,sy:-85,l:12,p:[0,0,-.1],rw:[-.25,.2,-.2],lw:[-.15,.25,.15],rk:[-.5,.6,-.5],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(.95,{hy:-30,sy:-85,b:.2,p:[0,0,-.1],rw:[-.2,0,-.4],lw:[-.2,.15,-.2],rk:[-.3,-.3,-.9],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(1.1,{hy:-20,sy:-66,b:.16,l:15,rw:[-.25,0,-.15],lw:[-.2,.2,-.3],rk:[-.2,-.2,-.9],p:[0,0,.12],ra:[.2,.05,.28],la:[-.25,.05,-.12]}),K(1.18,{hy:7,sy:-33,b:.14,l:15,rw:[-.28,.08,.3],lw:[-.2,.25,-.4],rk:[-.1,-.21,-.8],p:[0,0,.16],ra:[.2,.05,.29],la:[-.25,.05,-.11]}),K(1.25,{hy:16,sy:-1,b:.12,l:15,p:[0,0,.2],rw:[-.3,.12,.6],lw:[-.2,.3,-.45],rk:[-.1,.15,1],ra:[.2,.05,.3],la:[-.25,.05,-.1]}),K(1.3,{hy:17,sy:-1,b:.1,l:14,rw:[-.1,.4,.7],lw:[0,.3,-.45],rk:[.22,.54,.63],p:[0,0,.22],ra:[.2,.05,.34],la:[-.25,.05,-.1]}),K(1.6,{hy:32,sy:40,b:.04,l:8,p:[0,0,.3],rw:[.05,.45,.45],lw:[0,.3,-.4],rk:[.3,.4,.3],ra:[.2,.05,.4],la:[-.2,.15,.1]}),K(2,{hy:5,sy:10,rw:[.1,.2,.4],lw:[-.1,.15,.35],rk:[.2,.6,.8],p:[0,0,.1],ra:[.15,.05,.2],la:[-.15,.05,.1]})],
@@ -139,7 +194,7 @@ sl:{n:'Slice',dur:2.6,tc:1.3,inb:[-.3,.7,3.5],intro:'Slice de backhand. Raquete 
 keys:[K(0,{}),K(.55,{hy:-45,sy:-80,b:.1,p:[0,0,-.1],rw:[-.2,.6,-.25],lw:[-.15,.3,.1],rk:[-.2,.9,-.3],ra:[.2,.05,.25],la:[-.25,.05,-.15]}),K(1,{hy:-20,sy:-68,b:.18,p:[0,0,.05],rw:[-.25,.35,.2],lw:[-.2,.3,-.35],rk:[-.2,.4,.8],ra:[.2,.05,.28],la:[-.25,.05,-.15]}),K(1.12,{hy:-18,sy:-62,b:.2,l:16,p:[0,0,.1],rw:[-.22,.5,.05],lw:[-.2,.3,-.4],rk:[-.2,.7,-.35],ra:[.2,.05,.28],la:[-.25,.05,-.14]}),K(1.22,{hy:4,sy:-40,b:.2,l:17,p:[0,0,.16],rw:[-.25,.32,.4],lw:[-.2,.28,-.46],rk:[-.12,.45,.4],ra:[.2,.05,.29],la:[-.25,.05,-.13]}),K(1.3,{hy:14,sy:-4,b:.2,l:18,p:[0,0,.2],rw:[-.25,.2,.6],lw:[-.2,.25,-.5],rk:[-.05,.2,1],ra:[.2,.05,.3],la:[-.25,.05,-.12]}),K(1.38,{hy:15,sy:-2,b:.19,l:17,p:[0,0,.24],rw:[-.2,.1,.75],lw:[-.2,.28,-.5],rk:[-.04,-.05,1],ra:[.2,.05,.32],la:[-.25,.05,-.11]}),K(1.75,{hy:5,sy:-10,b:.18,p:[0,0,.28],rw:[-.1,0,.85],lw:[-.2,.3,-.55],rk:[0,-.3,1],ra:[.2,.05,.34],la:[-.25,.05,-.1]}),K(2.2,{hy:3,sy:0,rw:[.1,.2,.4],lw:[-.1,.15,.35],rk:[.2,.6,.8],p:[0,0,.1],ra:[.15,.05,.2],la:[-.15,.05,.1]})],
 tips:[[0,['HR','HL'],'Espera','Posição neutra, pronto para ler a bola.'],[.55,['RW','RKH'],'Raquete alta','A raquete sobe acima da altura da bola com o cotovelo flexionado e o ombro fechado.'],[1,['RW','LW'],'Descida controlada','O braço desce acompanhando o peso que avança para a perna da frente. Não force a velocidade.'],[1.3,['RW','RKH','RA'],'Contato','Face da raquete levemente aberta, punho firme, contato na frente do corpo. Isso gera o backspin.'],[1.75,['RW','RKH'],'Acompanhamento','A raquete continua para frente e para baixo, e o tronco permanece estável.'],[2.2,['RA','LA'],'Recuperação','Retorne rápido à base.']]},
 sm:{n:'Smash',dur:2.8,tc:1.3,inb:[.2,1.5,1.5],intro:'Smash. Passos laterais para trás, braço esquerdo apontando para a bola e um golpe forte, parecido com o saque.',
-keys:[K(0,{}),K(.35,{sy:55,hy:45,b:.12,p:[0,0,-.15],rw:[.3,.5,-.1],lw:[-.2,.9,.35],rk:[.1,.6,-.6],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(.8,{sy:75,hy:55,b:.24,l:-4,p:[0,0,-.2],rw:[.35,.5,-.15],lw:[-.1,.95,.4],rk:[0,.6,-.7],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(1.05,{sy:70,hy:50,b:.24,p:[0,0,-.15],rw:[.2,.4,-.3],lw:[-.2,.7,.3],rk:[0,-.7,-.5],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(1.17,{sy:48,hy:38,b:.08,l:12,p:[0,.09,-.05],rw:[.2,.6,.05],lw:[-.3,.4,.2],rk:[0,.14,-.8],ra:[.25,.18,-.22],la:[-.25,.18,.12]}),K(1.3,{sy:10,hy:10,b:-.02,l:10,p:[0,.12,.1],rw:[.15,1.05,.3],lw:[-.3,.3,.3],rk:[0,1,.2],ra:[.22,.24,-.06],la:[-.25,.24,.26]}),K(1.38,{sy:9,hy:9,b:.08,l:25,p:[0,.08,.2],rw:[-.1,.6,.55],lw:[-.35,.2,.2],rk:[-.1,-.56,.72],ra:[.2,.18,.04],la:[-.25,.12,.32]}),K(1.7,{sy:-50,hy:-30,l:32,b:.12,p:[0,0,.38],rw:[-.3,.1,.5],lw:[-.4,.1,.1],rk:[.3,-.7,.5],ra:[.18,.22,.08],la:[-.25,.05,.38]}),K(2.2,{b:.08,p:[0,0,.38],ra:[.16,.05,.44],la:[-.20,.05,.34]})],
+keys:[K(0,{}),K(.35,{sy:55,hy:45,b:.12,p:[0,0,-.15],rw:[.32,.38,-.3],lw:[-.2,1.12,.4],rk:[.1,.6,-.6],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(.8,{sy:75,hy:55,b:.24,l:-4,p:[0,0,-.2],rw:[.34,.38,-.3],lw:[-.1,1.14,.45],rk:[0,.6,-.7],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(1.05,{sy:70,hy:50,b:.24,p:[0,0,-.15],rw:[.28,.3,-.35],lw:[-.2,.95,.4],rk:[0,-.7,-.5],ra:[.25,.05,-.28],la:[-.25,.05,.08]}),K(1.17,{sy:48,hy:38,b:.08,l:12,p:[0,.09,-.05],rw:[.32,.7,-.12],lw:[-.15,.42,.4],rk:[0,.14,-.8],ra:[.25,.18,-.22],la:[-.25,.18,.12]}),K(1.3,{sy:10,hy:10,b:-.02,l:10,p:[0,.12,.1],rw:[.19,1.17,.2],lw:[-.3,.3,.3],rk:[0,1,.2],ra:[.22,.24,-.06],la:[-.25,.24,.26]}),K(1.38,{sy:9,hy:9,b:.08,l:25,p:[0,.08,.2],rw:[-.1,.6,.55],lw:[-.35,.2,.2],rk:[-.1,-.56,.72],ra:[.2,.18,.04],la:[-.25,.12,.32]}),K(1.7,{sy:-50,hy:-30,l:32,b:.12,p:[0,0,.38],rw:[-.3,.1,.5],lw:[-.4,.1,.1],rk:[.3,-.7,.5],ra:[.18,.22,.08],la:[-.25,.05,.38]}),K(2.2,{b:.08,p:[0,0,.38],ra:[.16,.05,.44],la:[-.20,.05,.34]})],
 tips:[[0,['HR','HL'],'Leitura da bola','Observe a bola alta e prepare os passos laterais.'],[.35,['LW','RKH'],'Passos para trás','Gire de lado, com a raquete já alta e o braço esquerdo apontando para a bola.'],[.8,['RW','RE','LKN','RKN'],'Posição de troféu','Joelhos flexionados, cotovelo alto. O peso fica na perna de trás.'],[1.05,['RKH','RE'],'Queda da raquete','A raquete cai nas costas em chicote, e as pernas começam a empurrar.'],[1.3,['RW','RKH','RA','LA'],'Contato alto','Braço estendido, salto curto, contato no ponto mais alto. A cadeia sobe das pernas até a raquete.'],[1.7,['SL','RA'],'Finalização','O braço cruza o corpo, e o peso termina na perna da frente.'],[2.2,['RA','LA'],'Recuperação','Retorne ao centro da quadra.']]},
 vl:{n:'Voleio',dur:1.6,tc:.65,inb:[.2,.5,3],intro:'Voleio. Movimento curto, sem swing amplo: apenas o bloqueio com punho firme, dando um passo à frente.',
 keys:[K(0,{}),K(.35,{sy:50,hy:35,b:.2,l:15,rw:[.35,.35,.1],lw:[-.25,.3,.3],rk:[.1,.8,.5],ra:[.25,.05,-.05],la:[-.2,.05,.3]}),K(.55,{sy:38,hy:28,b:.23,l:18,p:[0,0,.18],rw:[.35,.3,.3],lw:[-.3,.3,.25],rk:[.1,.55,.45],ra:[.25,.05,-.05],la:[-.2,.05,.35]}),K(.65,{sy:12,hy:10,b:.25,l:20,p:[0,0,.25],rw:[.35,.25,.55],lw:[-.35,.3,.2],rk:[.05,.3,1],ra:[.25,.05,-.05],la:[-.2,.05,.4]}),K(.72,{sy:10,hy:8,b:.23,l:20,p:[0,0,.25],rw:[.33,.25,.6],lw:[-.32,.3,.25],rk:[.03,.2,1],ra:[.25,.05,-.05],la:[-.2,.05,.4]}),K(.95,{sy:20,hy:15,b:.22,l:20,p:[0,0,.25],rw:[.3,.25,.62],lw:[-.3,.3,.3],rk:[.05,.15,1],ra:[.25,.05,-.05],la:[-.2,.05,.4]}),K(1.3,{sy:5,rw:[.2,.15,.4],lw:[-.1,.1,.35],p:[0,0,.1],ra:[.2,.05,.05],la:[-.18,.05,.15]})],
@@ -150,18 +205,18 @@ keys:[K(0,{p:[0,0,-.6],ra:[.2,.05,-.6],la:[-.2,.05,-.6]}),K(.4,{hy:30,sy:80,b:.1
 tips:[[0,['HR','HL'],'Leitura','Observe a bola curta e comece o deslocamento já com a raquete à frente.'],[.4,['SR','SL','HR','HL'],'Unit turn em movimento','Gire o tronco como um bloco enquanto corre. Não espere chegar para preparar.'],[.8,['LA','RKN'],'Passo à frente','O pé da frente se planta antes do golpe: o peso avança junto com o corpo.'],[1.2,['RW','RKH'],'Contato na aproximação','Bola funda na paralela encurta seu caminho até a rede e cobre a passada reta.'],[1.6,['RA','SL'],'Acompanhar a bola','Siga a direção da bola para a rede e continue em frente, sem parar.'],[2.7,['RA','LA'],'Split step na rede','Pare com pequeno salto quando o rival vai bater e aterrisse equilibrado.'],[3,['RW','RKH'],'Pronto para voleiar','Raquete à frente e alta, base larga e peso na ponta dos pés.']]};
 ['fh','bh','b1','sl'].forEach(k=>addSplit(S[k]));S.ap.keys.push({...S.ap.keys[S.ap.keys.length-1],t:3.2});S.ap.hold=3;
 const cl=(s,n,intro,mods,tips)=>{const c=JSON.parse(JSON.stringify(s));c.n=n;c.intro=intro;c.tips=tips;c.keys.forEach(k=>{const m=mods.find(m=>Math.abs(m[0]-k.t)<.011);if(m)Object.assign(k,m[1])});return c};
-S.kk=cl(S.sv,'Saque kick','Saque kick: toss atrás da cabeça e levemente à esquerda, mais arco nas costas e a raquete subindo de baixo para cima, escovando a bola para gerar topspin.',[[1.22,{l:-14,lw:[-.12,1.15,.22],rk:[0,.4,-.8]}],[1.52,{rk:[0,-1,-.1],rw:[.2,.3,-.35]}],[1.7,{l:0,p:[0,.14,.12],rw:[.05,1.05,.15],rk:[-.35,1,.1]}],[1.78,{rk:[-.3,-.45,.7]}]],[[0,['HR','HL'],'Postura','Pegada continental, base estável e ritmo calmo. O kick sai do mesmo setup do saque plano.'],[.6,['LW','SL'],'Toss atrás da cabeça','A bola sobe um pouco atrás da cabeça e levemente à esquerda (para destros). Quanto mais atrás, mais íngreme a subida da raquete e mais topspin.'],[1.1,['SR','LKN','RKN'],'Arco das costas','Joelhos flexionados e mais arco que no saque plano. É exigente: o kick sobrecarrega mais as costas e o ombro.'],[1.4,['RKH','RE'],'Queda da raquete','A raquete cai atrás e o cotovelo fica para trás por mais tempo: a raquete sobe antes do cotovelo.'],[1.7,['RW','RKH'],'Escovar de baixo para cima','A raquete sobe pela parte de trás da bola, de 7h para 1h no relógio. A velocidade da raquete segue alta: é um golpe rápido redirecionado em spin.'],[2.1,['SL','RA'],'Finalização','O braço cruza o corpo e o pé da frente aterrissa dentro da quadra.'],[2.7,['RA','LA'],'Recuperação','Equilibre-se e volte à posição inicial.']]);S.kk.inb=[.15,-1,-.35];
+S.kk=cl(S.sv,'Saque kick','Saque kick: toss atrás da cabeça e levemente à esquerda, mais arco nas costas e a raquete subindo de baixo para cima, escovando a bola para gerar topspin.',[[1.22,{l:-14,lw:[-.12,1.15,.22],rk:[0,.4,-.8]}],[1.52,{rk:[0,-1,-.1],rw:[.2,.3,-.35]}],[1.7,{l:0,p:[0,.14,.12],rw:[.1,1.17,.12],rk:[-.35,1,.1]}],[1.78,{rk:[-.3,-.45,.7]}]],[[0,['HR','HL'],'Postura','Pegada continental, base estável e ritmo calmo. O kick sai do mesmo setup do saque plano.'],[.6,['LW','SL'],'Toss atrás da cabeça','A bola sobe um pouco atrás da cabeça e levemente à esquerda (para destros). Quanto mais atrás, mais íngreme a subida da raquete e mais topspin.'],[1.1,['SR','LKN','RKN'],'Arco das costas','Joelhos flexionados e mais arco que no saque plano. É exigente: o kick sobrecarrega mais as costas e o ombro.'],[1.4,['RKH','RE'],'Queda da raquete','A raquete cai atrás e o cotovelo fica para trás por mais tempo: a raquete sobe antes do cotovelo.'],[1.7,['RW','RKH'],'Escovar de baixo para cima','A raquete sobe pela parte de trás da bola, de 7h para 1h no relógio. A velocidade da raquete segue alta: é um golpe rápido redirecionado em spin.'],[2.1,['SL','RA'],'Finalização','O braço cruza o corpo e o pé da frente aterrissa dentro da quadra.'],[2.7,['RA','LA'],'Recuperação','Equilibre-se e volte à posição inicial.']]);S.kk.inb=[.15,-1,-.35];
 S.rt={n:'Devolução',dur:2.2,tc:1,tl:.42,inb:[.3,.8,4],intro:'Devolução de saque: split step no contato do sacador, giro curto com backswing de cerca de 2/3 e contato à frente com o corpo indo para frente.',
 keys:[K(0,{b:.14,l:14,ra:[.25,.05,0],la:[-.25,.05,0]}),K(.35,{p:[0,.08,0],b:.02,ra:[.2,.15,0],la:[-.2,.15,0]}),K(.55,{b:.26,l:16,ra:[.27,.05,0],la:[-.27,.05,0]}),K(.72,{hy:25,sy:66,b:.2,p:[.1,0,-.02],rw:[.35,.2,0],lw:[-.05,.25,.3],rk:[.12,.55,.3],ra:[.38,.05,-.03],la:[-.15,.05,-.02]}),K(.9,{hy:7,sy:58,b:.18,p:[.1,0,.08],rw:[.35,.08,.2],lw:[-.35,.28,.2],rk:[.1,.09,.35],ra:[.34,.05,-.05],la:[-.2,.05,.2]}),K(.95,{hy:-10,sy:30,b:.16,p:[.1,0,.12],rw:[.35,.1,.35],lw:[-.38,.3,.15],rk:[.1,0,.6],ra:[.32,.05,-.05],la:[-.2,.05,.25]}),K(1,{hy:-7,sy:-4,b:.14,p:[.1,0,.15],rw:[.35,.12,.5],lw:[-.4,.3,.1],rk:[.1,.15,1],ra:[.3,.05,-.05],la:[-.2,.05,.3]}),K(1.08,{hy:-14,sy:2,b:.14,p:[.1,0,.18],rw:[.3,.3,.68],lw:[-.45,.25,0],rk:[-.2,.45,.7],ra:[.3,.05,-.05],la:[-.2,.05,.32]}),K(1.4,{hy:-25,sy:-35,b:.08,p:[.1,0,.3],rw:[-.1,.45,.4],lw:[-.4,.2,0],rk:[-.3,.2,.5],ra:[.25,.05,.1],la:[-.2,.05,.34]}),K(1.8,{b:.12,p:[0,0,.1],ra:[.2,.05,0],la:[-.2,.05,.1]})],
 tips:[[0,['HR','HL'],'Posição','Cerca de um metro atrás da linha, joelhos flexionados, raquete à frente e um pequeno passo à frente enquanto o sacador arma.'],[.55,['RA','LA'],'Split step no contato do sacador','Pouse no instante em que o sacador bate na bola. Você ainda não sabe a direção, então a pré-carga permite sair para qualquer lado.'],[.72,['SR','SL','HR'],'Giro curto','Passo com a perna de fora e giro do quadril, que já cria o backswing. Backswing de cerca de 2/3 do normal: quanto maior o saque, menor o backswing.'],[1,['RW','RKH'],'Contato à frente','Contato à frente do centro de gravidade, com o corpo ainda indo para frente. Aproveite a velocidade do saque.'],[1.4,['SL','RA'],'Finalização curta','Termine curto e volte ao centro, pronto para a terceira bola.']]};
 {const T=.27,B=-.05,r=(s,a)=>{s.gr=a};
-r(S.fh,[[-1,-.5,1.2,1.36,T],[2.3,2.55,9,10,T]]);
+r(S.fh,[[-1,-.5,1.1,1.36,T],[2.3,2.55,9,10,T]]);
 r(S.bh,[[-1,-.5,.5,.8,T],[.5,.8,1.95,2.2,B],[2.3,2.55,9,10,T]]);
-r(S.b1,[[-1,-.5,1.15,1.35,T],[2.3,2.55,9,10,T]]);
-r(S.sl,[[-1,-.5,1.2,1.42,T],[2.5,2.75,9,10,T]]);
-r(S.rt,[[-1,-.5,.82,.98,T],[1.7,1.95,9,10,T]]);
-r(S.ap,[[-1,-.5,.7,.95,T],[2.7,2.95,9,10,T]]);
-r(S.vl,[[-1,-.5,.45,.62,T],[1,1.2,9,10,T]]);
+r(S.b1,[[-1,-.5,1.05,1.35,T],[2.3,2.55,9,10,T]]);
+r(S.sl,[[-1,-.5,1.1,1.42,T],[2.5,2.75,9,10,T]]);
+r(S.rt,[[-1,-.5,.75,.98,T],[1.7,1.95,9,10,T]]);
+r(S.ap,[[-1,-.5,.55,.95,T],[2.7,2.95,9,10,T]]);
+r(S.vl,[[-1,-.5,.38,.62,T],[1,1.2,9,10,T]]);
 S.rt.db=5.8}
 S.lb=cl(S.fh,'Lob','Lob de ataque: começa como um forehand (disfarce), mas a raquete cai mais baixo e sobe mais íngreme, para a bola passar sobre quem está na rede.',[[1.23,{rw:[.35,.3,-.4],rk:[.1,-.8,-.7]}],[1.53,{rk:[.1,.45,.9]}],[1.58,{rw:[.3,.65,.6],rk:[-.1,.85,.5]}],[1.88,{sy:-45,rw:[-.2,.9,.2],rk:[-.4,.9,0]}]],[[0,['RA','LA'],'Disfarce','Comece como um forehand de ataque: a mesma preparação esconde o lob.'],[1.23,['RKH','LKN','RKN'],'Raquete baixa','A raquete cai bem abaixo da bola e os joelhos flexionam: o caminho será íngreme, de baixo para cima.'],[1.53,['RW','RKH'],'Contato','Contato com a face um pouco aberta. O lob de topspin precisa de altura e rotação para cair atrás do adversário.'],[1.88,['SL','RW'],'Finalização alta','Termine bem alto, acompanhando a bola para cima.']]);
 S.dp=cl(S.sl,'Drop shot','Drop shot: preparação igual à do slice ou do drive para disfarçar, raquete por baixo da bola com contato macio, backspin e a bola morrendo curta.',[[1.58,{rk:[-.05,.45,.9],rw:[-.25,.22,.55]}],[1.66,{rw:[-.2,.15,.6],rk:[.02,.3,.95]}],[2.03,{rw:[-.15,.1,.6],rk:[0,.2,.9],p:[0,0,.2]}]],[[0,['RA','LA'],'Split step','Pouse no instante em que o rival bate e saia já em direção à bola.'],[.42,['LKN','RKN'],'Arrancada','Primeiro passo na direção da bola, com o quadril e os ombros girando juntos.'],[.83,['RW','RKH'],'Disfarce','Preparação igual à do slice ou do drive: o rival só percebe tarde.'],[1.58,['RW','RKH'],'Raquete por baixo da bola','Face aberta e raquete por baixo da bola geram backspin e a bola morre curta. Contato macio, pouco swing.'],[2.03,['RW','LA'],'Finalização curta','Acompanhe a bola sem varrer e avance para a rede.']]);
@@ -431,16 +486,17 @@ function drawHeadRefined(J) {
 }
 
 // Desenha mão anatômica articulada com punho, metacarpo, 5 dedos individuais (3 falanges cada) e juntas
-function drawHandWithFingers(wristPos, forearmDir, gripAxis, palmNormal, isRightHand, isTwoHanded) {
+function drawHandWithFingers(wristPos, forearmDir, gripAxis, palmNormalIn, isRightHand, isTwoHanded, onHandle) {
+  const palmNormal = (onHandle && !isRightHand) ? V.mul(palmNormalIn, -1) : palmNormalIn; // mão esquerda envolve o cabo pelo lado oposto
   const skin = '#e0ac82';
   const skinDark = '#9c6b43';
-  const jointCol = '#facc15'; // Juntas esféricas amarelas de precisão
+  const jointCol = '#d49a6a'; // juntas na cor da pele
 
   // Punho articulado (Wrist joint)
   drawJointSphere(wristPos, 0.028, '#ffffff', '#2563eb');
 
   // Eixo longitudinal da mão e largura da palma
-  const handDir = isRightHand ? gripAxis : V.norm(V.add(forearmDir, [0, -0.1, 0]));
+  const handDir = (isRightHand || onHandle) ? gripAxis : V.norm(V.add(forearmDir, [0, -0.1, 0]));
   const sideVec = V.norm(vCross(handDir, palmNormal));
   const palmLen = 0.075;
   const palmCenter = V.add(wristPos, V.mul(handDir, palmLen * 0.55));
@@ -449,7 +505,9 @@ function drawHandWithFingers(wristPos, forearmDir, gripAxis, palmNormal, isRight
   // Palma da mão
   drawCapsule3D(wristPos, knucklesBase, 0.026, 0.032, skin, skinDark, '#f3c69f');
 
-  if (isRightHand) {
+  if (isRightHand || onHandle) {
+    // Barra dos nós dos dedos (metacarpos)
+    drawCapsule3D(V.add(V.add(wristPos, V.mul(gripAxis, 0.023)), V.mul(sideVec, 0.018)), V.add(V.add(wristPos, V.mul(gripAxis, 0.083)), V.mul(sideVec, 0.018)), 0.012, 0.012, skin, skinDark, '#f3c69f');
     // Mão direita segurando o cabo da raquete com os 5 dedos individuais articulados!
     // Posições dos 4 dedos (Indicador, Médio, Anelar, Mínimo) ao longo do cabo
     const fingerSpecs = [
@@ -605,13 +663,26 @@ function drawPlayer(J, hl) {
     f() { drawJointSphere(P, r, c, ring); }
   });
 
+  // Tênis articulado: tornozelo, cabedal do calcanhar, antepé, bico, cadarço e solado
+  const foot = (A, H, B, T) => {
+    const sole = a => V.add(a, [0, -0.024, 0]);
+    C(A, 0.034, sockCol, sockDark, 0.02);                                   // articulação do tornozelo
+    L(A, V.add(A, V.mul(V.norm(V.sub(H, A)), 0.03)), 0.036, 0.034, sockCol, sockDark);
+    L(H, B, 0.030, 0.033, shoeCol, '#64748b');                              // calcanhar -> antepé
+    L(B, T, 0.033, 0.024, shoeCol, '#64748b');                              // antepé -> bico
+    L(V.add(A, V.mul(V.sub(B, A), 0.15)), V.add(B, [0, 0.022, 0]), 0.008, 0.007, shoeAccent, '#1e3a8a'); // cadarço
+    L(sole(H), sole(B), 0.009, 0.009, '#0f172a', '#000000');                // solado
+    L(sole(B), sole(T), 0.009, 0.008, '#0f172a', '#000000');
+    C(B, 0.012, shoeAccent, '#1e3a8a', 0.03);                               // articulação metatarsofalângica
+  };
+
   // Perna Esquerda (Coxa -> Joelho -> Canela/Meia -> Tênis)
   const midLShin = V.add(V.mul(J.LKN, 0.45), V.mul(J.LA, 0.55));
   L(J.HL, J.LKN, 0.082, 0.056, shortCol, shortDark, shortHi);
   C(J.LKN, 0.052, skin, skinDark);
   L(J.LKN, midLShin, 0.052, 0.042, skin, skinDark, skinHi);
   L(midLShin, J.LA, 0.043, 0.036, sockCol, sockDark);
-  L(J.LHL, J.LTO, 0.044, 0.034, shoeCol, '#64748b', shoeAccent);
+  foot(J.LA, J.LHL, J.LBL, J.LTO);
 
   // Perna Direita (Coxa -> Joelho -> Canela/Meia -> Tênis)
   const midRShin = V.add(V.mul(J.RKN, 0.45), V.mul(J.RA, 0.55));
@@ -619,7 +690,7 @@ function drawPlayer(J, hl) {
   C(J.RKN, 0.054, skin, skinDark);
   L(J.RKN, midRShin, 0.054, 0.043, skin, skinDark, skinHi);
   L(midRShin, J.RA, 0.044, 0.037, sockCol, sockDark);
-  L(J.RHL, J.RTO, 0.044, 0.034, shoeCol, '#64748b', shoeAccent);
+  foot(J.RA, J.RHL, J.RBL, J.RTO);
 
   // Braço Esquerdo (Ombro/Manga -> Cotovelo -> Antebraço)
   const midLArm = V.add(V.mul(J.SL, 0.55), V.mul(J.LE, 0.45));
@@ -647,13 +718,14 @@ function drawPlayer(J, hl) {
   const palmNormal = V.norm(rotAroundAxis(J.RN || [0, 0, 1], gripAxis, gripRad));
   const forearmDirL = V.norm(V.sub(J.LW, J.LE));
   const isTwoHanded = (st.id === 'bh');
+  const leftOnHandle = (J.lg || 0) > 0.6; // mão esquerda realmente colada ao cabo (grip do 2H / garganta)
 
   it.push({
     z: proj(J.RKH)[2] - 0.08,
     f() {
       racketDrawRefined(J);
       // Mão direita com 5 dedos individuais abraçando o cabo
-      drawHandWithFingers(J.RW, V.norm(V.sub(J.RW, J.RE)), gripAxis, palmNormal, true, false);
+      drawHandWithFingers(J.RW, V.norm(V.sub(J.RW, J.RE)), gripAxis, palmNormal, true, false, true);
     }
   });
 
@@ -661,7 +733,7 @@ function drawPlayer(J, hl) {
     z: proj(J.LW)[2] - 0.04,
     f() {
       // Mão esquerda com 5 dedos individuais articulados
-      drawHandWithFingers(J.LW, forearmDirL, gripAxis, palmNormal, false, isTwoHanded);
+      drawHandWithFingers(J.LW, forearmDirL, gripAxis, palmNormal, false, isTwoHanded, leftOnHandle);
     }
   });
 
@@ -725,7 +797,21 @@ return{O:[P[0]-vv[0]*(1-f),P[1]-vv[1]*(1-f)],g:Math.min(1,sp/.7),ph:D*(E(a0,a1,t
 function gait(o,R){const d=R.dir,pp=[d[1],-d[0]],B=R.O;[['ra',1,0],['la',-1,.5]].forEach(([f,sd,po])=>{const fr=(R.ph+po)%1;let off,lift=0;if(fr<.6)off=SLEN*(.3-fr);else{const u=(fr-.6)/.4;off=SLEN*(-.3+.6*sm3(u));lift=.14*Math.sin(Math.PI*u)}
 const x=B[0]+pp[0]*sd*.18+d[0]*off,z=B[1]+pp[1]*sd*.18+d[1]*off,a=o[f],g=R.g;o[f]=[a[0]+(x-a[0])*g,Math.max(.05,a[1]+(.05+lift-a[1])*g),a[2]+(z-a[2])*g]});o.p[1]+=R.g*.03*Math.abs(Math.sin(Math.PI*2*R.ph))}
 const aimOf=h=>Math.atan2(h[4]-h[2],h[5]-h[3])*180/Math.PI;
-const pose=(s,t)=>{const o=evalPose(s,t),R=runInfo(s,t),O=R.O;{const w=Math.exp(-Math.pow((t-s.tc)/.22,2)),da=st.da||0;o.hy+=da*.45*w;o.sy+=da*.6*w;o.rk=[o.rk[0]+da*.006*w,o.rk[1],o.rk[2]]}{const g=gripAt(s,t);o.lg=g[0];o.lo=g[1]}o.p=[o.p[0]+O[0],o.p[1],o.p[2]+O[1]];o.ra=[o.ra[0]+O[0],o.ra[1],o.ra[2]+O[1]];o.la=[o.la[0]+O[0],o.la[1],o.la[2]+O[1]];if(R.g>0)gait(o,R);const hy=rad(o.hy),hx=Math.cos(hy)*.1,hz=-Math.sin(hy)*.1,py=.95-o.b+o.p[1];let mx=py;[['ra',1],['la',-1]].forEach(([f,sg])=>{const a=o[f],dx=o.p[0]+sg*hx-a[0],dz=o.p[2]+sg*hz-a[2];mx=Math.min(mx,a[1]+Math.sqrt(Math.max(0,.93*.93-dx*dx-dz*dz)))});if(py>mx)o.b+=py-mx;return o};
+const poseRaw=(s,t)=>{const o=evalPose(s,t),R=runInfo(s,t),O=R.O;{const w=Math.exp(-Math.pow((t-s.tc)/.22,2)),da=st.da||0;o.hy+=da*.45*w;o.sy+=da*.6*w;o.rk=[o.rk[0]+da*.006*w,o.rk[1],o.rk[2]]}{const g=gripAt(s,t);o.lg=g[0];o.lo=g[1]}o.p=[o.p[0]+O[0],o.p[1],o.p[2]+O[1]];o.ra=[o.ra[0]+O[0],o.ra[1],o.ra[2]+O[1]];o.la=[o.la[0]+O[0],o.la[1],o.la[2]+O[1]];if(R.g>0)gait(o,R);const hy=rad(o.hy),hx=Math.cos(hy)*.1,hz=-Math.sin(hy)*.1,py=.95-o.b*.85+o.p[1];let mx=py;[['ra',1],['la',-1]].forEach(([f,sg])=>{const a=o[f],dx=o.p[0]+sg*hx-a[0],dz=o.p[2]+sg*hz-a[2];mx=Math.min(mx,a[1]+Math.sqrt(Math.max(0,.93*.93-dx*dx-dz*dz)))});if(py>mx)o.b+=(py-mx)/.85;return o};
+// Suavização temporal: filtro de 5 taps sobre pés, pelve e agachamento (braços e raquete ficam intactos para preservar o impacto).
+// O pé que se desloca é levantado (fase de balanço) a cada instante e o levantamento também é suavizado: sem "teleportes" nem deslizes.
+const sstep=(a,b,x)=>{const u=Math.min(1,Math.max(0,(x-a)/(b-a)));return u*u*(3-2*u)};
+const SMW=[.1,.2,.4,.2,.1],SMD=.03;
+function fixReach(o){const hy=rad(o.hy),hx=Math.cos(hy)*.1,hz=-Math.sin(hy)*.1,py=.95-o.b*.85+o.p[1];let mx=py;
+ [['ra',1],['la',-1]].forEach(([f,sg])=>{const a=o[f],dx=o.p[0]+sg*hx-a[0],dz=o.p[2]+sg*hz-a[2];mx=Math.min(mx,a[1]+Math.sqrt(Math.max(0,.93*.93-dx*dx-dz*dz)))});
+ if(py>mx)o.b+=(py-mx)/.85;return o}
+const pose=(s,t)=>{const o=poseRaw(s,t);if(s.hold&&t>=s.hold)return o;
+ const X=[];for(let k=-3;k<=3;k++)X.push(poseRaw(s,Math.min(s.dur,Math.max(0,t+k*SMD))));
+ const sp=(f,k)=>Math.hypot(X[k+4][f][0]-X[k+2][f][0],X[k+4][f][2]-X[k+2][f][2])/(2*SMD); // velocidade horizontal do pé no tap k (-2..2)
+ const r={...o};
+ for(const f of['ra','la']){let x=0,y=0,z=0;for(let k=-2;k<=2;k++){const w=SMW[k+2],a=X[k+3][f],lift=.11*sstep(.25,1.2,sp(f,k));x+=w*a[0];z+=w*a[2];y+=w*Math.max(a[1],.05+lift)}r[f]=[x,y,z]}
+ let px=0,py=0,pz=0,b=0;for(let k=-2;k<=2;k++){const w=SMW[k+2],a=X[k+3];px+=w*a.p[0];py+=w*a.p[1];pz+=w*a.p[2];b+=w*a.b}
+ r.p=[px,py,pz];r.b=b;return fixReach(r)};
 function sim(c,v,th,az,rpm,full){
 const R=0.0335,m=0.057,rho=1.225,A=Math.PI*R*R;
 const w0=rpm*Math.PI/30;
@@ -919,7 +1005,7 @@ function renderCamMenu(){
 renderCamMenu();
 cmb.addEventListener('pointerdown',e=>{e.stopPropagation();renderCamMenu();mnb.classList.remove('open');stkMenu.classList.remove('open');spdMenu.classList.remove('open');camMenu.classList.toggle('open')});
 stb.addEventListener('pointerdown',e=>{e.stopPropagation();renderStkMenu();mnb.classList.remove('open');camMenu.classList.remove('open');spdMenu.classList.remove('open');stkMenu.classList.toggle('open')});
-function pick(id){window.speechSynthesis&&speechSynthesis.cancel();st.hold=0;st.done.clear();st.id=id;st.t=0;st.trail=[];st.tip=null;st.hitPlayed=false;st.bouncePlayed=false;setShot(id,0);renderStkMenu();$('#cap h3').textContent=S[id].n;$('#cap p').textContent=S[id].intro;if(st.coach){const s=S[id];st.hold=1;speak({h:s.n,x:s.intro},()=>{st.hold=0})}}
+function pick(id){window.speechSynthesis&&speechSynthesis.cancel();st.hold=0;st.done.clear();st.id=id;st.t=0;st.trail=[];st.tip=null;st.hitPlayed=false;st.bouncePlayed=false;setShot(id,0);renderStkMenu();$('#cap h3').textContent=S[id].n;$('#cap p').textContent=S[id].intro;if(st.coach){const s=S[id];st.hold=1;speak({h:s.n,x:s.intro},()=>{st.hold=0})};if(hubIsOpen()&&hub.tab==='drills')renderHubBody()}
 const SCI={g:['Cadeia no forehand (Landlinger e cols., 2010; 6 profissionais ATP, Vicon 400 Hz): pico de rotação da pelve ~75 ms antes do contato, tronco ~57 ms antes, rotação interna do ombro ~24 ms depois e extensão do cotovelo ~35 ms depois.','O timing separou elite de jovens de alto nível: picos de pelve e tronco mais tardios (-75 vs -93 ms e -57 vs -75 ms). Velocidade horizontal da raquete no impacto: ~33 m/s vs ~31 m/s.','Principais motores do forehand (Reid, Elliott e Crespo, 2013): rotação axial de pelve e tronco, adução horizontal e rotação interna do ombro.','Stance aberto x fechado: velocidade da raquete e do tronco praticamente iguais (Knudson; Kawamoto e cols., 2019). A aberta gira mais o tronco, a fechada usa mais transferência de peso.','Topspin: depende do ângulo da face e da trajetória da raquete perto do impacto; contato mais longo com a bola ajuda (J Sports Sci Med, 2017).'],s:['Contribuições à velocidade horizontal da raquete (66 sacadores; Tanabe e Ito, 2007): rotação interna do ombro 41%, flexão palmar do punho 32%. A rotação interna foi o que distinguiu sacadores rápidos de lentos.','Gordon e Dapena (2006): extensão do cotovelo e flexão do punho têm contribuições grandes; a pronção do antebraço dá contribuição breve e negativa.','Elliott e cols.: a velocidade linear das articulações cresce em sequência joelho, quadril, ombro, cotovelo e punho.','Pré-estiramento elástico (rotação externa seguida da interna) melhora o desempenho em ~20%. Uma pausa de 1,5 s reduz a velocidade de rotação interna em ~20%: não pare entre armar e acelerar (Elliott).','Profissionais com IMU (Frontiers, 2025; 8 jogadores): pelve, tronco e braço giram mais rápido no 1º saque que no 2º, e nem sempre seguem sequência proximal-distal estrita.'],a:['Aproximação (dados charting): ~96% caem dentro; se a bola volta, quem está na rede vence ~58,6%. A paralela é mais arriscada, mas cobre a passada reta.','Split step: pouso no momento em que o rival bate, para sair com a perna de fora e o primeiro passo na direção da bola.'],v:['Sem estudo biomecânico específico incluído nesta versão. Vale o princípio geral: sequência pernas, tronco, ombro, cotovelo e punho.'],k:['Velocidade x spin (Sports Health; dados de Elliott e Sakurai): saque plano ~190 km/h e ~1.200 rpm, slice ~170 km/h e ~2.200 rpm, kick ~150 km/h e ~3.200 rpm. Existe relação inversa entre velocidade e spin.','Toss do kick (guias de treinadores): ligeiramente atrás da cabeça e para o lado não dominante; a raquete sobe pela parte de trás da bola, de ~7h a ~1h.','Estudo com 7 atletas universitários: o kick gerou maiores forças nas costas e no ombro que o plano e o slice; o slice teve as menores forças.'],r:['Split step: pouse exatamente no contato do sacador, com pausa breve só para identificar a direção (Bollettieri; guias de treinadores).','Backswing de cerca de 2/3 do normal; quanto maior o saque, menor o backswing. A devolução ofensiva é um groundstroke compacto e o chip/block lembra um voleio.','Contato à frente do centro de gravidade e com o corpo indo para frente.'],l:['Lob de ataque (guias de treinadores): parece um groundstroke, com subida mais íngreme de baixo para cima; o disfarce é essencial.','Chip lob na devolução: swing de voleio com a face mais aberta, em torno de 45° (Tennis.com).'],d:['Drop shot: passar por baixo da bola com a face para criar underspin e fazer a bola morrer curta; sem disfarce perde o efeito surpresa (Tennis.com).','Misturar lob, drop e devoluções fortes em segundos saques fracos põe o sacador na defensiva (TennisOne).']},SK={fh:'g',bh:'g',b1:'g',sl:'g',sv:'s',sm:'s',ap:'a',vl:'v',kk:'k',rt:'r',lb:'l',dp:'d'};
 
 const mnb=$('#main-menu'),mnBtn=$('#mnb');
@@ -930,18 +1016,809 @@ function toggleSci(){
   e.style.display='block';
   return true;
 }
-function toggleDrill(){
+const HB_CATS={PR:'Pontuação e regras',QS:'Quadra e superfícies',AR:'Arbitragem',TO:'Torneios e ranking',EQ:'Equipamento',RC:'Cordas',BO:'Bola',PG:'Pegadas',GO:'Golpes',SA:'Saque e devolução',BM:'Biomecânica',JP:'Jogo de pernas',TA:'Tática',TR:'Treino e mental',CS:'Saúde e físico',GI:'Gírias',TD:'Dados e tecnologia'};
+const HB_GLOSS_RAW=`Love (zero)|PR|Zero ponto no placar. A origem é incerta; a explicação popular é o francês l'œuf (ovo, pelo formato do zero).
+15 / 30 / 40|PR|Sequência de pontos dentro de um game: 0 (love), 15, 30, 40 e game. O salto de 30 para 40 é só convenção histórica.
+Game|PR|Unidade básica de pontuação. Vence quem faz 4 pontos com diferença mínima de 2 (ou seja, passa de 40 com vantagem).
+Set|PR|Conjunto de games. Vence quem chega a 6 games com 2 de diferença; com 6–6 normalmente se joga tiebreak.
+Partida (Match)|PR|Disputa completa, em melhor de 3 sets (2 vencidos) ou melhor de 5 sets (3 vencidos), conforme o torneio.
+Melhor de 3 / Melhor de 5|PR|Formatos de partida: vence quem ganhar 2 de 3 sets ou 3 de 5 sets. Grand Slams masculinos usam melhor de 5.
+Deuce (40 iguais)|PR|Placar de 40–40. Para ganhar o game é preciso abrir dois pontos de vantagem: primeiro a vantagem, depois o game.
+Vantagem (Advantage / Ad)|PR|Ponto seguinte ao deuce. Se quem tem a vantagem ganhar o ponto seguinte, vence o game; se perder, volta ao deuce.
+Game point|PR|Ponto que, se vencido, dá o game ao jogador que o disputa.
+Set point|PR|Ponto que, se vencido, dá o set ao jogador que o disputa.
+Match point|PR|Ponto que, se vencido, encerra a partida a favor de quem o disputa.
+Break point|PR|Ponto em que o devolvedor pode quebrar o serviço do adversário. Aparece com 30–40, 15–40, 0–40 ou vantagem do devolvedor.
+Quebra (Break)|PR|Vencer um game em que o adversário estava sacando. Quebrar é a principal forma de abrir vantagem no set.
+Manter o saque (Hold)|PR|Vencer o próprio game de serviço. Sequências de holds levam o set ao tiebreak.
+Quebra de volta (Break back)|PR|Quebrar imediatamente após ter sido quebrado, recuperando o equilíbrio do set.
+Dupla quebra (Double break)|PR|Estar duas quebras à frente no set, o que torna a virada muito difícil.
+Tiebreak (desempate)|PR|Game especial a 7 pontos com diferença de 2. O primeiro sacador saca 1 ponto; depois cada jogador saca 2 seguidos. Troca de lado a cada 6 pontos.
+Super tiebreak (Match tiebreak)|PR|Tiebreak a 10 pontos (diferença de 2) usado no lugar do terceiro set ou do set decisivo em muitos formatos.
+Ponto decisivo (No-ad / Golden point)|PR|Em 40–40, joga-se um único ponto decisivo, sem vantagem. É comum em duplas e torneios de formato rápido.
+Pneu / Bagel (6–0)|PR|Set vencido por 6–0. Em português brasileiro é muito usado "pneu". Dois sets assim são o "double bagel".
+Breadstick (6–1)|PR|Set vencido por 6–1, gíria em inglês parecida com bagel.
+Falta (Fault)|PR|Saque inválido: errou o quadrado de serviço, tocou a rede e caiu fora, ou ocorreu infração de pé. Duas faltas seguidas geram dupla falta.
+Dupla falta (Double fault)|PR|Duas faltas consecutivas no mesmo ponto. O ponto vai para o devolvedor.
+Falta de pé (Foot fault)|PR|Infração do sacador que pisa na linha de fundo ou na sua extensão antes de bater, ou que "corre" invadindo a quadra antes do contato.
+Let|PR|Ponto a ser repetido. No saque, ocorre quando a bola toca a fita da rede e cai no quadrado correto (o saque é repetido, sem contar como falta).
+Fita (Net cord)|PR|Faixa superior da rede. Bola que toca a fita no rali continua em jogo se passar para o outro lado.
+Ace|PR|Saque que o devolvedor não consegue tocar com a raquete, ganhando o ponto direto.
+Winner|PR|Golpe vencedor: a bola cai na quadra e o adversário não consegue tocá-la.
+Erro forçado (Forced error)|PR|Erro causado por um golpe difícil do adversário (peso, ângulo, velocidade ou posição).
+Erro não forçado (Unforced error)|PR|Erro cometido sem pressão relevante do adversário, em bola que normalmente seria controlável.
+Rali (Rally)|PR|Troca de bolas entre os jogadores durante um ponto, do saque até o fim do ponto.
+Bola boa (In) / Fora (Out)|PR|Uma bola é boa se tocar qualquer parte da linha; basta encostar nela. Fora é quando cai inteiramente além da linha.
+Toque duplo (Double hit)|PR|Bater na bola duas vezes no mesmo golpe, o que é irregular. Se for um único movimento contínuo, é permitido.
+Toque na rede / Invasão (Net touch)|PR|Tocar a rede, os postes ou o lado do adversário com o corpo ou a raquete durante o ponto faz perder o ponto.
+Interferência (Hindrance)|PR|Ato (intencional ou não) que atrapalha o adversário, como gritar durante o golpe adversário. O árbitro pode repetir o ponto ou dar o ponto.
+Troca de lado (Changeover)|PR|Troca de lados da quadra a cada game ímpar. Dura cerca de 90 segundos nas competições profissionais (120 s entre sets).
+Tempo entre pontos (Shot clock)|PR|Limite de 20 a 25 segundos entre o fim de um ponto e o início do seguinte, conforme a competição, marcado por relógio.
+Walkover (W.O.)|PR|Vitória sem jogar porque o adversário não compareceu ou desistiu antes do início.
+Abandono (Retirement / RET)|PR|Quando um jogador desiste durante a partida, normalmente por lesão. O oponente avança.
+Desclassificação (Default)|PR|Exclusão de um jogador da partida ou do torneio por violação grave do código de conduta.
+Código de conduta (Code violation)|PR|Infrações como quebrar raquete, atrasar o jogo ou linguagem imprópria. Gera aviso, perda de ponto ou de game, até desclassificação.
+Aviso (Warning)|PR|Primeira sanção do código de conduta. A reincidência custa um ponto.
+Penalidade de ponto (Point penalty)|PR|Segunda infração: o jogador perde um ponto imediatamente.
+Penalidade de game (Game penalty)|PR|Terceira infração: o jogador perde um game inteiro.
+Sacador / Devolvedor (Server / Receiver)|PR|Sacador é quem inicia o ponto; devolvedor é quem responde o saque. Os papéis alternam a cada game.
+Ordem de saque|PR|Define quem saca em cada game. Em duplas, cada parceiro saca em games alternados, mantendo a mesma ordem durante o set.
+Primeiro saque / Segundo saque|PR|O sacador tem direito a duas tentativas por ponto. O primeiro costuma ser mais agressivo; o segundo, mais seguro.
+Contagem de saque (Serve count)|PR|Total de games de serviço ganhos e perdidos, usado para estatísticas como hold% e break%.
+Rodízio de bolas|PR|Troca de bolas novas em torneios, geralmente após 7 e depois a cada 9 games, para manter peso e velocidade uniformes.
+Quadra de simples / duplas|QS|Em simples usa-se a largura de 8,23 m; em duplas, 10,97 m (com os corredores laterais).
+Linha de fundo (Baseline)|QS|Linha do fundo da quadra, a 11,89 m da rede. A bola é boa se tocar a linha.
+Linha de serviço (Service line)|QS|Linha a 6,40 m da rede que delimita o fundo dos quadrados de saque.
+Quadrado de saque (Service box)|QS|Retângulo de 6,40 m por 4,115 m onde o saque precisa cair, na diagonal do sacador.
+Marca central de serviço|QS|Pequena marca no meio da linha de fundo que define o lado em que o sacador deve ficar.
+Linha central de serviço|QS|Linha que divide ao meio a área entre a rede e a linha de serviço, separando os dois quadrados.
+Linha lateral (Sideline)|QS|Limites laterais da quadra. Existem a linha de simples e a linha de duplas (corredor).
+Corredor (Alley)|QS|Faixa de 1,37 m entre a linha de simples e a de duplas. Só vale em duplas.
+Lado da vantagem (Ad court)|QS|Lado esquerdo da quadra do ponto de vista do sacador. O sacador usa este lado em pontos ímpares (15–0, 30–15, vantagem etc.) e saca para o quadrado diagonal.
+Lado do deuce (Deuce court)|QS|Lado direito da quadra do ponto de vista do sacador. O sacador usa este lado em pontos pares (0–0, 30–0, 15–15, deuce etc.).
+Rede (Net)|QS|Altura de 1,07 m nos postes e 0,914 m no centro, onde a faixa central a segura.
+Poste (Net post)|QS|Suporte da rede, fixado a 0,914 m fora da linha lateral de simples (ou duplas).
+Faixa central (Center strap)|QS|Fita que mantém a rede a 0,914 m no meio da quadra.
+Zona de transição (No man's land)|QS|Região entre a linha de fundo e a linha de serviço, onde o jogador fica vulnerável, sem espaço para atacar nem para defender.
+T (T do saque)|QS|Encontro da linha central de serviço com a linha de serviço. Saque no T é o saque mais perto do centro.
+Saibro (Clay)|QS|Superfície de terra batida, com bote alto e mais lento. Favorece rali longo, topspin e deslizes.
+Quadra rápida (Hard court)|QS|Superfície de concreto/acrílico, com bote regular e velocidade média a rápida.
+Grama (Grass)|QS|Superfície natural com bote baixo e rápido, que favorece saque forte, slice e jogo de rede.
+Carpete (Carpet)|QS|Superfície sintética indoor de bote baixo e rápido, hoje rara no circuito.
+Quadra coberta (Indoor)|QS|Quadra em ambiente fechado, sem vento e sem sol. Costuma ser mais rápida e de bote consistente.
+Saibro verde (Green clay)|QS|Saibro americano mais escuro e firme, com velocidade intermediária entre saibro vermelho e quadra rápida.
+Velocidade da quadra (Court Pace Index)|QS|Medida (CPI) do quanto a superfície acelera ou desacelera a bola; quadras rápidas têm CPI mais alto.
+Bote (Bounce)|QS|Quicada da bola no chão. Varia em altura e velocidade conforme superfície, pressão e efeito da bola.
+Bote baixo (Skid)|QS|Bola que quica baixo e escorrega, comum em grama e slice. Exige flexão de joelhos para devolver.
+Bote alto (High bounce)|QS|Bola que sobe após o quique, típica do topspin no saibro. Muitas vezes chega à altura do ombro ou acima.
+Vento (Wind)|QS|Fator tático em quadra aberta: joga a favor ou contra, e exige ajuste de altura e de ponto de impacto.
+Sol (Sun)|QS|Fator tático no saque e no smash. Trocar de lado do lançamento ou usar boné/óculos ajuda.
+Teto retrátil (Roof)|QS|Cobertura que fecha em dias de chuva ou calor em grandes arenas, transformando a quadra em indoor.
+Pausa por chuva (Rain delay)|QS|Interrupção de partida por chuva. O placar é mantido e a partida retoma quando a quadra está seca.
+Marca da bola (Ball mark)|QS|Marca deixada no saibro. Usada para conferir se a bola foi boa ou fora, mostrando onde pousou.
+Dimensões da quadra|QS|Comprimento de 23,77 m. Largura de 8,23 m (simples) e 10,97 m (duplas). Cada lado tem 11,89 m até a rede.
+Árbitro de cadeira (Chair umpire)|AR|Árbitro principal, sentado na cadeira alta, responsável por placar, regras e decisões finais em disputa.
+Juiz de linha (Line judge)|AR|Responsável por chamar bolas fora ou dentro. Em muitos torneios foi substituído por sistema eletrônico.
+Juiz de rede (Net judge)|AR|Verifica toques na fita no saque (let). Pode ser dispensado por sensores eletrônicos.
+Supervisor (Tournament referee)|AR|Autoridade máxima do torneio, chamado em disputas que o árbitro de cadeira não resolve.
+Hawk-Eye (olho de falcão)|AR|Sistema de câmeras que reconstrói a trajetória da bola e indica se foi dentro ou fora, com margem de erro de poucos milímetros.
+Chamada eletrônica de linha (ELC)|AR|Electronic Line Calling: sistema automático que anuncia "out" ou "fault" no lugar dos juízes de linha em muitos torneios.
+Desafio (Challenge)|AR|Pedido do jogador para revisar uma chamada. Cada jogador tem um número limitado de desafios errados por set (comumente 3).
+Correção (Overrule)|AR|Quando o árbitro de cadeira corrige uma chamada do juiz de linha por erro claro.
+Gandula (Ball kid)|AR|Pessoa que recolhe as bolas e as entrega aos jogadores durante a partida.
+Pausa médica (Medical timeout / MTO)|AR|Atendimento médico no meio da partida, limitado em tempo e em número, concedido por lesão tratável.
+Regra do calor (Heat rule)|AR|Intervalo extra permitido em condições de calor extremo, definido por índice de temperatura e umidade.
+Orientação do técnico (Coaching)|AR|Instruções do técnico durante o jogo. Permitidas ou restritas conforme o circuito e a fase da partida.
+Conduta antiesportiva (Unsportsmanlike conduct)|AR|Comportamento inadequado, como xingar, jogar a raquete ou assediar o árbitro. Sujeito a penalidades do código.
+Fair play|AR|Postura de respeito às regras e aos oponentes, incluindo chamar a bola corretamente nas partidas sem árbitro.
+Chamada de bola (Calling lines)|AR|Em jogos amadores sem juiz, cada jogador chama as bolas do seu lado. Em dúvida, a bola é boa para o adversário.
+Grand Slam|TO|Os quatro maiores torneios do ano: Australian Open, Roland Garros, Wimbledon e US Open. Pontuam mais e pagam os maiores prêmios.
+Australian Open|TO|Primeiro Grand Slam do ano (janeiro), em quadra rápida, em Melbourne.
+Roland Garros (French Open)|TO|Grand Slam em saibro, em Paris, entre maio e junho.
+Wimbledon|TO|Grand Slam em grama, em Londres, entre junho e julho. É o mais antigo e exige vestimenta branca.
+US Open|TO|Grand Slam em quadra rápida, em Nova York, entre agosto e setembro. Último do ano.
+ATP Tour|TO|Circuito profissional masculino organizado pela Association of Tennis Professionals.
+WTA Tour|TO|Circuito profissional feminino organizado pela Women's Tennis Association.
+Masters 1000 (ATP)|TO|Os nove torneios de maior pontuação do circuito masculino depois dos Grand Slams, como Indian Wells, Miami e Roma.
+WTA 1000|TO|Categoria de elite do circuito feminino abaixo dos Grand Slams, equivalente ao Masters 1000.
+ATP 500 / ATP 250|TO|Categorias intermediárias do circuito masculino, com 500 e 250 pontos para o campeão.
+WTA 500 / WTA 250|TO|Categorias intermediárias do circuito feminino.
+ATP Finals / WTA Finals|TO|Torneios de fim de temporada com os oito melhores do ano, em formato de grupos seguido de semifinais.
+Challenger|TO|Circuito de desenvolvimento masculino logo abaixo do ATP Tour. Importante para subir no ranking.
+ITF World Tennis Tour|TO|Circuito inicial de profissionais (M15, M25, W15, W35 etc.), onde se acumulam os primeiros pontos de ranking.
+Futures|TO|Nome antigo do circuito de entrada da ITF, hoje chamado World Tennis Tour.
+Copa Davis (Davis Cup)|TO|Principal competição mundial por equipes masculinas entre países.
+Billie Jean King Cup|TO|Competição mundial por equipes femininas entre países (antes Fed Cup).
+Laver Cup|TO|Torneio por equipes Europa contra Resto do Mundo.
+United Cup|TO|Torneio por equipes mistas, com jogos masculinos, femininos e de duplas mistas.
+Jogos Olímpicos|TO|Torneio individual e de duplas disputado a cada quatro anos. Não distribui pontos de ranking ATP/WTA, mas dá grande prestígio.
+Ranking (ATP / WTA)|TO|Lista baseada nos pontos dos melhores resultados das últimas 52 semanas. Define chaves e cabeças de chave.
+Race|TO|Ranking que soma só os pontos do ano civil corrente. É usado para definir quem vai às Finais.
+Cabeça de chave (Seed)|TO|Jogadores melhor ranqueados que são distribuídos na chave para não se enfrentarem nas primeiras rodadas.
+Convite (Wild card)|TO|Vaga na chave principal dada pela organização do torneio a um jogador sem ranking suficiente.
+Qualificatório (Qualifying)|TO|Mini-torneio prévio em que jogadores de ranking mais baixo disputam as últimas vagas da chave principal.
+Lucky loser|TO|Jogador derrotado no qualifying que entra na chave principal por desistência de outro.
+Exceção especial (Special exempt)|TO|Vaga na chave dada a jogador que jogou outro torneio até tarde e não pôde se inscrever no qualificatório.
+Ranking protegido (Protected ranking)|TO|Ranking antigo usado para inscrição após lesão longa, permitindo entrar em torneios sem perder status.
+Chave (Draw)|TO|Tabela de eliminatória com os confrontos. Sorteada com cabeças de chave protegidas.
+Chave principal (Main draw)|TO|A chave de eliminatória principal do torneio, depois do qualificatório.
+Bye|TO|Passagem direta para a rodada seguinte sem jogar, comum para os cabeças de chave quando a chave tem vagas ímpares.
+Round robin (Fase de grupos)|TO|Formato em que todos jogam contra todos num grupo. Usado em torneios de equipe e nas Finais.
+Eliminatória (Knockout)|TO|Formato em que perder significa sair do torneio.
+UTR (Universal Tennis Rating)|TO|Escala de 1 a 16,5 que mede o nível de qualquer jogador, amador ou profissional, baseada em resultados.
+NTRP|TO|Escala de nível 1,0 a 7,0 usada nos EUA para amadores. Valores como 3,5 e 4,5 são faixas comuns de clubes.
+CBT|TO|Confederação Brasileira de Tênis, responsável pelo ranking e pelos circuitos nacionais no Brasil.
+Categorias (Open, Veteranos, Sub-14)|TO|Divisões de torneios por idade e nível. Sub-14 e Sub-16 formam a base de jovens; Veteranos são divididos por faixa etária.
+Tênis em cadeira de rodas (Wheelchair tennis)|TO|Modalidade adaptada com as mesmas regras, mas com dois quiques permitidos, sendo o primeiro dentro da quadra.
+Beach tennis|TO|Modalidade jogada na areia, com raquete sem cordas e bola de menor pressão. Bastante popular no Brasil.
+Padel|TO|Modalidade jogada em quadra menor cercada por vidro, em duplas, com raquete sólida e paredes em jogo.
+Pickleball|TO|Esporte de raquete jogado em quadra pequena com bola perfurada e raquete sólida, popular entre amadores.
+Raquete (Racket)|EQ|Equipamento de jogo composto por cabeça (com cordas), garganta e cabo. Normalmente de grafite, pesa entre 255 e 330 g.
+Cabeça (Head)|EQ|Parte oval da raquete onde fica o encordoamento. O tamanho em cm² ou pol² influencia potência e tolerância.
+Aro (Frame / Hoop)|EQ|Estrutura que contorna a cabeça e segura as cordas. Perfis largos dão mais potência; finos, mais controle.
+Garganta (Throat)|EQ|Região em Y entre a cabeça e o cabo. Em algumas raquetes é aberta; em outras, fechada.
+Cabo (Handle)|EQ|Parte que a mão segura, normalmente octogonal. Recoberto pelo grip.
+Base do cabo (Butt cap)|EQ|Extremidade inferior do cabo, onde costuma haver a marca do fabricante e o tamanho de grip.
+Protetor de aro (Bumper guard)|EQ|Faixa de plástico no topo do aro que protege contra batidas no chão.
+Ilhós (Grommets)|EQ|Pequenas peças plásticas nos furos do aro que protegem as cordas do atrito com a borda.
+Padrão de cordas (String pattern)|EQ|Número de cordas verticais x horizontais, como 16x19 (aberto, mais efeito) ou 18x20 (fechado, mais controle).
+Padrão aberto (Open pattern)|EQ|Padrão com menos cordas e maior espaçamento (como 16x19). Facilita efeito e dá mais potência, mas as cordas se movem mais.
+Padrão fechado (Dense pattern)|EQ|Padrão com mais cordas e menor espaçamento (como 18x20). Controle maior e maior durabilidade das cordas.
+Ponto doce (Sweet spot)|EQ|Região do prato de cordas onde a bola sai com mais potência e menos vibração. Quanto maior a cabeça, maior costuma ser.
+Tamanho da cabeça (Head size)|EQ|Área do prato de cordas. Valores comuns vão de 93 a 110 pol² (cerca de 600 a 710 cm²).
+Peso da raquete (Weight)|EQ|Massa da raquete, geralmente entre 255 e 330 g sem cordas. Raquetes mais pesadas são mais estáveis e menos manobráveis.
+Balanço (Balance)|EQ|Onde está o ponto de equilíbrio do peso: head-light (HL, mais no cabo), head-heavy (HH, mais na cabeça) ou neutro (even).
+Swingweight|EQ|Medida da dificuldade de balançar a raquete (inércia na rotação), em kg·cm². Valores típicos ficam em torno de 300 a 340.
+Twistweight (Peso torcional)|EQ|Resistência da raquete a torcer no impacto fora do centro. Maior twistweight significa mais estabilidade.
+Rigidez (Stiffness / RA)|EQ|Quanto o quadro flexiona no impacto. Raquetes mais rígidas (RA alto) dão mais potência e transmitem mais choque.
+Largura do perfil (Beam)|EQ|Espessura do aro em mm. Perfil largo dá mais potência; fino, mais sensibilidade e controle.
+Tamanho de empunhadura (Grip size)|EQ|Medida da circunferência do cabo, de 0 (L0) a 5 (L5), ou em polegadas (4 a 4 5/8). Deve caber na mão sem ficar folgado.
+Grip (Replacement grip)|EQ|Fita de borracha ou poliuretano colocada em volta do cabo. Sobre ela se coloca o overgrip.
+Overgrip|EQ|Fita fina e macia colocada sobre o grip para absorver suor e dar aderência. Deve ser trocado com frequência.
+Antivibrador (Dampener)|EQ|Pequena peça colocada nas cordas para reduzir o som e a vibração percebidos. Não diminui a vibração do quadro.
+Fita de chumbo (Lead tape)|EQ|Fita pesada colada no aro ou no cabo para alterar peso, balanço e estabilidade.
+Customização|EQ|Ajustes feitos pelo jogador, como chumbo, grip e cordas, para adaptar a raquete ao próprio estilo.
+Tênis de quadra (Tennis shoes)|EQ|Calçado específico com solado resistente, amortecimento e suporte lateral. O padrão do solado varia por superfície.
+Solado (Outsole)|EQ|Parte inferior do tênis. Em saibro, desenho em espinha; em quadra rápida, borracha mais dura e lisa.
+Palmilha (Insole)|EQ|Camada interna do tênis que amortece e dá suporte ao arco do pé.
+Munhequeira (Wristband)|EQ|Faixa de tecido no pulso que absorve suor para manter o grip seco.
+Viseira / Boné (Visor / Cap)|EQ|Proteção contra sol e suor. Obrigatório ou comum em diversas condições de jogo.
+Bolsa de raquetes (Racket bag)|EQ|Mochila ou bolsa termicamente isolada para levar raquetes, bolas, toalha e acessórios.
+Máquina de bolas (Ball machine)|EQ|Equipamento que lança bolas com velocidade, efeito e direção programados, para treino individual.
+Cesto de bolas (Ball hopper)|EQ|Cesto metálico com suporte para guardar e recolher bolas rapidamente.
+Cordas (Strings)|RC|Material que forma o prato da raquete. Influencia potência, controle, efeito, conforto e durabilidade.
+Encordoamento (Stringbed / Stringing)|RC|Conjunto de cordas montado no aro, chamado também de prato de cordas. Também é o processo de montar as cordas.
+Cordas principais (Mains)|RC|Cordas verticais da raquete, que correm da garganta ao topo da cabeça.
+Cordas cruzadas (Crosses)|RC|Cordas horizontais que passam entre as principais, formando a malha.
+Tensão (Tension)|RC|Força aplicada ao esticar as cordas, em libras (lb) ou kg. Tensões comuns ficam entre 40 e 65 lb (18 a 30 kg).
+Tensão baixa|RC|Mais potência, mais conforto e maior efeito de trampolim, mas menos controle.
+Tensão alta|RC|Mais controle e sensibilidade, com menos potência e menos conforto.
+Perda de tensão (Tension loss)|RC|Queda gradual da tensão com o tempo e o uso, mesmo sem tocar a bola. Poliéster perde tensão mais rápido que tripa natural.
+Calibre (Gauge)|RC|Espessura da corda. Calibres usuais variam de 1,10 a 1,35 mm; mais fina dá mais efeito e sensibilidade, mais grossa dura mais.
+Tripa natural (Natural gut)|RC|Corda de intestino de animal, a mais macia e a que melhor mantém a tensão. Cara e sensível à umidade.
+Multifilamento (Multifilament)|RC|Corda feita de milhares de fibras, macia e confortável, com ótimo toque. Dura menos que poliéster.
+Nylon sintético (Synthetic gut)|RC|Corda básica de nylon, barata e equilibrada, usada por iniciantes e jogadores recreativos.
+Poliéster (Polyester / Poly)|RC|Corda rígida de grande durabilidade e controle, usada por jogadores de topspin e de swing rápido. Mais exigente para cotovelo e ombro.
+Kevlar|RC|Fibra extremamente rígida, geralmente usada em híbridos para resistir a quebras. Pode agredir o cotovelo em tensão alta.
+Corda híbrida (Hybrid)|RC|Combinação de dois tipos de corda, uma nas principais e outra nas cruzadas, para equilibrar potência, efeito e conforto.
+Corda texturizada (Shaped / Textured)|RC|Corda com formato hexagonal, pentagonal ou superfície rugosa para morder mais a bola e gerar efeito.
+Mobilidade das cordas (String movement)|RC|Capacidade de as cordas deslizarem e voltarem à posição. Importante para gerar efeito, mas pode causar desgaste.
+Snapback|RC|Retorno rápido das cordas à posição original após se deslocarem no impacto, o que acrescenta rotação à bola.
+Efeito de trampolim (Trampoline effect)|RC|Retorno elástico das cordas que acrescenta velocidade à bola. Maior com tensão baixa.
+Quebra de cordas (String breakage)|RC|Ruptura da corda por desgaste ou impacto. Raquetes de padrão aberto com cordas finas quebram mais.
+Encordoador (Stringer)|RC|Profissional que monta as cordas na raquete. A qualidade do trabalho afeta a consistência.
+Máquina de encordoar (Stringing machine)|RC|Equipamento que tensiona as cordas: de manivela, de peso constante ou eletrônica.
+Pré-tensionamento (Pre-stretch)|RC|Esticar a corda antes de fixá-la para reduzir a perda de tensão inicial.
+Nó (Knot) / Amarração (Tie-off)|RC|Ponto em que a corda é presa ao aro depois de esticada. O tipo de nó afeta a manutenção da tensão.
+Reencordoar (Restring)|RC|Trocar as cordas gastas. Uma regra comum é reencordoar tantas vezes por ano quantas vezes se joga por semana.
+Cordas "mortas" (Dead strings)|RC|Cordas que perderam elasticidade e tensão, deixando o toque sem vida e menos potente.
+Bola de tênis|BO|Bola de borracha com feltro, de 56,0 a 59,4 g e 6,54 a 6,86 cm de diâmetro, conforme regras da ITF.
+Pressão da bola (Pressurized ball)|BO|Bola com ar pressurizado, mais viva e rápida, mas que perde pressão após aberta.
+Bola sem pressão (Pressureless ball)|BO|Bola de borracha maciça, mais durável e pesada, usada em máquinas e treinos. Dá toque mais duro.
+Bola Tipo 1 (rápida)|BO|Bola do tipo Fast, mais dura, para saibro e outras superfícies lentas.
+Bola Tipo 2 (média)|BO|Bola do tipo Medium, para superfícies médias como quadras rápidas.
+Bola Tipo 3 (lenta)|BO|Bola do tipo Slow ou High Altitude, mais macia, para quadras rápidas e ambientes de altitude.
+Bola vermelha (Stage 3)|BO|Bola de espuma ou baixa compressão para crianças de até 8 anos, em quadras e redes reduzidas.
+Bola laranja (Stage 2)|BO|Bola de baixa compressão para crianças de 8 a 10 anos, em quadra de 18 m.
+Bola verde (Stage 1)|BO|Bola de pressão reduzida para crianças de 9 a 10 anos, em quadra de tamanho quase total.
+Feltro (Felt)|BO|Cobertura de lã e nylon da bola. Desgasta com o uso e aumenta a resistência ao ar.
+Penugem (Fuzz)|BO|Fibras do feltro. Bola "careca" perde efeito e velocidade.
+Bola careca (Bald ball)|BO|Bola com feltro gasto, que voa mais rápido e controla pior.
+Quique padrão (Bounce test)|BO|Teste ITF: solta-se a bola de 254 cm de altura e ela deve quicar entre 135 e 147 cm.
+Bola nova (Fresh ball)|BO|Bola recém-aberta, rápida e viva. Em torneios, as bolas são trocadas em intervalos fixos.
+Bola morta (Dead ball)|BO|Bola gasta e sem vida, que quica pouco e perde velocidade.
+Tubo de bolas|BO|Embalagem pressurizada que mantém as bolas novas por mais tempo. Normalmente com 3 ou 4 bolas.
+Rotação da bola (Spin rate)|BO|Quantidade de giros por minuto (rpm). Forehands profissionais costumam ficar entre 2.500 e 3.500 rpm.
+Pegada (Grip)|PG|Forma de segurar a raquete. Define o ângulo da face, o tipo de efeito possível e o ponto ideal de contato.
+Pegada continental (Continental / Hammer)|PG|Mão como se segurasse um martelo (base do dedo indicador na face 2 do cabo octogonal). Muito usada no saque, voleio e slice.
+Pegada eastern de forehand|PG|Mão atrás do cabo (base do indicador na face 3). Boa para bolas planas e topspin moderado.
+Pegada semi-western|PG|Mão mais embaixo (base do indicador na face 4). A mais usada hoje no forehand moderno, com topspin forte.
+Pegada western|PG|Mão bem abaixo no cabo (face 5). Gera topspin muito alto, mas dificulta bolas baixas e o slice.
+Pegada eastern de backhand|PG|Base do indicador na face 1 do cabo. Usada no backhand de uma mão e no drive de duas mãos.
+Pegada de duas mãos (Two-handed grip)|PG|Duas mãos no cabo, com a dominante abaixo (normalmente continental) e a não dominante acima (normalmente semi-western de forehand).
+Pegada do saque|PG|Continental ou levemente rotada para eastern de backhand, permitindo pronação do antebraço no contato.
+Pegada do voleio|PG|Normalmente continental, que dá face aberta natural e permite bater de forehand e backhand sem trocar de pegada.
+Troca de pegada (Grip change)|PG|Reajuste da mão no cabo entre golpes, por exemplo ao sair de um forehand e ir para um voleio.
+Face da raquete (Racket face)|PG|Superfície das cordas voltada para a bola. Seu ângulo no contato (aberta, neutra ou fechada) define a altura e o efeito.
+Face fechada (Closed face)|PG|Face inclinada para baixo no contato, o que produz bolas com topspin e trajetória mais baixa.
+Face aberta (Open face)|PG|Face inclinada para cima, comum no slice, no voleio e no lob.
+Pegada neutra|PG|Pegada de sensação intermediária, que mantém a face quase vertical no ponto de contato.
+Bevel (faces do cabo)|PG|Cada uma das oito faces planas do cabo octogonal, numeradas de 1 a 8, usadas como referência de pegada.
+Forehand (direita)|GO|Golpe executado do lado dominante do corpo, com a palma da mão dominante voltada para a rede. É normalmente o golpe mais agressivo.
+Backhand (esquerda)|GO|Golpe executado do lado não dominante, com o dorso da mão dominante voltado para a rede. Pode ser de uma ou duas mãos.
+Backhand de duas mãos (Two-handed backhand)|GO|Backhand com as duas mãos no cabo. Dá estabilidade e potência com menos exigência de punho.
+Backhand de uma mão (One-handed backhand)|GO|Backhand com a mão dominante no cabo e braço livre se estendendo para trás. Exige mais técnica, mas dá alcance e variedade.
+Golpe de fundo (Groundstroke)|GO|Qualquer golpe dado após o quique da bola, normalmente de forehand ou backhand, geralmente da linha de fundo.
+Topspin (Liftado / Efeito para frente)|GO|Rotação da bola para frente (de baixo para cima). Faz a bola cair mais rápido, quicar alto e permite bater com margem sobre a rede.
+Backspin (efeito para trás)|GO|Rotação da bola para trás (de cima para baixo). Mantém a bola baixa, dá estabilidade e a sustenta no ar.
+Flat (Golpe chapado)|GO|Golpe com pouco efeito, batido em linha reta. É rápido, mas com menor margem sobre a rede.
+Efeito lateral (Sidespin)|GO|Rotação em torno do eixo vertical. Faz a bola curvar para um lado em vez de subir ou descer.
+Slice (golpe cortado)|GO|Golpe de cima para baixo com face aberta. Produz bola baixa e quique curto, útil para defesa e para variar o ritmo.
+Drop shot (Curtinha / Amortie)|GO|Bola curta, com muito slice, que quica perto da rede. Funciona melhor com o adversário atrás da linha de fundo.
+Lob (Balão)|GO|Bola alta que passa por cima do adversário na rede. Pode ser defensivo (alto e profundo) ou ofensivo (baixo e rápido).
+Passing shot (Passada)|GO|Golpe que passa ao lado do jogador na rede, em cruzada ou paralela, antes que ele consiga alcançar.
+Bola de aproximação (Approach shot)|GO|Golpe dado para subir à rede, normalmente na quadra curta, com profundidade e slice ou drive.
+Voleio (Volley)|GO|Golpe dado antes da bola quicar, com swing curto. É o golpe típico de rede.
+Meia-vôlei (Half-volley)|GO|Golpe dado logo após o quique, a poucos centímetros do chão. Exige face firme e pouca preparação.
+Voleio de swing (Swing volley)|GO|Voleio mais ofensivo, com swing completo, em bola alta e sem quicar, geralmente de topspin.
+Drop volley (Voleio curto)|GO|Voleio amortecido que cai perto da rede, tirando a velocidade da bola.
+Smash (Overhead)|GO|Golpe por cima da cabeça, semelhante ao saque, usado em lobs altos. É finalizador.
+Bandeja (Slice overhead)|GO|Golpe por cima com slice, mais controlado que o smash. Muito comum no padel.
+Smash em salto (Jump smash)|GO|Smash em suspensão, feito para alcançar lobs profundos sem recuar demais.
+Tweener (Entre as pernas)|GO|Golpe dado entre as pernas, de costas para a rede, quando a bola passa do jogador. Mais espetacular do que prático.
+Golpe em torno do poste (Around the post)|GO|Bola que passa por fora do poste da rede e não por cima dela, devolvendo a bola em um ponto abaixo da altura da rede.
+Bola curta (Short ball)|GO|Bola que cai perto da rede ou na quadra frontal, geralmente uma oportunidade de ataque.
+Bola funda (Deep ball)|GO|Bola que cai perto da linha de fundo e empurra o adversário para trás.
+Bola pesada (Heavy ball)|GO|Bola com muito topspin e potência que quica alto e exige esforço do adversário para devolver.
+Bola mole / Sitter|GO|Bola lenta e fácil de atacar, geralmente na altura ideal para o adversário bater.
+Moonball (balão de ritmo)|GO|Bola muito alta e de baixa velocidade, que cai funda e tira o ritmo do oponente.
+Cruzada (Cross-court)|GO|Golpe diagonal, que cruza a quadra de um lado a outro. É o mais seguro, pois a rede é mais baixa no centro e o caminho é mais longo.
+Paralela (Down the line)|GO|Golpe pela lateral, paralelo à linha lateral. Arriscado, mas muda a direção do jogo.
+Inside-out|GO|Forehand batido a partir do lado do backhand (contornando-o), dirigido em diagonal para o lado do forehand. Abre a quadra com o golpe mais forte.
+Inside-in|GO|Forehand batido a partir do lado do backhand (contornando-o), dirigido paralelamente à linha lateral, no mesmo lado em que está o jogador.
+Bola alta de ombro (High ball)|GO|Bola que quica à altura dos ombros ou acima. Exige adaptação da pegada e da posição.
+Bola baixa (Low ball)|GO|Bola que passa perto do chão. Exige flexão de joelhos e face de raquete controlada.
+Devolução em bloqueio (Block return)|GO|Devolução curta e firme, com pouco swing, para controlar saques fortes.
+Chip and charge|GO|Devolução em slice curta seguida de subida imediata à rede, para pressionar o sacador.
+Contra-ataque (Counterpunch)|GO|Usar a velocidade do adversário a seu favor, devolvendo a bola com direção e profundidade.
+Golpe de definição (Putaway)|GO|Golpe finalizador que encerra o ponto, geralmente em bola curta ou fácil.
+Take-back (Preparação / Backswing)|GO|Movimento da raquete para trás para preparar o golpe. Em golpes modernos é compacto e combinado com o giro do tronco.
+Swing (Balanço)|GO|Movimento completo da raquete, do início à finalização.
+Swing para frente (Forward swing)|GO|Fase em que a raquete vem em direção à bola, acelerando até o contato.
+Ponto de contato (Contact point)|GO|Posição no espaço onde a raquete encontra a bola. No forehand, o ideal é à frente do corpo, na altura da cintura.
+Finalização (Follow-through)|GO|Continuação do movimento após o contato. Reduz a carga no braço e define a direção e o efeito.
+Limpador de para-brisa (Windshield wiper)|GO|Finalização do forehand moderno em que a raquete gira da direita para a esquerda após o contato, como um limpador de para-brisa.
+Caminho do swing (Swing path)|GO|Trajetória da cabeça da raquete. Baixo-para-alto produz topspin; alto-para-baixo, slice.
+Plano do swing (Swing plane)|GO|Plano em que o movimento da raquete se desenvolve. Em geral, inclinado para cima na frente do contato.
+Bater com a bola subindo (Take it on the rise)|GO|Bater a bola logo depois do quique, quando ela está subindo, para ganhar tempo e pressionar o adversário.
+Bater com a bola caindo|GO|Bater a bola no ponto mais baixo do arco, dando mais tempo, mas com menos agressividade.
+Saque (Serve)|SA|Golpe que inicia o ponto, dado por cima da cabeça, de trás da linha de fundo, em direção ao quadrado diagonal.
+Primeiro saque (First serve)|SA|Primeira tentativa. Costuma ser potente e agressiva, com margem de erro maior.
+Segundo saque (Second serve)|SA|Segunda tentativa após uma falta. Costuma ter mais efeito (slice ou kick) e menos velocidade para evitar a dupla falta.
+Saque chapado (Flat serve)|SA|Saque com pouco efeito, o mais rápido possível, batendo a bola de forma quase plana.
+Saque com slice (Slice serve)|SA|Saque com efeito lateral, que curva a bola para o lado e a faz escapar do devolvedor, especialmente em quadras rápidas.
+Saque kick (Kick serve / Topspin serve)|SA|Saque com topspin forte que faz a bola quicar alto e para o lado. Muito usado no segundo saque.
+Saque e voleio (Serve and volley)|SA|Estilo em que o jogador saca e sobe à rede logo em seguida para finalizar o ponto com voleio.
+Saque no T|SA|Saque dirigido ao T, no centro da quadra, perto da linha central de serviço.
+Saque aberto (Wide serve)|SA|Saque dirigido ao canto externo do quadrado, empurrando o devolvedor para fora da quadra.
+Saque no corpo (Body serve)|SA|Saque dirigido ao corpo do devolvedor, tirando espaço e ângulo de devolução.
+Saque por baixo (Underhand serve)|SA|Saque dado por baixo do ombro, usado como surpresa tática ou por iniciantes.
+Lançamento (Toss)|SA|Lançar a bola para cima antes de sacar. Sua posição e consistência definem o tipo de saque e a precisão.
+Posição de troféu (Trophy position)|SA|Posição do saque em que o braço da raquete está para cima, o outro braço aponta a bola e os joelhos estão flexionados.
+Queda da raquete (Racket drop)|SA|Momento em que a raquete cai atrás das costas antes de subir para o contato, alongando os músculos do ombro.
+Impulsão no saque (Leg drive)|SA|Extensão dos joelhos e do tornozelo que impulsiona o corpo para cima e para frente no saque.
+Posição de pés no saque (Platform / Pinpoint)|SA|Platform: pés lado a lado e parados. Pinpoint: pé de trás aproxima-se do da frente durante o movimento. Ambos são válidos.
+Pronação do saque|SA|Rotação do antebraço no contato do saque, que vira a face da raquete e dá velocidade e efeito.
+Ponto de contato do saque|SA|Altura em que a raquete encontra a bola, com o braço estendido. É o ponto mais alto possível, ligeiramente à frente do corpo.
+Saque-devolução (Return of serve)|SA|Resposta ao saque. Exige antecipação, split step e movimento compacto.
+Devolução (Return)|SA|Primeiro golpe depois do saque. É determinante para a quebra de serviço.
+Devolução cruzada (Cross-court return)|SA|Devolução em diagonal, geralmente a mais segura, buscando profundidade.
+Devolução agressiva|SA|Devolução com swing completo, tomando a iniciativa em segundo saques fracos.
+Posição de devolução (Return stance)|SA|Posição do devolvedor ao receber o saque, com pés abertos e peso à frente, pronto para o split step.
+Serve +1 (Saque mais um)|SA|Padrão tático que combina o saque com o golpe seguinte, para finalizar o ponto rapidamente.
+Cadeia cinética (Kinetic chain)|BM|Sequência coordenada em que a energia sobe do solo pelas pernas, quadril, tronco, ombro, braço e raquete, de segmentos grandes para pequenos.
+Sequência proximal-distal|BM|Princípio de que os segmentos mais próximos do centro do corpo aceleram primeiro e passam a energia aos mais distais, em sucessão.
+Unit turn (Giro unitário)|BM|Giro simultâneo de ombros, quadril e raquete como um bloco, no início da preparação. Mantém a raquete à frente do peito e prepara a carga.
+Giro de ombros (Shoulder turn)|BM|Rotação dos ombros para o lado do golpe, que alonga a musculatura do tronco e prepara a rotação.
+Carga (Load / Loading)|BM|Flexão dos joelhos e transferência de peso para a perna de trás, armazenando energia elástica antes de explodir no golpe.
+Ciclo alongamento-encurtamento (SSC)|BM|Pré-alongamento rápido dos músculos seguido de contração. Gera mais potência do que a contração sem pré-alongamento.
+Pré-alongamento (Pre-stretch)|BM|Alongamento rápido que precede a contração concêntrica, ativando o reflexo miotático e a energia elástica.
+Separação quadril-ombro (Hip-shoulder separation)|BM|Diferença angular entre a rotação do quadril e a dos ombros. Alongar essa diferença antes do golpe aumenta a potência.
+X-factor|BM|Ângulo de separação entre quadril e ombros durante o golpe. Maior X-factor é associado a maior potência de rotação.
+Lag da raquete (Racket lag)|BM|Atraso da cabeça da raquete em relação à mão e ao antebraço no início do swing, que armazena energia para soltá-la no contato.
+Efeito chicote (Whip effect)|BM|Aceleração progressiva dos segmentos distais quando os proximais desaceleram, como a ponta de um chicote.
+Transferência de energia|BM|Passagem de momento de um segmento corporal para o seguinte na cadeia cinética, de pernas ao braço e à raquete.
+Força de reação do solo (Ground reaction force / GRF)|BM|Força que o chão devolve ao corpo ao ser empurrado. É a fonte inicial da potência dos golpes e do saque.
+Força de pernas no solo (Leg drive)|BM|Extensão das pernas contra o chão que gera força de reação do solo e inicia a cadeia cinética.
+Rotação do quadril (Hip rotation)|BM|Giro da pelve em torno do eixo vertical. É o primeiro grande pico de velocidade angular na cadeia cinética do golpe.
+Rotação do tronco (Trunk rotation)|BM|Giro do tronco que sucede o do quadril e passa a energia para o ombro e o braço.
+Rotação interna do ombro (Shoulder internal rotation)|BM|Rotação do úmero para dentro, que acelera fortemente o antebraço no forehand e no saque. Responsável por grande parte da velocidade da raquete.
+Pronação do antebraço (Forearm pronation)|BM|Rotação do antebraço que vira a palma para baixo. No saque e no forehand, contribui para a velocidade da raquete no contato.
+Supinação do antebraço (Forearm supination)|BM|Rotação do antebraço que vira a palma para cima. Presente no início do movimento de queda da raquete.
+Extensão do cotovelo (Elbow extension)|BM|Esticar o cotovelo na aceleração, que adiciona velocidade à raquete nos golpes por cima da cabeça (saque e smash) e no forehand.
+Desvio ulnar / radial|BM|Movimentos laterais do punho em direção ao dedo mínimo (ulnar) ou polegar (radial). Participam da aceleração da cabeça da raquete.
+Flexão de punho (Wrist flexion)|BM|Dobrar o punho para a palma, adiciona velocidade no fim do swing, em saque e smash.
+Extensão de punho (Wrist extension)|BM|Dobrar o punho para trás. Usado no backhand de uma mão e na preparação do forehand para criar lag.
+Core (Centro corporal)|BM|Musculatura do abdômen, lombar, oblíquos e quadril, que estabiliza o tronco e transfere força das pernas aos braços.
+Centro de massa (Center of mass)|BM|Ponto de equilíbrio do corpo, próximo ao umbigo. Manter o centro de massa dentro da base de apoio dá estabilidade.
+Base de apoio (Base of support)|BM|Área entre os pés que sustenta o corpo. Uma base larga aumenta estabilidade; uma estreita aumenta mobilidade.
+Transferência de peso (Weight transfer)|BM|Movimento do peso do corpo da perna de trás para a da frente durante o golpe, somando massa à velocidade da raquete.
+Equilíbrio dinâmico|BM|Capacidade de manter o equilíbrio em movimento, essencial para bater a bola em corrida e recuperar posição.
+Momento angular (Angular momentum)|BM|Quantidade de rotação de um corpo, que depende de massa, distribuição e velocidade angular. É conservado e transferido entre segmentos.
+Velocidade angular|BM|Rapidez com que um segmento gira, em graus por segundo. Picos sequenciais de velocidade angular caracterizam a cadeia cinética.
+Torque|BM|Força que causa rotação. Os músculos geram torque nas articulações para acelerar os segmentos.
+Fase excêntrica / concêntrica|BM|Excêntrica: o músculo alonga sob carga (freia). Concêntrica: o músculo encurta (acelera). Ambos acontecem em sequência no golpe.
+Fases do golpe|BM|Preparação, aceleração, contato e finalização (desaceleração). Cada fase tem objetivos mecânicos diferentes.
+Velocidade da cabeça da raquete (Racket head speed)|BM|Velocidade com que a cabeça da raquete atinge a bola. É o principal determinante da velocidade e do spin.
+Ângulo da face (Racket face angle)|BM|Inclinação da face em relação ao chão no contato. Define a direção vertical da bola e o spin.
+Efeito Magnus|BM|Força lateral que age sobre uma bola em rotação no ar. É por isso que o topspin faz a bola cair e o backspin a mantém no ar.
+Tempo de contato (Dwell time)|BM|Duração do contato entre bola e cordas, cerca de 4 a 5 milissegundos em golpes de fundo.
+Impacto fora do centro (Off-center hit)|BM|Contato fora do ponto doce, que reduz potência e aumenta vibração e a torção da raquete.
+Vibração (Vibration)|BM|Oscilação do quadro após o impacto. Impactos fora do centro e cordas rígidas aumentam a vibração transmitida ao braço.
+Centro de percussão|BM|Ponto da raquete onde o impacto minimiza o choque sentido na mão. Fica perto do ponto doce.
+Postura atlética (Athletic stance)|BM|Posição de preparo com joelhos levemente flexionados, tronco inclinado à frente e peso nas bolas dos pés.
+Posição de espera (Ready position)|BM|Postura em que o jogador aguarda a bola, com pés abertos na largura dos ombros, joelhos flexionados e raquete à frente.
+Postura aberta (Open stance)|BM|Pés quase paralelos à linha de fundo no contato. Facilita rotação e recuperação, e é típica do forehand moderno.
+Postura semi-aberta (Semi-open stance)|BM|Pés em ângulo intermediário, com o pé de trás ligeiramente atrás. Equilibra potência e rotação.
+Postura neutra (Neutral stance)|BM|Pés em linha com a trajetória da bola, com o pé da frente avançando em direção à bola.
+Postura fechada (Closed stance)|BM|Pé da frente cruza à frente do outro, dando alcance, mas limitando a rotação do quadril.
+Braço livre (Non-hitting arm)|BM|Braço que não segura a raquete. Ajuda a girar, equilibrar e apontar a bola, e recolher-se para acelerar a rotação.
+Contrapeso (Counterbalance)|BM|Movimento do braço livre ou do corpo que compensa o movimento da raquete para manter o equilíbrio.
+Extensão completa (Full extension)|BM|Braço esticado no contato do saque ou do smash, que maximiza altura e alcance.
+Rotação externa do ombro|BM|Giro do úmero para fora, como na queda da raquete no saque, que prepara a rotação interna explosiva.
+Retração escapular|BM|Movimento das escápulas para trás e para dentro, importante na preparação e na estabilidade do ombro.
+Estabilidade escapular|BM|Controle das escápulas pelos músculos do manguito e das costas. Protege o ombro nos golpes repetitivos.
+Ritmo do golpe (Timing)|BM|Coordenação temporal dos segmentos na cadeia cinética. Pequenos atrasos ou adiantamentos mudam a potência e o controle.
+Golpe em suspensão (Jump hit)|BM|Golpe dado com os dois pés fora do chão. Permite bater com a bola alta, mas reduz o contato com o solo e a estabilidade.
+Rotação dos pés (Pivot)|BM|Giro do pé de apoio que acompanha a rotação do quadril para evitar tensão no joelho e liberar a pelve.
+Split step (Passo de preparação)|JP|Pequeno salto ou "pulinho" feito no instante em que o adversário bate a bola. Pré-ativa as pernas para reagir rápido em qualquer direção.
+Primeiro passo (First step)|JP|Primeiro movimento depois do split step, na direção da bola. É decisivo para chegar a tempo com equilíbrio.
+Passos de ajuste (Adjustment steps)|JP|Pequenos passos finais para acertar a distância da bola e preparar o contato.
+Passo lateral (Side step / Shuffle)|JP|Deslocamento lateral curto, sem cruzar os pés, usado para pequenas distâncias.
+Passo cruzado (Crossover step)|JP|Passo em que o pé de trás cruza à frente do outro para acelerar em corridas laterais mais longas.
+Passo carioca (Carioca / Grapevine)|JP|Deslocamento lateral com cruzamento alternado dos pés, usado como exercício de coordenação e agilidade.
+Passo de abertura (Drop step / Jab step)|JP|Passo inicial que abre o quadril na direção da bola, para iniciar a corrida sem perder tempo.
+Passo de recuperação (Recovery step)|JP|Passos depois do golpe que levam o jogador de volta à posição central de espera.
+Posição central (Home position)|JP|Posição ideal na linha de fundo para voltar após cada golpe, equilibrada entre os ângulos possíveis do adversário.
+Antecipação (Anticipation)|JP|Leitura prévia da direção, do efeito e da profundidade da bola, com base na postura e no swing do adversário.
+Reação (Reaction time)|JP|Tempo entre o estímulo (bola do adversário) e a resposta motora. Treinável com exercícios de reação.
+Deslize (Slide)|JP|Deslizar o pé no chão ao parar, técnica típica do saibro que reduz o esforço de frenagem e permite continuar o movimento.
+Corrida lateral (Lateral movement)|JP|Deslocamento para os lados, base do jogo de fundo. Depende de agilidade, força e equilíbrio.
+Sprint curto|JP|Corrida explosiva de poucos metros, por exemplo para uma curtinha ou aproximação.
+Frenagem (Deceleration)|JP|Parar o corpo em movimento antes do golpe. Exige força excêntrica de pernas e controle do tronco.
+Pés ativos|JP|Estar em movimento constante, com pequenos passos, antes e depois do golpe. Evitar ficar parado em "pé fixo".
+Agilidade (Agility)|JP|Capacidade de mudar de direção rapidamente com controle. Medida em testes como 5-10-5 e T-test.
+Pliometria (Plyometrics)|JP|Treino de saltos e movimentos explosivos que melhora potência e rapidez de reação das pernas.
+Salto vertical (Vertical jump)|JP|Medida da potência de pernas. Importante para o saque e o smash.
+Cross-court (Cruzada)|TA|Bola jogada na diagonal. Tática básica: a rede mais baixa e a trajetória mais longa dão mais margem.
+Down the line (Paralela)|TA|Bola jogada ao longo da linha lateral. Usada para mudar a direção do jogo e surpreender.
+Padrão de jogo (Pattern)|TA|Sequência de golpes planejada, como cruzado-cruzado-paralela, para criar vantagem.
+Construção do ponto (Point construction)|TA|Planejar os golpes sucessivos para abrir a quadra e finalizar com segurança.
+Quadra aberta (Open court)|TA|Espaço vazio no lado oposto da quadra, onde se pode finalizar quando o adversário está deslocado.
+Pé errado (Wrong-foot)|TA|Fazer o adversário se deslocar para um lado e então bater para o lado oposto, deixando-o sem reação.
+Profundidade (Depth)|TA|Bater a bola perto da linha de fundo adversária. Mantém o adversário recuado e sem ângulos.
+Margem (Margin)|TA|Distância de segurança sobre a rede e para as linhas. Mais margem reduz erros.
+Altura sobre a rede (Net clearance)|TA|Altura pela qual a bola passa acima da rede. Maior margem aumenta a segurança, mas dá mais tempo ao adversário.
+Variação de ritmo (Change of pace)|TA|Alterar velocidade, efeito, altura e profundidade para tirar o adversário do conforto.
+Neutralizar (Neutralize)|TA|Defender um golpe agressivo, devolvendo com profundidade, sem arriscar, para voltar ao ponto neutro.
+Tomar a iniciativa (Take initiative)|TA|Atacar primeiro, dirigindo o ritmo do ponto em vez de apenas reagir.
+Primeira bola agressiva (First strike)|TA|Estilo de jogo que busca finalizar nos dois primeiros golpes depois do saque ou da devolução.
+Jogador de fundo (Baseliner)|TA|Jogador que passa a maior parte do jogo na linha de fundo, construindo pontos com golpes de base.
+Agressivo de fundo (Aggressive baseliner)|TA|Baseliner que busca finalizar o ponto com golpes potentes, ainda da linha de fundo.
+Contra-atacante (Counterpuncher)|TA|Jogador defensivo e consistente que devolve tudo e espera o erro ou a abertura do adversário.
+Jogador completo (All-courter)|TA|Jogador versátil, que combina golpes de fundo, jogo de rede e variações.
+Sacador-voleador (Serve-and-volleyer)|TA|Jogador que saca e sobe à rede de imediato. Estilo clássico, hoje raro no circuito.
+Empurrador (Pusher)|TA|Jogador que devolve tudo com pouca potência, esperando erros. Frustrante para quem tenta atacar.
+Saque potente (Big server)|TA|Jogador cujo saque é a principal arma, com muitos aces e games rápidos.
+Subida à rede (Net approach)|TA|Avançar para a rede para finalizar com voleio ou smash. Funciona melhor após bola curta ou aproximação profunda.
+Zona de ataque|TA|Região da quadra em que o jogador pode atacar com segurança, geralmente na linha de serviço ou à frente dela.
+Plano A / B / C|TA|Planos táticos alternativos. Se o plano A não funciona, ajusta-se para o B e depois para o C.
+Pontos importantes (Big points)|TA|Break points, set points e match points, em que a pressão aumenta e a escolha tática ganha peso.
+Momentum|TA|Sensação de domínio do jogo, que muda a confiança e o resultado. Pode se perder rapidamente em jogos equilibrados.
+Observação do adversário (Scouting)|TA|Identificar padrões, pontos fracos e forças do adversário antes e durante a partida.
+Duplas (Doubles)|TA|Modalidade com dois jogadores por lado. A quadra é mais larga e o jogo de rede é decisivo.
+Formação "I" (I-formation)|TA|Em duplas, o parceiro do sacador se agacha no centro, perto da rede, e sinaliza por onde vai se mover.
+Formação australiana|TA|Em duplas, sacador e parceiro ficam do mesmo lado da quadra para forçar a devolução cruzada.
+Invadir (Poach)|TA|Em duplas, o jogador da rede cruza a frente para interceptar a bola, surpreendendo o adversário.
+Um sobe, um fica (One up, one back)|TA|Formação de duplas em que um jogador fica na rede e o outro, no fundo.
+Dois na rede (Both up)|TA|Formação de duplas ofensiva, com ambos os jogadores na rede para pressionar.
+Dois no fundo (Both back)|TA|Formação defensiva de duplas, em que ambos ficam na linha de fundo.
+Comunicação em duplas|TA|Sinais e combinações entre os parceiros, como "meu", "seu", "troca" e sinais de mão antes do saque.
+Treino (Practice)|TR|Atividade estruturada para melhorar uma habilidade específica, com objetivos claros e feedback.
+Drill|TR|Exercício repetitivo com regras específicas, desenhado para trabalhar um aspecto técnico, tático ou físico.
+Cesto (Basket feeding)|TR|Treinador alimenta bolas de um cesto, em ritmo e direção controlados, para repetição técnica.
+Multi-ball|TR|Treino em que o treinador alimenta várias bolas seguidas, sem pausas, permitindo repetição de alta intensidade.
+Rali de treino (Hitting / Rallying)|TR|Troca de bolas descontraída com parceiro para aquecer ou treinar consistência.
+Mini-tênis (Mini tennis)|TR|Rali na área de serviço, com bolas macias e curtas. Treina toque, controle e aquecimento.
+Shadow swing (Golpe de sombra)|TR|Repetir o movimento do golpe sem bola, focando em técnica e fluidez, geralmente à frente de um espelho.
+Paredão (Wall practice)|TR|Treino batendo a bola contra um muro. Ótimo para repetições, reação e consistência individuais.
+Treino de alvos (Target practice)|TR|Exercício em que se busca acertar zonas marcadas por cones, toalhas ou linhas.
+Treino em circuito (Circuit training)|TR|Sequência de estações com exercícios variados, com pouca pausa. Usado para condicionamento.
+Treino de reação|TR|Exercícios em que o jogador responde a estímulos inesperados, como bolas de ricochete.
+Escada de agilidade (Agility ladder)|TR|Escada no chão para treinar passos curtos, rápidos e coordenados.
+Periodização (Periodization)|TR|Organização do treino em ciclos (macro, meso e microciclos) para alcançar o pico de forma em datas de competição.
+Sobrecarga progressiva (Progressive overload)|TR|Aumentar gradualmente a carga de treino para estimular adaptação sem lesionar.
+Volume / Intensidade|TR|Volume: quantidade total de treino (horas, repetições). Intensidade: esforço em cada sessão. Trade-off clássico do planejamento.
+Descarga (Deload)|TR|Semana de volume reduzido para permitir recuperação e evitar excesso de treino.
+Percepção de esforço (RPE)|TR|Escala subjetiva de 1 a 10 de quão difícil foi a sessão. Útil para ajustar cargas.
+Aquecimento dinâmico (Dynamic warm-up)|TR|Movimentos como skipping, rotações e corridas curtas que elevam a temperatura e preparam o corpo para jogar.
+Volta à calma (Cool-down)|TR|Atividade leve e alongamento depois do treino para normalizar frequência cardíaca e favorecer a recuperação.
+Mobilidade (Mobility)|TR|Amplitude de movimento ativa nas articulações. Importante para tórax, ombros, quadril e tornozelos.
+Alongamento estático / dinâmico|TR|Estático: segurar uma posição. Dinâmico: movimentos controlados em amplitude progressiva. O dinâmico é indicado antes de jogar.
+Treino de força (Strength training)|TR|Exercícios com carga para ganhar força muscular. Essencial para potência de golpes e prevenção de lesões.
+Potência (Power)|TR|Força aplicada rapidamente. É o que dá velocidade a saque e golpes.
+Resistência aeróbica (Aerobic endurance)|TR|Capacidade de sustentar esforço prolongado, importante em partidas longas e na recuperação entre pontos.
+Resistência anaeróbica|TR|Capacidade de repetir esforços intensos curtos, como os pontos de tênis, com pouca pausa.
+Treino intervalado (HIIT)|TR|Séries de esforço intenso alternadas com pausas, adequado ao padrão de esforço do tênis.
+Recuperação ativa|TR|Atividade leve (caminhada, bicicleta) para acelerar recuperação depois de esforços intensos.
+Rotina entre pontos (Between-point routine)|TR|Sequência de comportamentos (respirar, ajustar cordas, olhar para as cordas) que organiza foco entre um ponto e outro.
+Visualização (Visualization)|TR|Imaginar mentalmente a execução do golpe ou o plano tático. Reforça padrões motores.
+Respiração (Breathing)|TR|Respirações profundas e controladas entre pontos para reduzir tensão e ansiedade.
+Foco (Focus)|TR|Atenção voltada à tarefa do momento (a bola, o plano tático) em vez do placar ou do resultado.
+Autodiálogo (Self-talk)|TR|Conversa interna do jogador. Instruções positivas e curtas ajudam a manter o foco.
+Fluxo (Flow / In the zone)|TR|Estado mental de total imersão e execução fluida, sem excesso de pensamento.
+Travar (Choking)|TR|Queda de desempenho sob pressão, com tensão muscular excessiva e dúvida. Trabalhável com rotina mental.
+Cotovelo de tenista (Tennis elbow)|CS|Dor no lado de fora do cotovelo (epicondilite lateral) por sobrecarga dos extensores do punho, comum em backhands e em cordas rígidas.
+Cotovelo de golfista (Golfer's elbow)|CS|Dor no lado de dentro do cotovelo (epicondilite medial), comum no saque e no forehand.
+Tendinite (Tendinitis)|CS|Inflamação ou sobrecarga de um tendão por uso repetitivo, como o do ombro, cotovelo ou punho.
+Manguito rotador (Rotator cuff)|CS|Conjunto de quatro músculos que estabilizam o ombro. Lesionado com frequência pelo saque e smash repetitivos.
+Impacto do ombro (Shoulder impingement)|CS|Compressão de tendões sob o acrômio, causando dor ao elevar o braço, como no saque.
+Entorse de tornozelo (Ankle sprain)|CS|Lesão dos ligamentos do tornozelo, comum por pisadas inadequadas ou mudanças de direção bruscas.
+Fascite plantar (Plantar fasciitis)|CS|Dor na sola do pé, perto do calcanhar, por sobrecarga da fáscia. Comum com calçados inadequados.
+Tendinite de Aquiles (Achilles tendinopathy)|CS|Dor no tendão do calcanhar, associada a saltos, sprints e aumento rápido do volume de treino.
+Joelho de saltador (Patellar tendinopathy)|CS|Dor abaixo da patela por sobrecarga em saltos e aceleração.
+Lesão de menisco / LCA|CS|Lesões do joelho (menisco ou ligamento cruzado anterior) frequentes em freadas e giros com o pé fixo no chão.
+Lombalgia (Low back pain)|CS|Dor lombar associada à hiperextensão no saque, rotações repetidas e falta de estabilidade do core.
+Bolhas (Blisters)|CS|Lesão da pele por fricção, comum nos pés e na mão. Prevenir com meias técnicas, calçado adequado e grips secos.
+Câimbra (Cramp)|CS|Contração involuntária e dolorosa de um músculo, comum em jogos longos por desidratação, fadiga ou perda de sais minerais.
+Fratura por estresse (Stress fracture)|CS|Pequena fissura no osso por sobrecarga repetitiva, mais comum nos pés e na lombar.
+Lesão por uso excessivo (Overuse injury)|CS|Dor ou lesão gerada por sobrecarga repetida sem recuperação adequada.
+Hidratação (Hydration)|CS|Reposição de água e sais minerais durante e após o jogo. A perda de apenas 2% do peso por suor já reduz o desempenho.
+Nutrição esportiva|CS|Alimentação planejada com carboidratos, proteínas e gorduras em quantidade adequada para o esforço e a recuperação.
+Sono (Sleep)|CS|Fator essencial de recuperação, ligado a desempenho, reação e prevenção de lesões.
+Prevenção de lesões|CS|Conjunto de práticas como aquecimento, força, mobilidade, planejamento de carga e uso de equipamento adequado.
+PRICE / POLICE|CS|Protocolos iniciais de lesão aguda: proteção, descanso/carga otimizada, gelo, compressão e elevação. Deve ser seguido de avaliação profissional.
+Fisioterapia (Physical therapy)|CS|Tratamento e reabilitação com exercícios e técnicas para tratar lesões e prevenir recorrência.
+Pronação do pé (Foot pronation)|CS|Movimento natural do pé ao apoiar. Muita pronação ou supinação pode exigir tênis ou palmilhas específicos.
+Raquetada|GI|Golpe forte ou mal controlado dado com a raquete. Pode também se referir a um golpe dado com agressividade.
+Bola na linha|GI|Bola que cai exatamente sobre a linha, considerada boa. Gíria para precisão.
+Matar o ponto|GI|Finalizar o ponto com um golpe decisivo, geralmente na rede.
+Esticar o rali|GI|Manter a bola em jogo por muito tempo, prolongando o ponto.
+Entregar o ponto|GI|Errar facilmente ou devolver uma bola fácil, dando o ponto ao adversário.
+Subir pra rede|GI|Avançar para a rede, abandonando a linha de fundo.
+Vamos! (Come on!)|GI|Exclamação de incentivo própria, usada para ganhar energia e foco.
+Out! / Fora!|GI|Chamada de bola fora, feita pelo jogador ou pelo juiz de linha.
+Let! / Repete!|GI|Chamada de ponto a ser repetido, por exemplo, quando a bola toca a rede no saque.
+Game, set, match|GI|Frase final do árbitro que anuncia o fim da partida e o vencedor.
+Chapar|GI|Gíria para bater a bola sem efeito, plana e forte.
+Slice-and-dice|GI|Estilo de jogo baseado em slices variados, variações de ritmo e trocas de altura para desorganizar o adversário.
+Clutch|GI|Jogador que performa nos momentos decisivos. Oposto de quem "trava".
+Grinder|GI|Jogador que vence no desgaste, com muita regularidade e resistência física.
+Hawk-Eye Live|TD|Sistema de chamadas automáticas em tempo real que dispensa os juízes de linha.
+Radar de saque (Radar gun)|TD|Medidor que registra a velocidade do saque em km/h. O valor depende de onde na trajetória a bola é medida.
+Sensor de raquete (Racket sensor)|TD|Dispositivo no cabo que mede velocidade de swing, tipo de golpe e ponto de impacto.
+Análise de vídeo (Video analysis)|TD|Gravação e revisão em câmera lenta de golpes para corrigir técnica. Um dos recursos mais acessíveis.
+Captura de movimento (Motion capture)|TD|Sistema com câmeras e marcadores que registra o movimento 3D do corpo. Base de muitos estudos biomecânicos.
+Plataforma de força (Force plate)|TD|Plataforma que mede a força de reação do solo durante saques e golpes.
+Eletromiografia (EMG)|TD|Medida da atividade elétrica dos músculos. Mostra quando e quanto cada músculo é ativado no golpe.
+Estatísticas de partida|TD|Registros como aces, % de primeiros saques, pontos ganhos no saque, break points convertidos e winners/erros.
+Porcentagem de primeiro saque (1st serve %)|TD|Proporção de primeiros saques que entram. Valores entre 55% e 70% são comuns nos profissionais.
+Pontos ganhos no primeiro saque|TD|Porcentagem de pontos vencidos quando o primeiro saque entra. Nos profissionais fica geralmente entre 70% e 80%.
+Break points convertidos|TD|Razão entre break points transformados em quebras e o total de break points disputados.
+Mapa de calor (Heatmap)|TD|Visualização da distribuição de bolas, deslocamentos ou pontos de impacto na quadra.
+Probabilidade de vitória (Win probability)|TD|Estimativa estatística de quem vencerá, atualizada a cada ponto, a partir de modelos de dados.
+Quadríceps|BM|Grupo muscular da frente da coxa. Estende o joelho e freia o corpo nas paradas, sendo a base do impulso das pernas.
+Isquiotibiais (Hamstrings)|BM|Músculos da parte de trás da coxa. Estendem o quadril, freiam a corrida e protegem o joelho.
+Glúteos (Gluteals)|BM|Músculos do quadril e da nádega. Principais geradores de potência para rotação e extensão do quadril.
+Oblíquos (Obliques)|BM|Músculos laterais do abdômen que giram e estabilizam o tronco. Chave para a rotação nos golpes e no saque.
+Reto abdominal|BM|Músculo frontal do abdômen. Flexiona o tronco e transfere força no saque e no smash.
+Latíssimo do dorso (Latissimus dorsi)|BM|Grande músculo das costas, que puxa o braço para baixo e para trás, importante na aceleração do saque.
+Peitoral maior (Pectoralis major)|BM|Músculo do peito que gira internamente o ombro e leva o braço à frente no forehand e no saque.
+Deltoide (Deltoid)|BM|Músculo do ombro que eleva e estabiliza o braço. A parte posterior desacelera o braço depois do contato.
+Tríceps|BM|Músculo posterior do braço, que estende o cotovelo na aceleração do saque e do smash.
+Trapézio (Trapezius)|BM|Músculo das costas e pescoço que estabiliza a escápula. Sobrecarregado por má postura e tensão.
+Flexores do punho|BM|Músculos da parte interna do antebraço que flexionam o punho e fecham a mão. Muito ativos no saque e no forehand.
+Extensores do punho|BM|Músculos da parte externa do antebraço que mantêm o punho estável no contato. Sobrecarregados no cotovelo de tenista.
+Panturrilha (Calf / Gastrocnêmio e sóleo)|BM|Músculos da perna que dão impulso nos saltos e nas arrancadas, e absorvem impacto em paradas.
+Co-contração|BM|Ativação simultânea de músculos opostos para dar estabilidade articular, como na pegada firme no impacto.
+Propriocepção (Proprioception)|BM|Sensação da posição do corpo no espaço, essencial para equilíbrio e coordenação fina da raquete.
+Reflexo miotático (Stretch reflex)|BM|Contração automática de um músculo quando é alongado rapidamente, que contribui para a potência no ciclo alongamento-encurtamento.
+Pré-ativação muscular|BM|Ativação dos músculos antes do impacto para preparar a articulação. Reduz a absorção de choque no braço.
+Punho firme (Firm wrist)|BM|Manter o punho estável durante o contato, em voleios e bloqueios, para controlar a face e evitar vibração.
+Punho solto (Loose wrist)|BM|Punho relaxado no início do swing, para permitir lag e aceleração. Fecha-se antes do contato.
+Frente do corpo (Contact in front)|BM|Princípio de bater a bola à frente do tronco, o que dá mais controle, ângulo e potência.
+Pivô do pé de trás (Back foot pivot)|BM|Giro do pé de trás ao acelerar o quadril, que permite transferir peso e gerar rotação.
+Empurrar o chão (Push off)|BM|Usar o pé para empurrar o chão e iniciar o movimento de corrida, salto ou saque.
+Salto de tesoura (Scissor kick)|BM|Chute com as pernas no ar durante o smash em salto ou no saque, que equilibra a rotação do tronco.
+Posição do cotovelo (Elbow position)|BM|Posição do cotovelo em relação ao tronco ao longo do golpe. No forehand moderno, o cotovelo fica perto do corpo e à frente.
+Elasticidade muscular|BM|Capacidade de tendões e músculos armazenarem energia ao serem alongados e devolvê-la ao encurtar.
+Aceleração (Acceleration)|BM|Aumento de velocidade. No golpe, a raquete acelera continuamente até o contato, não depois.
+Desaceleração (Deceleration)|BM|Frenagem do braço depois do contato, controlada por músculos posteriores do ombro. Má desaceleração aumenta o risco de lesão.
+Energia elástica|BM|Energia armazenada em tendões e fáscias quando alongados, usada para dar potência ao golpe.
+Eixo de rotação (Axis of rotation)|BM|Linha em torno da qual o corpo gira. Na rotação do tronco, é a coluna vertebral.
+Plano sagital / frontal / transversal|BM|Planos do corpo: sagital divide esquerda e direita; frontal, frente e trás; transversal, alto e baixo. A rotação do golpe é no transversal.
+Momento de inércia|BM|Resistência de um corpo a mudar sua rotação. Braço e raquete estendidos têm inércia maior que braço encolhido.
+Conservação do momento angular|BM|Princípio que explica por que a velocidade de rotação aumenta quando se recolhe o braço livre ou se aproximam os segmentos.
+Era Aberta (Open Era)|TO|Período iniciado em 1968, em que profissionais e amadores passaram a disputar os mesmos torneios.
+Número 1 do mundo (World No. 1)|TO|Jogador na primeira posição do ranking. Chegar ao topo exige consistência ao longo de todas as superfícies.
+Career Grand Slam|TO|Conquistar os quatro Grand Slams ao longo da carreira, mesmo em anos diferentes.
+Golden Slam|TO|Vencer os quatro Grand Slams e a medalha de ouro olímpica no mesmo ano. Feito de pouquíssimos jogadores.
+Calendar Slam|TO|Vencer os quatro Grand Slams dentro do mesmo ano civil.
+Quadra central (Center court)|TO|Quadra principal de um torneio, geralmente com maior capacidade e onde ocorrem as finais.
+Sessão noturna (Night session)|TO|Jogos em horário noturno, comuns em Grand Slams, com condições diferentes do dia (temperatura e velocidade).
+Cerimônia do cara ou coroa (Coin toss)|TO|Sorteio inicial que define quem escolhe sacar, devolver ou o lado da quadra.
+Aquecimento da partida (Warm-up)|TO|Cinco minutos permitidos antes do início da partida para trocar bolas e treinar saques.
+Atrasar o jogo (Time violation)|TO|Infração por demorar além do tempo permitido entre pontos. Gera aviso e depois perda de ponto.
+Raquete quebrada (Racket abuse)|TO|Quebrar ou jogar a raquete é infração do código de conduta e pode levar a aviso ou penalidade.
+Patrocinador (Sponsor)|TO|Empresa que apoia o jogador financeiramente em troca de exposição de marca.
+Prêmio em dinheiro (Prize money)|TO|Valor pago por rodada alcançada nos torneios, aumentando com o avanço na chave.
+Academia (Tennis academy)|TO|Centro de formação com treino técnico, tático, físico e escolar para jovens atletas.
+Técnico (Coach)|TO|Profissional que orienta o treino técnico, tático e mental do jogador.
+Preparador físico (Fitness coach)|TO|Responsável por planejar o condicionamento, a força, a mobilidade e a prevenção de lesões.
+Fisioterapeuta de circuito|TO|Profissional que acompanha o jogador em torneios para tratar e prevenir lesões.
+Scouting report|TO|Relatório sobre o adversário, com padrões de jogo, direção do saque e pontos fracos.
+Grafite (Graphite)|EQ|Material de fibra de carbono usado nos quadros das raquetes modernas, leve e rígido.
+Fibra de carbono (Carbon fiber)|EQ|Material compósito de alta rigidez e baixo peso usado em raquetes e componentes.
+Raquete de potência (Power racket)|EQ|Raquete leve, de cabeça grande e rígida, que facilita a potência com pouco esforço. Boa para iniciantes.
+Raquete de controle (Control racket)|EQ|Raquete mais pesada, de cabeça menor e perfil fino, para jogadores avançados com swing completo.
+Raquete tweener|EQ|Raquete intermediária entre as de potência e de controle, de peso médio e cabeça de tamanho moderado.
+Flexão do quadro (Frame flex)|EQ|Quanto o quadro dobra no impacto. Quadros mais flexíveis absorvem choque, mas dão menos estabilidade.
+Sistema de fixação das cordas (Mounting system)|EQ|Método para prender a raquete na máquina de encordoar. Influencia a precisão da tensão.
+Tensão de referência (Reference tension)|EQ|Tensão recomendada pelo fabricante para uma raquete, ponto de partida para ajustes.
+Cordas gastas (Worn strings)|RC|Cordas que perderam elasticidade, com entalhes visíveis, que reduzem o controle e podem arrebentar.
+Entalhe de cordas (Notching)|RC|Pequenos cortes nas cordas pelo atrito das cordas cruzadas, indicando que a corda está chegando ao fim da vida útil.
+Bola de espuma (Foam ball)|BO|Bola de espuma usada na iniciação e em treinos em espaços reduzidos. Mais lenta e segura.
+Bola de treino (Practice ball)|BO|Bola mais barata e durável, usada em cestos de treino, geralmente com pressão reduzida.
+Passo para dentro (Step-in)|JP|Avançar para dentro da quadra para bater a bola logo após o quique, ganhando tempo e ângulo.
+Peso à frente (Forward momentum)|JP|Transferência do peso corporal para a frente durante o golpe, o que adiciona potência e estabilidade.
+Pés largos (Wide base)|JP|Posição com pés bem afastados, que aumenta estabilidade em golpes difíceis e na devolução de saque.
+Recuperação defensiva|JP|Voltar rápido ao centro depois de um golpe defensivo, geralmente com passos cruzados.
+Corrida para trás (Backpedal)|JP|Deslocamento para trás, usado em lobs curtos. Quando a bola é muito alta, vira-se e corre-se de lado.
+Giro lateral para o smash|JP|Virar de lado e recuar com passos laterais ou cruzados para se posicionar sob o lob.
+Voleio de bloqueio (Punch volley)|GO|Voleio firme, com swing curto e pouca preparação, que devolve a velocidade do adversário com controle.
+Voleio de reflexo (Reflex volley)|GO|Voleio rápido e quase sem preparação, dado em bolas que chegam muito perto do corpo.
+Lob de voleio (Lob volley)|GO|Voleio alto que passa por cima de um adversário na rede, dado também na rede.
+Voleio defensivo|GO|Voleio de recuperação, dado de trás ou de baixo, com o objetivo de manter a bola em jogo.
+Slice de forehand|GO|Forehand cortado, menos comum que o de backhand, mas usado em bolas baixas ou para variar o ritmo.
+Slice de backhand|GO|Backhand cortado de cima para baixo, com face aberta, muito usado em bolas baixas e como golpe de defesa e aproximação.
+Backhand cruzado (Cross-court backhand)|GO|Backhand dirigido na diagonal. É a base da troca de bolas entre dois destros.
+Forehand de contra-ataque|GO|Forehand usado para responder a uma bola forte com direção e profundidade, aproveitando a velocidade recebida.
+Bola de recuperação (Recovery shot)|GO|Golpe que devolve a bola em situação difícil, muitas vezes alta e funda, para ganhar tempo.
+Confiança (Self-efficacy)|TR|Crença na própria capacidade de executar uma tarefa. Aumenta com sucesso, preparação e feedback positivo.
+Ansiedade competitiva (Competitive anxiety)|TR|Tensão física e mental antes ou durante uma competição. Controlável com respiração, rotina e foco.
+Resiliência (Resilience)|TR|Capacidade de se recuperar de erros e derrotas e manter o desempenho sob pressão.
+Motivação (Motivation)|TR|Energia e direção do comportamento do atleta. Pode ser interna (prazer) ou externa (resultado).
+Feedback|TR|Informação sobre o desempenho que o treinador ou a tecnologia dá ao jogador para ajustar a técnica.
+Treino variável (Variable practice)|TR|Praticar o mesmo golpe com variações de velocidade, altura e direção para melhorar a adaptação.
+Treino em bloco (Blocked practice)|TR|Repetir a mesma tarefa várias vezes seguidas. Bom na fase inicial de aprendizado, menos na transferência para o jogo.
+Treino aleatório (Random practice)|TR|Alternar tarefas diferentes, o que dificulta no começo, mas melhora a retenção e a adaptação em jogo.
+Aprendizado motor (Motor learning)|TR|Processo de aquisição e refinamento de habilidades motoras por meio de prática e feedback.
+Memória muscular (Muscle memory)|TR|Termo popular para o padrão motor automatizado pela repetição, que passa a ser executado sem pensar.
+Ponto de pressão (Pressure point)|TR|Situação de jogo em que o resultado depende de um único ponto. Treinada por meio de simulações.
+Jogo-treino (Practice match)|TR|Partida informal para testar táticas e técnicas sob condições de jogo real.
+Aquecimento de ombro (Shoulder warm-up)|CS|Exercícios com elástico e rotações para ativar o manguito antes de treinar saques e smashes.
+Exercícios de manguito rotador|CS|Rotações externas e internas com elástico para fortalecer e estabilizar o ombro.
+Prancha (Plank)|CS|Exercício isométrico de core, em que se mantém o corpo reto apoiado nos antebraços e nos pés.
+Agachamento (Squat)|CS|Exercício de força de pernas, importante para o impulso do saque e a mobilidade dos golpes.
+Afundo (Lunge)|CS|Exercício unilateral de pernas que simula a passada em alcance, treinando equilíbrio e força.
+Rotação com elástico (Banded rotation)|CS|Exercício em que se gira o tronco contra a resistência de um elástico, treinando a rotação do golpe.
+Pallof press|CS|Exercício anti-rotação de core, em que se resiste ao giro do tronco enquanto se empurra um elástico à frente.
+Medicine ball throw|CS|Arremesso de bola medicinal em rotação, treinando potência de tronco de forma semelhante ao golpe.
+Equilíbrio unipodal (Single-leg balance)|CS|Ficar de pé sobre uma perna, treinando estabilidade do tornozelo e do quadril.
+Alongamento de peitoral e ombro|CS|Alongamento de músculos do peito e do ombro, frequentemente encurtados por saques e postura.
+Mobilidade torácica|CS|Amplitude de rotação da coluna dorsal, essencial para o giro de ombros nos golpes.
+Mobilidade de quadril|CS|Amplitude de movimento da articulação do quadril, importante para a rotação e a passada.`;
+const HB_DRILLS_RAW=`## fh
+Shadow swing com unit turn|I|3 séries de 10|Sem bola, em frente a um espelho ou câmera. Pronto → unit turn (ombros e quadril juntos, mão livre na garganta da raquete) → swing de baixo para cima → finalização sobre o ombro oposto.|Quadril começa o giro antes do tronco; a raquete fica "atrasada" (lag) até a aceleração.
+Cesto com bola lenta|I|3 séries de 10 bolas|O parceiro joga bolas quicando devagar na altura da cintura, no mesmo ponto. Bata cada bola com o mesmo ritmo: "prepara — quica — bate".|Contato à frente do corpo; pés em posição semi-aberta; olhar fixo no ponto de impacto.
+Rali de forehand cruzado|I|10 min|Dois jogadores trocam bolas cruzadas do lado do forehand, sem pressa, buscando 10 trocas seguidas dentro da quadra.|Altura segura sobre a rede (1 a 1,5 m); finalizar sempre o movimento.
+Cruzado profundo com alvo|M|5 séries de 8 bolas|Cones ou linha a 1,5 m do fundo da quadra. Marque quantas bolas de 8 caem na zona alvo; meta é 6 em 8.|Profundidade e margem: trajetória alta sobre a rede, bola chegando ao fundo.
+Forehand inside-out|M|3 séries de 8|Comece no centro. O parceiro joga bola no backhand; você contorna o backhand e bate o forehand cruzado para o lado do forehand.|Pés rápidos (passos curtos) para dar espaço ao swing; giro de quadril completo.
+Topspin com corda alta|M|4 séries de 10|Esticar uma corda ou elástico ~1 m acima da rede. Bater de modo que a bola passe sobre a corda e caia na quadra.|Trajetória baixo-para-alto; velocidade da cabeça da raquete antes do contato.
+Mudança de direção (cruzada → paralela)|A|10 min|Rali cruzado; na bola que o parceiro sinalizar, mude para a paralela mantendo o mesmo swing, sem disfarçar mudança de preparação.|Contato mais à frente na paralela; igual preparação para os dois golpes para esconder a intenção.
+Forehand em movimento e recuperação|A|5 séries de 6|O parceiro alterna bolas largas para os dois lados; bata o forehand em corrida e volte ao centro com passos cruzados e carioca.|Freio e giro em um único passo; recuperar a posição de espera antes da próxima bola.
+## bh
+Shadow swing de backhand de duas mãos|I|3 séries de 10|Sem bola. Pronto → unit turn para o lado esquerdo (para destros), as duas mãos no cabo, swing baixo-alto, finalizar sobre o ombro direito.|Mão não dominante guia o movimento; ombros giram antes do braço.
+Mão não dominante isolada|I|2 séries de 15|Para destros: use só a mão esquerda para bater o backhand em bolas fáceis lançadas pelo parceiro, para sentir o papel dela no golpe.|A mão esquerda é "motor" do backhand de duas mãos; sentir o fluxo da força do quadril até a raquete.
+Cesto de backhand na cintura|I|3 séries de 10|Bolas lançadas na altura da cintura, ligeiramente à frente. Bata com contato à frente, mantendo a cabeça parada no contato.|Contato à frente do corpo; joelhos flexionados; cabeça estável.
+Rali cruzado de backhand|M|10 min|Rali cruzado só no backhand, a 3/4 da velocidade. Meta: 15 bolas seguidas.|Consistência; peso sobre a perna da frente na finalização.
+Backhand paralela|M|3 séries de 8|Rali cruzado; ao sinal, bata a paralela.|Contato mais à frente que no cruzado; não abrir os ombros cedo.
+Bola alta de backhand|A|3 séries de 8|Bolas na altura dos ombros ou acima. Entre com a bola mais perto do corpo e bata com a raquete em plano mais plano.|Ajuste de pés para dar espaço; pegada firme e finalização alta.
+Defesa e recuperação no backhand|A|5 séries de 6|O parceiro joga bolas largas no backhand. Devolva com bola alta e funda e recupere ao centro.|Equilíbrio e giro de pés; bola funda para ganhar tempo.
+## b1
+Shadow swing com braço livre|I|3 séries de 10|Sem bola. No unit turn, o braço livre segura a garganta da raquete. No contato, o braço livre se estende para trás como contrapeso.|Braço livre equilibra o corpo; ombro de trás aponta para a bola.
+Bola lançada em câmera lenta|I|3 séries de 8|Parceiro lança bolas a 3 m com a mão. Bata cada bola de backhand de uma mão tocando o ponto à frente do corpo.|Contato bem à frente; cabeça estável; peso transferido para a perna da frente.
+Segurar a finalização|M|3 séries de 10|Após cada golpe, congele a finalização por 2 segundos antes de se mover.|Equilíbrio dinâmico e braço bem estendido na finalização.
+Backhand de uma mão cruzado|M|10 min|Rali cruzado de backhand de uma mão a 70% da velocidade.|Pegada eastern de backhand; contato à frente do corpo.
+Alternar slice e drive|A|3 séries de 8|Alterne uma bola de drive com uma de slice, mantendo a mesma preparação (disfarçar).|Mesmo unit turn para os dois golpes, mudando só o plano do swing.
+## sl
+Shadow swing do slice|I|3 séries de 10|Sem bola, com pegada continental. Raquete alta na preparação, desça para a frente com face levemente aberta, finalizando à frente.|Cotovelo à frente do corpo; punho firme; movimento de cima para baixo e para frente.
+Slice em bola lançada|I|3 séries de 10|Bolas lançadas na altura da cintura. Cortar a bola buscando que passe baixa sobre a rede.|Deslizar a raquete por baixo da bola, sem "bater".
+Slice cruzado baixo|M|10 min|Rali de slice cruzado, com a bola passando a menos de 1 m acima da rede e caindo funda.|Altura baixa sobre a rede e profundidade; peso à frente.
+Slice defensivo profundo|M|5 min|O parceiro bate forte; devolva só com slice profundo para ganhar tempo.|Estabilidade; uso do slice para neutralizar.
+Slice e drop shot|A|3 séries de 8|Alterne slice profundo com drop shot a partir da mesma preparação.|Disfarce da preparação; toque macio e leve no drop.
+## sv
+Lançamento sem bater|I|20 lançamentos|Sem raquete. Lance a bola com o braço esquerdo (para destros), deixando-a cair no chão no ponto ideal (aprox. à frente do corpo, no lado da raquete). Se o lançamento for consistente, a bola cai sempre no mesmo ponto.|Braço estendido; soltar a bola na altura dos olhos; lançamento reto, sem girar o pulso.
+Troféu e queda em câmera lenta|I|3 séries de 8|Sem bola. Pare na posição de troféu (joelhos flexionados, braço da raquete elevado, braço livre apontando). Em seguida desça a raquete atrás das costas e suba até o contato.|Joelhos flexionados; cotovelo alto; não pular etapas do movimento.
+Saque ajoelhado|I|2 séries de 10|Ajoelhado no chão. Sacar usando só o tronco, braço e pronação do antebraço, para sentir o movimento da raquete até o contato.|Pronação do antebraço; ponto de contato alto e à frente.
+Saque em três alvos|M|3 séries de 10 em cada alvo|Marque três alvos com cones: T, corpo e aberto. Meta: 6 em 10 em cada alvo.|Mesma preparação e lançamento para os três; muda só a direção da face.
+Segundo saque com margem|M|20 saques|Sacar 20 segundos saques com topspin e slice, tentando 90% de acerto. Se errar, repetir a série.|Altura sobre a rede; velocidade 70–80%.
+Saque +1|A|10 pontos|Sacar e jogar o ponto como serve +1: saque no T seguido de forehand na quadra aberta.|Saque colocado e o plano para o golpe seguinte já definido.
+Rotina de saque|A|10 saques|Antes de cada saque, cumprir sempre a mesma rotina (quicar a bola, respirar, olhar o alvo).|Consistência mental e ritmo.
+## sm
+Shadow smash com passos laterais|I|3 séries de 8|Sem bola. Vire de lado, recue com passos laterais e simule o smash com braço estendido.|Passos laterais curtos; braço livre aponta a bola; cotovelo alto.
+Smash alimentado|I|3 séries de 8|O parceiro lança lobs altos e fáceis, nos quais você deve bater o smash sem recuar muito.|Contato à frente da cabeça; braço totalmente esticado.
+Smash depois do voleio|M|3 séries de 6|Voleio na rede seguido de lob do parceiro; recue e finalize com smash.|Recuperação rápida do voleio para a posição de smash.
+Smash em recuo e salto|A|3 séries de 6|Lob profundo; corra para trás com passos laterais e bata o smash em salto.|Impulsão das pernas; tesoura de pernas; olhar sempre na bola.
+## vl
+Voleio curto com parceiro|I|3 séries de 10|Parceiro a 3 m com bolas fáceis; voleio com raquete à frente, sem swing, só bloqueio.|Mãos à frente; sem preparação grande; punho firme.
+Voleio contra voleio|I|5 min|Dois jogadores na rede, trocando voleios curtos, sem deixar a bola cair.|Reflexos e controle; trabalho de pés (passos curtos).
+Voleio baixo|M|3 séries de 8|Bolas baixas lançadas no pé. Dobrar joelhos e bater com face ligeiramente aberta.|Joelhos flexionados (não curvar as costas); face aberta.
+Meia-vôlei|M|3 séries de 8|Bolas curtas que quicam logo à frente. Bata logo após o quique com raquete firme.|Face estável; sem swing.
+Aproximação + voleio|A|10 pontos|Bola curta do parceiro, aproximação com slice e voleio para fechar o ponto.|Equilíbrio no split step ao subir; voleio direcionado.
+## ap
+Aproximação slice paralela|M|3 séries de 8|Bola curta do parceiro; bata slice paralela e suba à rede, finalizando com voleio.|Subir depois do golpe, não antes; split step na hora em que o parceiro bate.
+Aproximação cruzada com subida|M|3 séries de 8|Mesmo padrão, mas com aproximação cruzada, que dá mais tempo para chegar à rede.|Profundidade; posição inicial na rede ligeiramente voltada para o lado da bola.
+Aproximação contra passada|A|10 pontos|Aproximação e voleio contra um parceiro que tenta passar.|Leitura do passing shot; fechar o ângulo.
+## kk
+Lançamento atrás da cabeça|M|20 lançamentos|Lance a bola de modo que, no ponto mais alto, esteja acima e ligeiramente atrás da cabeça, e deixe cair para sentir o ponto de contato do kick.|Arco das costas; ombros inclinados para trás.
+Movimento de escovar (7 a 1)|M|3 séries de 10|Sem bola, simule a raquete subindo de baixo para cima, "escovando" a bola de 7 para 1 horas (visão de relógio).|Pronação do antebraço e movimento de baixo para cima.
+Kick no alvo|A|3 séries de 10|Segundo saque kick em direção ao corpo ou ao backhand do devolvedor, mirando a zona entre a linha de serviço e a de fundo.|Altura sobre a rede; efeito para o quique alto.
+## rt
+Split step no saque|I|20 saques|Parceiro saca e você faz o split step no instante em que ele bate a bola, mesmo sem devolver.|Timing: pés no ar no contato do saque, pés no chão para a reação.
+Devolução em bloqueio|I|3 séries de 10|Saque suave. Devolver curto, sem swing, com raquete firme, só bloqueando a bola.|Preparação curta; olhar no ponto de contato.
+Devolução cruzada profunda|M|3 séries de 10|Devolver em diagonal, buscando profundidade e margem sobre a rede.|Altura sobre a rede; bola profunda.
+Devolução agressiva no 2º saque|A|3 séries de 8|Quando o parceiro sacar o segundo saque, entrar para dentro da quadra e atacar a devolução.|Passo para dentro; swing compacto; dominar o ponto.
+Devolução de slice|A|3 séries de 8|Contra saque forte, bloquear com slice curto, em seguida subir à rede.|Face aberta e movimento curto; decisão rápida.
+## lb
+Lob ofensivo|M|3 séries de 8|Contra o parceiro na rede, bata um lob baixo e rápido, que passe por cima dele.|Disfarce: mesma preparação do passing shot.
+Lob defensivo|M|3 séries de 8|Bolas profundas do parceiro; devolva lobs altos e profundos.|Altura mínima de 5 m; profundidade perto da linha de fundo.
+Lob e recuperação|A|3 séries de 6|Após o lob, voltar à posição central com passos laterais.|Recuperação rápida e antecipação do smash adversário.
+## dp
+Drop shot sem disfarce|M|3 séries de 8|Em bola curta do parceiro, bata um drop shot em direção à quadra frontal.|Toque macio e face aberta; sem força.
+Drop shot e subida|A|3 séries de 6|Bata o drop shot e avance à rede para finalizar a próxima bola.|Equilíbrio na saída; recuperação rápida.
+Disfarce da preparação|A|3 séries de 8|Mesma preparação de um drive, decidindo só no último instante entre drive ou drop shot.|Manter o mesmo ritmo até o último momento.
+## GER
+Mini-tênis|I|5 a 10 min|Dupla na área de serviço, trocando bolas leves e curtas, sem deixar a bola cair, com bolas lentas. Aquecimento e treino de toque.|Toque macio; olhos na bola; posição de pés equilibrada.
+Rali de fundo cruzado|I|10 min|Dois jogadores na linha de fundo, em diagonal, trocando bolas cruzadas a 60–70% de velocidade.|Consistência; altura segura sobre a rede; recuperar ao centro.
+Rali de fundo paralelo|M|10 min|Rali em paralela, na linha lateral, buscando constância antes de acelerar.|Contato à frente; precisão.
+Quatro cantos|M|10 min|Dois jogadores: um joga cruzado e o outro paralelo; invertem papéis após 5 minutos, trocando de lado.|Mudança de direção; leitura de jogo.
+Dois contra um|M|5 min por rodada|Um jogador contra dois, que jogam na quadra inteira; o solitário devolve cada bola em qualquer lugar da quadra.|Resistência e posicionamento tático; recuperação rápida.
+Jogo de pontos com condição|M|20 min|Disputar pontos com uma condição: por exemplo, o ponto só vale se a bola cruzar a rede com 3 trocas ou mais.|Disciplina tática; construção de pontos.
+Jogo de pontos curtos (primeira bola)|A|15 min|Pontos em que o sacador deve finalizar até a terceira bola. Valoriza serve +1 e agressividade controlada.|Decisão rápida; agressividade com margem.
+Rali de pressão (pontos de 11)|A|15 min|Pontos disputados com placar a 11, simulando match point a cada ponto decisivo.|Controle da pressão; execução em momentos decisivos.
+Passada contra rede|M|10 min|Um jogador fica na rede, outro no fundo. O do fundo tenta passar, o da rede tenta fechar o ponto.|Leitura de ângulos; pernas rápidas.
+Rali de subida|A|10 min|Rali onde, ao receber bola curta, o jogador sobe à rede e termina com voleio.|Transição fundo-rede; posicionamento ao subir.
+Simulação de partida (Set de treino)|A|30 a 45 min|Disputar um set completo contra um parceiro de nível semelhante, sob as regras reais.|Aplicação tática; gestão de pressão e energia.
+Duplas — saque e posição|M|20 min|Jogar pontos de duplas com formação "um sobe, um fica", treinando comunicação e invasões.|Comunicação; cobertura da quadra.
+## SOLO
+Cesto de saques|I|50 saques|Leve um cesto de bolas e saque do mesmo lado alternando as duas metades da quadra. Anote quantos entram.|Rotina fixa; ritmo constante; lançamento consistente.
+Saque nos três alvos|M|30 saques|Coloque três toalhas ou cones: T, centro e aberto. Tente acertar cada um 10 vezes.|Mesma preparação para todos os alvos; muda só a direção.
+Lançamento e queda|I|30 lançamentos|Lance a bola sem sacar e confira se cai no ponto ideal. Se errar, ajuste o braço.|Consistência de lançamento; braço estendido.
+Quicar e bater (Drop and hit)|I|30 bolas por lado|Segure a bola, deixe cair e bata depois do quique em direção à quadra oposta. Alterne forehand e backhand.|Ritmo e contato à frente; sem preparação grande.
+Auto-lob e smash|M|20 bolas|Lance a bola alto à frente e bata o smash depois de se posicionar sob ela.|Posição sob a bola; braço estendido; cotovelo alto.
+Voleio contra rede|I|3 min|De pé perto da rede, deixe a bola cair e bata voleios curtos, caindo do outro lado da rede.|Mãos firmes; sem swing.
+Alvos com toalhas|M|5 séries de 10|Coloque toalhas em cantos da quadra. Com bolas do cesto (auto-alimentadas), tente acertar cada toalha.|Precisão e controle de direção.
+Rali contra o muro da quadra|I|10 min|Se a quadra tiver um muro liso, use-o como paredão: bata, deixe quicar uma vez e devolva, em ritmo controlado.|Reação e repetição.
+Escada de agilidade|I|5 séries|Passos laterais, com um pé em cada quadrado, depois dois pés, de lado e cruzando, para coordenação de pés.|Pés rápidos e cabeça parada.
+Teste T de agilidade|M|5 séries|Cones em T (10 m à frente, 5 m para cada lado). Corra à frente, desloque-se lateralmente, volte ao centro e finalize de costas.|Mudanças de direção explosivas; frenagem controlada.
+Sprints laterais na linha de fundo|M|6 a 8 séries|Da linha de fundo, corra de lado entre as duas linhas laterais e volte. Descanse 30 s entre as séries.|Primeiro passo rápido; passos de recuperação.
+Spider drill|A|5 séries|Cinco cones: um central e quatro nos cantos. Parta do centro, toque cada cone e volte ao centro, em sequência.|Agilidade total e frenagem.
+Shadow com footwork|I|3 séries de 2 min|Sem bola. Simule golpes de forehand e backhand movendo-se pela quadra, com split step antes de cada um.|Footwork integrado ao golpe; ritmo contínuo.
+Manter a bola no ar (Keep-up)|I|3 min|Bata a bola para cima com a raquete, alternando as faces, sem deixar cair.|Controle e sensibilidade; olho-mão.
+Linha de fundo ao quadrado de serviço|M|10 min|Deixe a bola quicar e bata de modo que a bola caia dentro do quadrado do lado oposto. Tente 8 seguidas.|Trajetória curta e baixa; controle de força.
+Segundo saque com pressão|A|20 saques|Imagine um break point. Se errar, volte a série ao início, saque a segundo saque com topspin.|Controle mental sob pressão; kick e slice.
+Rotina completa de 30 minutos|M|30 min|5 min de aquecimento dinâmico, 10 min de saques, 10 min de drop and hit, 5 min de sprints leves e alongamento.|Planejamento e disciplina de treino individual.
+Visualização de ponto|I|5 min|Sentado ou em pé, feche os olhos e imagine a sequência: saque, devolução e golpe, em detalhes.|Foco e antecipação.
+## CASA
+Keep-up com a raquete|I|3 min|Mantenha a bola no ar com a raquete, alternando as faces. Em seguida, tente no chão e depois mais alto.|Coordenação olho-mão; punho solto.
+Quicar a bola no chão|I|3 min|Bata a bola no chão com a raquete, devagar e contínuo, sem deixar ela fugir.|Sensibilidade; altura constante.
+Shadow swing em frente ao espelho|I|3 séries de 10|Faça cada golpe sem bola em frente ao espelho: forehand, backhand, saque. Observe postura, giro de ombros e finalização.|Verificar técnica; unit turn visível.
+Toalha para chicote (towel drill)|I|3 séries de 10|Segure uma toalha enrolada na ponta e simule o saque ou forehand, tentando ouvir o estalo no ponto de contato.|Aceleração progressiva e momento certo do chicote.
+Troca de pegadas|I|2 min|Com a raquete na mão, alterne rapidamente entre continental, eastern e semi-western, sem olhar.|Memória da mão; velocidade de troca.
+Equilíbrio unipodal com raquete|I|3 séries de 30 s por perna|Em um pé só, mova a raquete em círculos à frente do corpo. Feche os olhos para dificultar.|Estabilidade do tornozelo e do quadril.
+Rotação com elástico|M|3 séries de 12 por lado|Prenda o elástico em um ponto fixo à altura do peito e gire o tronco, mantendo o quadril firme.|Rotação do core; potência do giro.
+Pallof press|M|3 séries de 10 por lado|Com elástico ao lado do corpo, estenda os braços à frente resistindo ao giro.|Estabilidade de core, anti-rotação.
+Prancha e prancha lateral|I|3 séries de 30 s|Prancha frontal e lateral, mantendo o corpo reto.|Core estável para transferir força.
+Agachamento e afundo|I|3 séries de 10|Agachamento livre e afundo alternado, mantendo o tronco ereto e os joelhos alinhados.|Força de pernas e equilíbrio.
+Agachamento com salto|M|3 séries de 8|Agachar e saltar o mais alto possível, aterrissando suavemente com joelhos flexionados.|Potência de pernas para o saque e para o smash.
+Passos curtos no lugar (split step)|I|3 séries de 20 s|Pés ativos em passos curtos e, de tempos em tempos, um split step. Use um espaço livre e sem tapetes escorregadios.|Pés ativos e reação rápida.
+Lançar e pegar com a mão fraca|I|3 min|Para destros, lance e pegue a bola com a mão esquerda; depois alterne a bola de uma mão para a outra.|Coordenação e lançamento do saque.
+Reação com bola na parede (sala)|M|3 séries de 20 s|Com uma bola macia, arremesse à parede a 1,5 m e pegue com uma mão, depois com a outra.|Reflexos e coordenação olho-mão.
+Alongamento de ombro e peitoral|I|3 séries de 30 s|Alongue o peitoral no batente da porta e o ombro cruzando o braço à frente do peito.|Mobilidade do ombro; prevenção de lesões.
+Fortalecimento de antebraço|I|3 séries de 15|Com um halter leve ou garrafa de água, faça flexão e extensão de punho, com o antebraço apoiado numa mesa.|Prevenção do cotovelo de tenista.
+Mobilidade torácica|I|2 séries de 10 por lado|Deitado de lado, com os joelhos dobrados, abra o braço de cima para trás, acompanhando-o com o olhar.|Rotação do tronco; alcance do giro de ombros.
+Visualização mental|I|5 min|Sente-se e imagine, em detalhes, um ponto completo: saque, devolução, golpe e recuperação.|Foco e planejamento mental.
+Comparar vídeo|I|10 min|Grave seus golpes de sombra e compare, em câmera lenta, com um vídeo de referência de um bom jogador.|Aprendizado visual e autocorreção.
+## PAR
+Rali livre contra o paredão|I|5 a 10 min|Fique a 5 ou 6 m do muro. Bata a bola e deixe-a quicar uma vez antes da próxima batida, sem pressa.|Consistência e controle de ritmo.
+Linha da rede|I|3 séries de 20 bolas|Marque com fita a altura da rede (0,914 m) no muro. Bata de modo que a bola sempre bata acima da linha.|Altura segura sobre a rede; topspin.
+Quadrado alvo|M|5 séries de 10|Desenhe um quadrado de 1 m² na altura do peito. Tente acertar o quadrado 10 vezes seguidas.|Precisão e repetição.
+Contagem de bolas|M|Meta: 20, 50, 100|Conte quantas batidas consecutivas consegue sem errar. Registre o recorde e tente quebrá-lo.|Concentração e ritmo.
+Somente forehand|I|3 séries de 20|Bata só de forehand, com foco em unit turn e finalização completa.|Contato à frente; giro de quadril.
+Somente backhand|I|3 séries de 20|Bata só de backhand, de uma ou duas mãos.|Contato à frente; mão livre ou mão não dominante ativa.
+Alternar forehand e backhand|M|3 séries de 20|Alterne os golpes a cada bola, mudando o pé de apoio.|Transição de pegada e de pés.
+Topspin pesado|M|3 séries de 15|Aponte a bola alta no muro, de modo que ela volte com muito efeito e quique alto.|Baixo-para-alto; aceleração da raquete.
+Slice no paredão|M|3 séries de 15|Bata slice baixo, buscando que a bola volte com pouca altura.|Pegada continental; movimento de cima para baixo.
+Voleio no paredão|M|3 séries de 20|Fique a 2 a 3 m do muro e bata voleios de forehand e backhand, sem deixar a bola cair.|Mãos à frente; punho firme; reflexos.
+Saque no paredão|M|20 saques|Do lado, a 6 m do muro, saque na linha do quadrado e devolva a bola que voltar.|Lançamento e contato; reação à bola que volta.
+Mão não dominante|M|3 séries de 15|Bata com a mão não dominante, só forehand, para melhorar a coordenação e o equilíbrio.|Coordenação e simetria.
+Movimento lateral no paredão|M|3 séries de 20|Bata a bola em movimento ao longo do muro, com passos laterais e split step antes de cada golpe.|Footwork em movimento; contato em corrida.
+Bater a bola subindo|A|3 séries de 15|Perto do muro (3 a 4 m), bata a bola logo depois do quique, como em take it on the rise.|Antecipação e timing; swing curto.
+Meia-vôlei|A|3 séries de 15|A 3 m do muro, bata a bola logo depois do quique, com raquete firme.|Face estável; joelhos flexionados.
+Reação a 2 m|A|3 séries de 20 s|Perto do muro (2 m), bata bolas rápidas sem deixá-las cair e sem swing grande.|Reflexos e antecipação.
+Bola alta no paredão|M|3 séries de 15|Bata a bola alto no muro, de modo que ela volte em arco, simulando uma bola alta de fundo.|Bola alta e contato acima do ombro.
+Sequência direcional|A|3 séries de 10|Marque dois pontos no muro (esquerda e direita). Alterne acertando cada um com forehand e backhand.|Precisão e controle de direção.
+Pré-saque e devolução|A|3 séries de 10|Faça o saque e devolva a bola que volta do muro como se fosse uma devolução de saque.|Split step no tempo certo; movimento compacto.
+Rali com bolas de baixa pressão|I|5 min|Use bolas de espuma ou de baixa pressão para reduzir o impacto e o ricochete, especialmente em iniciantes e em muros próximos.|Controle e segurança.
+Bola quicando antes do muro|I|5 min|Bata a bola primeiro no chão e depois no muro (quique duplo), ajustando o ritmo e a posição.|Sensibilidade ao bote.
+Treino de 20 minutos|M|20 min|5 min de rali livre, 5 de forehand, 5 de backhand e 5 de voleio.|Planejamento de treino simples.`;
+const hbN=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const hbE=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const HB_GLOSS=HB_GLOSS_RAW.trim().split('\n').map(l=>{const p=l.split('|');return{t:p[0],c:p[1],d:p[2],k:hbN(p[0]+' '+p[2]),s:hbN(p[0])}}).sort((a,b)=>a.s.localeCompare(b.s,'pt'));
+const HB_DR={};{let sec=null;HB_DRILLS_RAW.trim().split('\n').forEach(l=>{if(l.startsWith('## ')){sec=l.slice(3);HB_DR[sec]=[];return}const p=l.split('|');HB_DR[sec].push({t:p[0],l:p[1],n:p[2],h:p[3],f:p[4]})})}
+const HB_LV={I:'Iniciante',M:'Intermediário',A:'Avançado'};
+const hub={tab:'drills',lvl:'',sub:'SOLO',q:'',cat:''};
+function hubIsOpen(){return $('#drill-panel').style.display==='block'}
+function hubClose(){$('#drill-panel').style.display='none';renderMainMenu()}
+function openHub(tab){
   const dp=$('#drill-panel');
-  if(dp.style.display==='block'){dp.style.display='none';return false}
-  const sName=S[st.id].n;
-  dp.innerHTML=`<h2>📋 Guia Prático de Drills: ${sName}</h2>
-  <div class="dr-card"><h4>1. Shadow Swing (Sem Bola)</h4><p>Faça 3 séries de 10 repetições focando na rotação da pelve e no timing do golpe em frente ao espelho.</p></div>
-  <div class="dr-card"><h4>2. Ajuste de Pés (Footwork)</h4><p>Treine o Split Step seguido de 2 passos de ajuste rápidos em direção ao ponto de impacto simulado.</p></div>
-  <div class="dr-card"><h4>3. Controle de Alvo</h4><p>Em quadra real, posicione cones nas zonas profundas e busque 8 acertos consecutivos cruzados.</p></div>
-  <small style="color:var(--mut);cursor:pointer;" onclick="document.getElementById('drill-panel').style.display='none';renderMainMenu()">✕ Fechar painel de treinos</small>`;
-  dp.style.display='block';
-  return true;
+  if(hubIsOpen()&&((tab==='gloss')===(hub.tab==='gloss'))){hubClose();return false}
+  hub.tab=tab;$('#sci').style.display='none';dp.style.display='block';renderHub();return true;
 }
+function toggleDrill(){return openHub('drills')}
+function hbCards(list){
+  const L=hub.lvl?list.filter(d=>d.l===hub.lvl):list;
+  if(!L.length)return '<div class="hb-empty">Nenhum exercício neste nível.</div>';
+  return L.map(d=>`<details class="hb-dr"><summary><span>${hbE(d.t)}</span><span class="hb-lv hb-lv${d.l}">${HB_LV[d.l]}</span></summary><div class="hb-m">⏱ ${hbE(d.n)}</div><p>${hbE(d.h)}</p><p class="f">🎯 Foco: ${hbE(d.f)}</p></details>`).join('');
+}
+function hbLvChips(){return '<div class="hub-chips">'+[['','Todos os níveis'],['I','Iniciante'],['M','Intermediário'],['A','Avançado']].map(([v,t])=>`<button class="hb-chip sm${hub.lvl===v?' on':''}" data-lv="${v}">${t}</button>`).join('')+'</div>'}
+function renderHub(){
+  const dp=$('#drill-panel');
+  const tabs=[['drills','📋 Drills'],['solo','🏟️ Solo e casa'],['wall','🧱 Paredão'],['gloss','📖 Glossário']];
+  dp.innerHTML=`<div class="hub"><div class="hub-h"><div class="hub-t">${hub.tab==='gloss'?'📖 Glossário do tênis':'🎾 Treinos'}</div><button class="hub-x" aria-label="Fechar">✕</button></div><div class="hub-tabs">${tabs.map(([k,t])=>`<button class="hb-chip${hub.tab===k?' on':''}" data-tab="${k}">${t}</button>`).join('')}</div><div id="hub-body" style="flex:1;display:flex;flex-direction:column;min-height:0"></div></div>`;
+  dp.querySelector('.hub-x').onclick=hubClose;
+  dp.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{hub.tab=b.dataset.tab;renderHub();renderMainMenu()});
+  renderHubBody();
+}
+function renderHubBody(){
+  const host=$('#hub-body');if(!host)return;
+  if(hub.tab==='gloss'){renderGloss(host);return}
+  let h='';
+  if(hub.tab==='drills'){
+    const own=HB_DR[st.id]||[];
+    h=hbLvChips()+`<div class="hub-b"><h3>Para este golpe: ${hbE(S[st.id].n)}</h3>${hbCards(own)}<h3>Drills gerais (rali, tática e jogo)</h3>${hbCards(HB_DR.GER)}<div class="hub-note">Dica: troque o golpe no app e esta lista muda para os drills dele.</div></div>`;
+  }else if(hub.tab==='solo'){
+    const home=hub.sub==='CASA';
+    h=`<div class="hub-chips"><button class="hb-chip sm${!home?' on':''}" data-sub="SOLO">🏟️ Na quadra, sozinho</button><button class="hb-chip sm${home?' on':''}" data-sub="CASA">🏠 Em casa</button></div>`+hbLvChips()+`<div class="hub-b"><div class="hub-note">${home?'Em casa: use um espaço livre, longe de objetos frágeis e de tapetes escorregadios. Prefira bolas de espuma ou de baixa pressão.':'Na quadra sozinho: leve um cesto de bolas, cones ou toalhas como alvos e comece sempre com aquecimento dinâmico.'}</div>${hbCards(HB_DR[hub.sub])}</div>`;
+  }else{
+    h=hbLvChips()+`<div class="hub-b"><div class="hub-note">Paredão: use um muro liso e plano, com marcações de fita (rede a 0,914 m). Prefira bolas de baixa pressão, confira se o local permite e cuide do ricochete, mantendo distância segura de pessoas e vidros.</div>${hbCards(HB_DR.PAR)}</div>`;
+  }
+  host.innerHTML=h;
+  host.querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{hub.lvl=b.dataset.lv;renderHubBody()});
+  host.querySelectorAll('[data-sub]').forEach(b=>b.onclick=()=>{hub.sub=b.dataset.sub;renderHubBody()});
+}
+function renderGloss(host){
+  host.innerHTML=`<input id="hb-q" class="hb-search" type="search" placeholder="Buscar termo, expressão ou definição…" autocomplete="off" value="${hbE(hub.q)}"><div class="hub-chips" id="hb-cats"></div><div class="hb-count" id="hb-count"></div><div class="hub-b" id="hb-list"></div>`;
+  const q=host.querySelector('#hb-q');let tm=0;
+  q.oninput=()=>{clearTimeout(tm);tm=setTimeout(()=>{hub.q=q.value;updGloss()},120)};
+  updGloss();
+}
+function updGloss(){
+  const cats=$('#hb-cats'),list=$('#hb-list'),cnt=$('#hb-count');if(!cats)return;
+  cats.innerHTML=[['','Todos']].concat(Object.entries(HB_CATS)).map(([k,t])=>`<button class="hb-chip sm${hub.cat===k?' on':''}" data-cat="${k}">${t}</button>`).join('');
+  cats.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{hub.cat=b.dataset.cat;updGloss()});
+  const onc=cats.querySelector('.on');if(onc&&hub.cat)cats.scrollLeft=Math.max(0,onc.offsetLeft-12);
+  const toks=hbN(hub.q).split(/\s+/).filter(Boolean);
+  const R=HB_GLOSS.filter(g=>(!hub.cat||g.c===hub.cat)&&toks.every(t=>g.k.includes(t)));
+  cnt.textContent=R.length+' de '+HB_GLOSS.length+' termos';
+  if(!R.length){list.innerHTML='<div class="hb-empty">Nenhum termo encontrado. Tente outra palavra ou outra categoria.</div>';return}
+  let out='',last='';
+  R.forEach(g=>{const f=(g.s[0]||'#').toUpperCase(),L=/[A-Z]/.test(f)?f:'#';if(L!==last){out+=`<div class="hb-let">${L}</div>`;last=L}
+    out+=`<div class="hb-gl"><b>${hbE(g.t)}</b><span class="hb-gc">${hbE(HB_CATS[g.c]||g.c)}</span><p>${hbE(g.d)}</p></div>`});
+  list.innerHTML=out;list.scrollTop=0;
+}
+$('#drill-panel').addEventListener('pointerdown',e=>e.stopPropagation());
 function renderMainMenu(){
   mnb.innerHTML='';
   const sciOpen=$('#sci').style.display==='block';
@@ -966,7 +1843,8 @@ function renderMainMenu(){
     {label:'Cadeia',on:!!VEC.Cadeia,badge:VEC.Cadeia?'ON':'OFF',act:()=>{VEC.Cadeia=!VEC.Cadeia}},
     {label:'🎯 Tática',on:st.tactics,badge:st.tactics?'ON':'OFF',act:()=>{st.tactics=!st.tactics}},
     {label:'🔬 Estudos',on:sciOpen,badge:sciOpen?'ON':'OFF',act:()=>{toggleSci()}},
-    {label:'📋 Drill',on:drillOpen,badge:drillOpen?'ON':'OFF',act:()=>{toggleDrill()}},
+    {label:'📋 Treinos',on:drillOpen&&hub.tab!=='gloss',badge:(drillOpen&&hub.tab!=='gloss')?'ON':'OFF',act:()=>{openHub('drills')}},
+    {label:'📖 Glossário',on:drillOpen&&hub.tab==='gloss',badge:(drillOpen&&hub.tab==='gloss')?'ON':'OFF',act:()=>{openHub('gloss')}},
     {label:'🎾 Pegada',on:true,badge:st.grip,act:()=>{
       const keys=Object.keys(GRIPS);
       st.grip=keys[(keys.indexOf(st.grip)+1)%keys.length];
