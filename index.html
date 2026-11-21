@@ -41,6 +41,12 @@ canvas{width:100%;height:100%;display:block}
 #cam-menu{right:160px;min-width:160px;max-height:62vh;overflow-y:auto}
 #main-menu{right:198px;min-width:210px;max-height:68vh;overflow-y:auto}
 #spd-menu.open,#stk-menu.open,#cam-menu.open,#main-menu.open{display:flex}
+/* Menus sempre inteiros e centralizados em telas estreitas / modo retrato */
+@media (orientation:portrait),(max-width:700px){
+  #spd-menu,#stk-menu,#cam-menu,#main-menu{left:50%!important;right:auto!important;transform:translateX(-50%);bottom:52px;width:min(92%,360px);min-width:0!important;max-height:calc(100% - 110px)!important;overflow-y:auto;overscroll-behavior:contain}
+  #spd-menu{width:min(60%,200px)}
+  #spd-menu button,#stk-menu button,#cam-menu button,#main-menu button{padding:9px 12px;font-size:13.5px}
+}
 #spd-menu button,#stk-menu button,#cam-menu button,#main-menu button{border:0;background:transparent;color:var(--tx);padding:6px 10px;border-radius:8px;font-size:12.5px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
 #spd-menu button:hover,#stk-menu button:hover,#cam-menu button:hover,#main-menu button:hover{background:color-mix(in srgb,var(--ac) 14%,transparent)}
 #spd-menu button.on,#stk-menu button.on,#cam-menu button.on,#main-menu button.on{background:var(--ac);color:#fff;font-weight:600}
@@ -95,7 +101,14 @@ details.hb-dr summary{font-size:1em}details.hb-dr p{font-size:.95em}.hb-m{font-s
 #cap h3{min-height:22px;padding-right:72px}
 .hb-dg{margin:8px 0 4px;text-align:center}
 .hb-dg svg{width:auto;max-width:100%;max-height:300px;display:block;margin:0 auto;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.hb-dc{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.hb-dc button{border:1px solid color-mix(in srgb,var(--ac) 45%,transparent);background:transparent;color:var(--tx);border-radius:8px;min-width:36px;height:30px;font-size:13px;font-weight:700;cursor:pointer;padding:0 9px}
 .hb-dl{font-size:.74em;color:var(--mut);margin-top:4px;line-height:1.35}
+.hb-rel{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px;align-items:center}
+.hb-rel span{font-size:.78em;color:var(--mut)}
+.hb-rel button{border:1px solid color-mix(in srgb,var(--ac) 45%,transparent);background:color-mix(in srgb,var(--ac) 8%,transparent);color:var(--tx);border-radius:999px;padding:5px 10px;font-size:.82em;cursor:pointer;text-align:left}
+.tac-3d{margin:6px 0;border:0;background:var(--ac);color:#fff;border-radius:10px;padding:9px 14px;font-weight:700;font-size:.95em;cursor:pointer}
+#tac-ret{display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:6;border:0;background:var(--ac);color:#fff;border-radius:18px;padding:7px 14px;font-size:12.5px;font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.3);cursor:pointer}
 .hub.scene .hub-tabs{display:none}
 .tac-scene{display:flex;flex-direction:column;flex:1;min-height:0}
 .tac-top{display:flex;align-items:center;gap:8px;padding:2px 12px 4px}
@@ -1149,7 +1162,7 @@ const DG_VIEW={full:[-7,.2,14,30],near:[-7,12.8,14,17.4],far:[-7,.2,14,17.8],mid
 function dgE(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 const DG_DEFS='<defs><marker id="dgy" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ffd600"/></marker><marker id="dgw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#fff"/></marker><marker id="dgk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f2937"/></marker></defs>';
 const DG_TXT=(x,y,t,sz,col)=>'<text x="'+x+'" y="'+y+'" font-size="'+(sz||.8)+'" text-anchor="middle" fill="'+(col||'#fff')+'" font-family="system-ui,sans-serif" font-weight="700" paint-order="stroke" stroke="'+((col||'#fff')==='#fff'?'#0b1220':'#fff')+'" stroke-width=".22" stroke-linejoin="round">'+dgE(t)+'</text>';
-function dgCourt(view,ops){
+function dgCourt(view,ops,anim){
   const Y=z=>+(27-z).toFixed(2),v=DG_VIEW[view]||DG_VIEW.full;
   let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+v.join(' ')+'" role="img" aria-label="Diagrama do exercício na quadra">'+DG_DEFS;
   s+='<rect x="-7" y="-10" width="14" height="50" fill="#c85a46"/><rect x="-4.115" y="'+Y(23.77)+'" width="8.23" height="23.77" fill="#3688d6"/>';
@@ -1157,12 +1170,13 @@ function dgCourt(view,ops){
   s+=L(-4.115,0,4.115,0)+L(-4.115,23.77,4.115,23.77)+L(-4.115,0,-4.115,23.77)+L(4.115,0,4.115,23.77)+L(-4.115,5.485,4.115,5.485)+L(-4.115,18.285,4.115,18.285)+L(0,5.485,0,18.285)+L(0,0,0,.4)+L(0,23.37,0,23.77);
   s+='<line x1="-5.03" y1="'+Y(11.885)+'" x2="5.03" y2="'+Y(11.885)+'" stroke="#111827" stroke-width=".3"/><circle cx="-5.03" cy="'+Y(11.885)+'" r=".3" fill="#111827"/><circle cx="5.03" cy="'+Y(11.885)+'" r=".3" fill="#111827"/>';
   const curve=(x1,z1,x2,z2)=>{const mx=(x1+x2)/2,mz=(z1+z2)/2,dx=x2-x1,dz=z2-z1,n=Math.hypot(dx,dz)||1;return 'M'+x1+' '+Y(z1)+' Q'+(mx-dz/n*3.2).toFixed(2)+' '+Y(mz+dx/n*3.2).toFixed(2)+' '+x2+' '+Y(z2)};
-  for(const o of ops){const k=o[0];
+  const AO=anim?' opacity=".4"':'';
+  for(const o of ops){const k=o[0];if(anim&&(k==='P'||k==='Q'||k==='B'))continue;
     if(k==='Z')s+='<rect x="'+o[1]+'" y="'+Y(o[4])+'" width="'+(o[3]-o[1])+'" height="'+(o[4]-o[2])+'" fill="'+(o[5]||'#ffd54f')+'" opacity=".38" stroke="#ffd54f" stroke-width=".1" stroke-dasharray=".4 .3"/>';
-    else if(k==='a')s+='<line x1="'+o[1]+'" y1="'+Y(o[2])+'" x2="'+o[3]+'" y2="'+Y(o[4])+'" stroke="#ffd600" stroke-width=".26" marker-end="url(#dgy)"/>';
-    else if(k==='b')s+='<line x1="'+o[1]+'" y1="'+Y(o[2])+'" x2="'+o[3]+'" y2="'+Y(o[4])+'" stroke="#ffd600" stroke-width=".22" stroke-dasharray=".7 .45" marker-end="url(#dgy)"/>';
-    else if(k==='m')s+='<line x1="'+o[1]+'" y1="'+Y(o[2])+'" x2="'+o[3]+'" y2="'+Y(o[4])+'" stroke="#fff" stroke-width=".2" stroke-dasharray=".5 .4" marker-end="url(#dgw)"/>';
-    else if(k==='l')s+='<path d="'+curve(o[1],o[2],o[3],o[4])+'" fill="none" stroke="#ffd600" stroke-width=".24" stroke-dasharray=".7 .4" marker-end="url(#dgy)"/>';
+    else if(k==='a')s+='<line x1="'+o[1]+'" y1="'+Y(o[2])+'" x2="'+o[3]+'" y2="'+Y(o[4])+'" stroke="#ffd600" stroke-width=".26" marker-end="url(#dgy)"'+AO+'/>';
+    else if(k==='b')s+='<line x1="'+o[1]+'" y1="'+Y(o[2])+'" x2="'+o[3]+'" y2="'+Y(o[4])+'" stroke="#ffd600" stroke-width=".22" stroke-dasharray=".7 .45" marker-end="url(#dgy)"'+AO+'/>';
+    else if(k==='m')s+='<line x1="'+o[1]+'" y1="'+Y(o[2])+'" x2="'+o[3]+'" y2="'+Y(o[4])+'" stroke="#fff" stroke-width=".2" stroke-dasharray=".5 .4" marker-end="url(#dgw)"'+AO+'/>';
+    else if(k==='l')s+='<path d="'+curve(o[1],o[2],o[3],o[4])+'" fill="none" stroke="#ffd600" stroke-width=".24" stroke-dasharray=".7 .4" marker-end="url(#dgy)"'+AO+'/>';
     else if(k==='T')s+='<circle cx="'+o[1]+'" cy="'+Y(o[2])+'" r="'+(o[3]||.9)+'" fill="#ef4444" opacity=".35"/><circle cx="'+o[1]+'" cy="'+Y(o[2])+'" r="'+(o[3]||.9)+'" fill="none" stroke="#fff" stroke-width=".16"/><circle cx="'+o[1]+'" cy="'+Y(o[2])+'" r=".18" fill="#fff"/>';
     else if(k==='C')s+='<path d="M'+(o[1]-.45)+' '+(Y(o[2])+.4)+'L'+o[1]+' '+(Y(o[2])-.5)+'L'+(o[1]+.45)+' '+(Y(o[2])+.4)+'z" fill="#fb923c" stroke="#7c2d12" stroke-width=".08"/>';
     else if(k==='P')s+='<circle cx="'+o[1]+'" cy="'+Y(o[2])+'" r=".75" fill="#1d4ed8" stroke="#fff" stroke-width=".16"/>'+DG_TXT(o[1],Y(o[2])+.28,o[3]||'Você',.7)+'';
@@ -1170,66 +1184,11 @@ function dgCourt(view,ops){
     else if(k==='K')s+='<rect x="'+(o[1]-.6)+'" y="'+(Y(o[2])-.45)+'" width="1.2" height=".9" rx=".15" fill="#92400e" stroke="#fff" stroke-width=".1"/><circle cx="'+(o[1]-.25)+'" cy="'+(Y(o[2])-.5)+'" r=".22" fill="#ffd600"/><circle cx="'+(o[1]+.2)+'" cy="'+(Y(o[2])-.55)+'" r=".22" fill="#ffd600"/>';
     else if(k==='B')s+='<circle cx="'+o[1]+'" cy="'+Y(o[2])+'" r=".36" fill="#d7ec3c" stroke="#fff" stroke-width=".08"/>';
     else if(k==='L'){for(let i=0;i<7;i++)s+='<rect x="'+(o[1]-.5)+'" y="'+(Y(o[2]+i*.55)-.2)+'" width="1" height=".4" fill="none" stroke="#fff" stroke-width=".1"/>'}
-    else if(k==='S')s+='<path d="M'+(o[1]-1.3)+' '+(Y(o[2])+.4)+' A1.6 1.6 0 0 1 '+(o[1]+1.3)+' '+(Y(o[2])+.4)+'" fill="none" stroke="#fff" stroke-width=".2" marker-end="url(#dgw)"/>';
+    else if(k==='S')s+='<path d="M'+(o[1]-1.3)+' '+(Y(o[2])+.4)+' A1.6 1.6 0 0 1 '+(o[1]+1.3)+' '+(Y(o[2])+.4)+'" fill="none" stroke="#fff" stroke-width=".2" marker-end="url(#dgw)"'+AO+'/>';
     else if(k==='N')s+=DG_TXT(o[1],Y(o[2]),o[3],o[4]||.75);
   }
   return s+'</svg>';
 }
-function dgWall(kind,o){ // paredão: vista lateral (jogador + muro) ou frontal
-  o=o||{};let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" role="img" aria-label="Diagrama do exercício no paredão">'+DG_DEFS+'<rect width="120" height="70" fill="#dbeafe"/><rect y="60" width="120" height="10" fill="#c85a46"/>';
-  const T=(x,y,t,c)=>DG_TXT(x,y,t,3.4,c||'#0f172a');
-  if(kind==='front'){ // frente do muro
-    s+='<rect x="8" y="6" width="104" height="54" fill="#94a3b8" stroke="#475569" stroke-width="1"/>';
-    (o.items||[]).forEach(it=>{if(it[0]==='sq')s+='<rect x="'+it[1]+'" y="'+it[2]+'" width="'+(it[3]||14)+'" height="'+(it[3]||14)+'" fill="#ef4444" opacity=".4" stroke="#fff" stroke-width="1.4"/>';
-      else if(it[0]==='ln')s+='<line x1="8" y1="'+it[1]+'" x2="112" y2="'+it[1]+'" stroke="#fff" stroke-width="1.4" stroke-dasharray="4 3"/>'+T(98,it[1]-2,it[2],'#fff');
-      else if(it[0]==='ar')s+='<line x1="'+it[1]+'" y1="'+it[2]+'" x2="'+it[3]+'" y2="'+it[4]+'" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#dgw)"/>'});
-    s+='<circle cx="'+(o.px||60)+'" cy="54" r="4.5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>'+T(60,68,o.l||'','#0f172a');
-    return s+'</svg>';}
-  const d=o.d||6,px=14+d*7.5,gy=60;
-  s+='<rect x="8" y="6" width="6" height="54" fill="#64748b"/><line x1="0" y1="60" x2="120" y2="60" stroke="#7f1d1d" stroke-width="1"/>';
-  const hl=Math.round(.914*12);
-  if(o.tape)s+='<rect x="8" y="'+(gy-hl)+'" width="6" height="1.6" fill="#fff"/><line x1="14" y1="'+(gy-hl+.8)+'" x2="86" y2="'+(gy-hl+.8)+'" stroke="#0f172a" stroke-width=".6" stroke-dasharray="2 2"/>'+T(102,gy-hl+1.8,'fita 0,91 m','#0f172a');
-  if(o.target)s+='<rect x="8" y="'+(gy-30)+'" width="6" height="12" fill="#ef4444"/><line x1="14" y1="'+(gy-24)+'" x2="86" y2="'+(gy-24)+'" stroke="#0f172a" stroke-width=".6" stroke-dasharray="2 2"/>'+T(102,gy-23,'alvo 1 m²','#0f172a');
-  const hx=px-3,hy=gy-14;
-  const hit=(o.path==='high')?'M'+hx+' '+hy+' Q'+(hx-d*3.4)+' 4 14 '+(gy-36):(o.path==='low')?'M'+hx+' '+(gy-8)+' Q'+(hx-d*3.5)+' '+(gy-14)+' 14 '+(gy-12):'M'+hx+' '+hy+' Q'+(hx-d*3.5)+' '+(gy-34)+' 14 '+(gy-18);
-  s+='<path d="'+hit+'" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="4 2.5" marker-end="url(#dgy)"/>';
-  s+='<path d="M14 '+(gy-18)+' Q'+(14+d*3.2)+' '+(gy-3)+' '+(px-6)+' '+(gy-16)+'" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="2 2" marker-end="url(#dgw)"/>';
-  s+='<circle cx="'+px+'" cy="'+(gy-20)+'" r="3.6" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><rect x="'+(px-2.6)+'" y="'+(gy-16)+'" width="5.2" height="14" rx="2" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>';
-  s+='<line x1="14" y1="67" x2="'+px+'" y2="67" stroke="#0f172a" stroke-width="1" marker-end="url(#dgk)" marker-start="url(#dgk)"/>'+T((14+px)/2,66,d+' m','#0f172a');
-  if(o.l)s+=T(64,10,o.l,'#0f172a');
-  return s+'</svg>';
-}
-function dgHome(kind,txt){ // espaço livre em casa (vista de cima) e ícones simples
-  let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 70" role="img" aria-label="Diagrama do exercício em casa">'+DG_DEFS+'<rect width="100" height="70" fill="#e2e8f0"/><rect x="6" y="6" width="88" height="58" rx="3" fill="#f8fafc" stroke="#94a3b8" stroke-width=".8" stroke-dasharray="3 2"/>';
-  const T=(x,y,t,sz)=>DG_TXT(x,y,t,sz||3.6,'#0f172a'),P=(x,y)=>'<circle cx="'+x+'" cy="'+y+'" r="5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>',Bl=(x,y)=>'<circle cx="'+x+'" cy="'+y+'" r="2.4" fill="#d7ec3c" stroke="#65a30d" stroke-width=".6"/>',Ar=(a,b,c,d)=>'<line x1="'+a+'" y1="'+b+'" x2="'+c+'" y2="'+d+'" stroke="#0f172a" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#dgk)"/>';
-  const k=kind;
-  if(k==='keep')s+=P(50,40)+Bl(50,22)+Ar(56,36,56,18)+Ar(44,18,44,36)+T(50,14,'bola no ar (raquete)')+'<rect x="40" y="42" width="20" height="3" rx="1.5" fill="#64748b"/>';
-  else if(k==='bounce')s+=P(50,28)+Bl(50,52)+Ar(56,36,56,50)+Ar(44,50,44,36)+'<line x1="30" y1="58" x2="70" y2="58" stroke="#64748b" stroke-width="1.5"/>'+T(50,14,'quicar a bola no chão');
-  else if(k==='mirror')s+='<rect x="20" y="8" width="60" height="4" fill="#38bdf8"/>'+T(50,20,'espelho / câmera')+P(50,42)+Ar(60,46,76,34)+T(50,62,'unit turn · swing · finalização');
-  else if(k==='towel')s+=P(50,38)+'<path d="M55 38 Q72 24 78 40" fill="none" stroke="#f97316" stroke-width="3"/><circle cx="78" cy="40" r="2.5" fill="#f97316"/>'+T(50,14,'toalha enrolada: ouça o estalo')+T(50,62,'aceleração progressiva');
-  else if(k==='grips')s+=P(50,36)+'<rect x="30" y="52" width="40" height="5" rx="2" fill="#64748b"/>'+T(26,48,'cont.',3)+T(50,48,'east.',3)+T(74,48,'semi',3)+T(50,14,'trocar pegadas sem olhar');
-  else if(k==='balance')s+='<circle cx="50" cy="38" r="5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><rect x="47" y="46" width="6" height="12" rx="2" fill="#1d4ed8" opacity=".6"/>'+T(50,14,'um pé só + raquete em círculos')+'<path d="M62 30 A12 12 0 1 1 61.9 29.9" fill="none" stroke="#0f172a" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#dgk)"/>';
-  else if(k==='band')s+='<rect x="6" y="28" width="5" height="14" fill="#475569"/>'+T(24,24,'ponto fixo',3)+'<line x1="11" y1="35" x2="45" y2="35" stroke="#ef4444" stroke-width="2"/>'+P(52,35)+'<path d="M60 28 A10 10 0 0 1 60 42" fill="none" stroke="#0f172a" stroke-width="1.2" marker-end="url(#dgk)"/>'+T(60,58,'gire o tronco, quadril firme');
-  else if(k==='pallof')s+='<rect x="6" y="28" width="5" height="14" fill="#475569"/><line x1="11" y1="35" x2="42" y2="35" stroke="#ef4444" stroke-width="2"/>'+P(48,35)+Ar(54,35,74,35)+T(50,14,'empurre à frente, resista ao giro')+T(30,24,'elástico',3);
-  else if(k==='plank')s+='<rect x="25" y="38" width="50" height="8" rx="4" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><circle cx="76" cy="40" r="4" fill="#fcd9b6" stroke="#fff" stroke-width=".8"/><rect x="20" y="48" width="60" height="6" fill="#38bdf8" opacity=".5"/>'+T(50,18,'prancha: corpo reto')+T(50,62,'30 s frontal · 30 s lateral');
-  else if(k==='squat')s+=P(50,34)+'<path d="M50 40 L44 52 L56 52 Z" fill="#1d4ed8" opacity=".6"/>'+Ar(70,26,70,50)+Ar(30,50,30,26)+T(50,14,'agachamento / afundo')+T(50,62,'joelho alinhado ao pé');
-  else if(k==='jump')s+=P(50,36)+Ar(50,28,50,10)+'<ellipse cx="50" cy="56" rx="12" ry="3" fill="#64748b" opacity=".5"/>'+T(50,64,'aterrisse flexionando os joelhos',3.2);
-  else if(k==='steps')s+=P(50,38)+Ar(58,38,72,38)+Ar(42,38,28,38)+Ar(50,30,50,16)+Ar(50,46,50,58)+T(50,12,'passos curtos + split step',3.4);
-  else if(k==='catch')s+=P(30,38)+Bl(50,20)+'<path d="M36 36 Q50 8 66 36" fill="none" stroke="#0f172a" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#dgk)"/>'+P(70,38)+T(50,62,'lance e pegue com a mão fraca');
-  else if(k==='wall')s+='<rect x="6" y="6" width="88" height="5" fill="#64748b"/>'+T(50,24,'parede (bola macia)')+Bl(50,17)+P(50,50)+Ar(52,44,52,22)+Ar(48,22,48,44)+T(50,66,'1,5 m da parede',3.2);
-  else if(k==='stretch')s+='<rect x="8" y="8" width="6" height="54" fill="#64748b"/>'+T(32,16,'batente da porta',3.2)+P(30,40)+'<line x1="14" y1="34" x2="26" y2="38" stroke="#fcd9b6" stroke-width="3"/>'+T(60,58,'30 s por lado');
-  else if(k==='fore')s+='<rect x="25" y="40" width="50" height="6" rx="2" fill="#92400e"/>'+'<rect x="48" y="30" width="22" height="6" rx="2" fill="#475569"/><circle cx="73" cy="33" r="3" fill="#475569"/>'+T(50,14,'antebraço apoiado na mesa')+Ar(60,28,60,18)+Ar(66,18,66,28);
-  else if(k==='thorax')s+='<ellipse cx="50" cy="42" rx="22" ry="9" fill="#1d4ed8" opacity=".6"/><path d="M36 38 A16 10 0 0 0 64 38" fill="none" stroke="#0f172a" stroke-width="1.2" marker-end="url(#dgk)"/>'+T(50,18,'deitado de lado: abra o braço de cima');
-  else if(k==='mind')s+='<circle cx="35" cy="48" r="8" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><circle cx="48" cy="34" r="2" fill="#94a3b8"/><circle cx="55" cy="26" r="3" fill="#94a3b8"/><ellipse cx="72" cy="20" rx="20" ry="11" fill="#fff" stroke="#94a3b8"/>'+T(72,22,'saque → devolução → golpe',2.8);
-  else if(k==='video')s+='<rect x="30" y="14" width="40" height="30" rx="3" fill="#0f172a"/><path d="M46 22 L58 29 L46 36z" fill="#fff"/>'+T(50,56,'compare seu vídeo ao de referência',3.2)+'<rect x="42" y="46" width="16" height="3" fill="#38bdf8"/>';
-  else s+=P(50,36)+T(50,14,txt||'exercício em casa');
-  return s+'</svg>';
-}
-function dgSide(kind){ // corda/rede vista de lado
-  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" role="img" aria-label="Diagrama de altura sobre a rede">'+DG_DEFS+'<rect width="120" height="70" fill="#dbeafe"/><rect y="58" width="120" height="12" fill="#3688d6"/><rect x="58" y="42" width="3" height="16" fill="#111827"/>'+DG_TXT(60,40,'rede',3.4,'#0f172a')+'<line x1="52" y1="28" x2="68" y2="28" stroke="#ef4444" stroke-width="1.6" stroke-dasharray="3 2"/>'+DG_TXT(60,25,'corda +1 m',3.4,'#0f172a')+'<path d="M12 54 Q58 8 108 56" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 2.5" marker-end="url(#dgy)"/></svg>';
-}
-function dgPlan(blocks){let x=6,s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 50" role="img" aria-label="Plano de treino">'+DG_DEFS+'<rect width="120" height="50" fill="#e2e8f0"/>';const tot=blocks.reduce((a,b)=>a+b[0],0),col=['#38bdf8','#3688d6','#16a34a','#f59e0b','#a78bfa'];blocks.forEach((b,i)=>{const w=108*b[0]/tot;s+='<rect x="'+x+'" y="10" width="'+(w-1.5)+'" height="24" rx="3" fill="'+col[i%5]+'"/>'+DG_TXT(x+w/2-.7,24,b[0]+' min',3.4)+DG_TXT(x+w/2-.7,43,b[1],2.8,'#0f172a');x+=w});return s+'</svg>'}
-function dgClock(){let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" role="img" aria-label="Relógio do kick">'+DG_DEFS+'<rect width="120" height="70" fill="#dbeafe"/><circle cx="60" cy="36" r="26" fill="#fff" stroke="#475569" stroke-width="1.4"/>';[['12',0],['3',90],['6',180],['9',270],['7',210],['1',30]].forEach(([t,a])=>{const r=a*Math.PI/180;s+=DG_TXT(60+Math.sin(r)*20,36-Math.cos(r)*20+1.4,t,4.2,'#0f172a')});s+='<path d="M44 52 Q40 30 52 18 Q58 15 66 18" fill="none" stroke="#f59e0b" stroke-width="2.4" marker-end="url(#dgy)"/>'+DG_TXT(60,68,'a raquete "escova" a bola de 7 para 1 hora',3.2,'#0f172a')+'</svg>';return s}
 // ---------- mapeamento: seção -> título -> modelo ----------
 const _A=[2.5,-.8],_B=[-2.5,24.6],_L=[-2.5,-.8],_R=[2.5,24.6];
 const dgShadow=(x,t)=>['c','near',['P',x,-.8,'Você'],['S',x,-.8],['N',0,-2.5,t||'sem bola',.8]];
@@ -1243,7 +1202,7 @@ const DG={
  bh:{'Shadow swing de backhand de duas mãos':dgShadow(-1.5),'Mão não dominante isolada':['c','near',['P',-1.5,-.8,'Você'],['Q',1.2,6,'Parceiro'],['a',1.2,6,-1.5,.8],['N',-1.5,-2.5,'só a mão esquerda',.75]],'Cesto de backhand na cintura':dgFeed(-2,2.5,19),'Rali cruzado de backhand':dgRally(_L,_R,1),'Backhand paralela':['c','full',['P',-2.5,-.8,'A'],['Q',-2.5,24.6,'B'],['a',-2.5,.4,-2.5,22.8],['a',-3.2,22.8,-3.2,.4]],'Bola alta de backhand':['c','near',['P',-2,-.8,'Você'],['Q',1,9.5,'Parceiro'],['l',1,9.5,-2,.2],['N',0,-2.5,'bola na altura do ombro',.75]],'Defesa e recuperação no backhand':['c','full',['P',-3.8,-.8,'Você'],['Q',2,24.6,'B'],['m',0,-.8,-3.6,-.8],['m',-3.6,-2.2,0,-2.2],['a',2,23.4,-3.8,.5],['l',-3.8,.4,2.5,22.6],['N',0,-3,'bola alta e funda · recupera',.7]]},
  b1:{'Shadow swing com braço livre':dgShadow(-1.5,'braço livre aberto'),'Bola lançada em câmera lenta':['c','near',['P',-1.5,-.8,'Você'],['Q',1,5,'Parceiro'],['a',1,5,-1.5,.8],['N',-1.5,-2.5,'3 m, bola lenta',.75]],'Segurar a finalização':dgShadow(-1.5,'segure 2 s'),'Backhand de uma mão cruzado':dgRally(_L,_R,1),'Alternar slice e drive':['c','full',['P',-2.5,-.8,'A'],['Q',2.5,24.6,'B'],['a',-2.5,.4,2.5,22.8],['b',-2.2,.4,2.2,22.8],['N',0,13.6,'drive (cheio) · slice (tracejado)',.7]]},
  sl:{'Shadow swing do slice':dgShadow(1.5,'cima para baixo'),'Slice em bola lançada':['c','near',['P',1.5,-.8,'Você'],['Q',-1,5,'Parceiro'],['a',-1,5,1.5,.8]],'Slice cruzado baixo':['c','full',['P',2.5,-.8,'A'],['Q',-2.5,24.6,'B'],['a',2.5,.4,-2.5,22.8],['N',0,13.6,'bola baixa sobre a rede',.7]],'Slice defensivo profundo':['c','full',['P',2.5,-.8,'Você'],['Q',-2.5,24.6,'B'],['Z',-4.115,21.2,4.115,23.77],['a',2.5,.4,-1,22.6],['N',0,19.8,'profundidade',.8]],'Slice e drop shot':['c','full',['P',1,-.8,'Você'],['Q',-2.5,24.6,'B'],['a',1,.4,-2.5,22.6],['b',1,.4,.5,13.4],['N',2.4,14,'drop',.8]]},
- sv:{'Lançamento sem bater':dgToss('lance e deixe cair'),'Troféu e queda em câmera lenta':dgShadow(.8,'troféu → queda → contato'),'Saque ajoelhado':dgShadow(.8,'ajoelhado, só braço'),'Saque em três alvos':dgServeBox('T · corpo · aberto'),'Segundo saque com margem':['c','mid',['P',.8,-.8,'Você'],['Z',-4.115,11.885,0,18.285],['T',-1.9,16,1.6],['a',.8,.4,-1.9,16],['N',-2,19.3,'centro do quadrado',.75],['N',0,-2.5,'90% de acerto',.75]],'Saque +1':['c','full',['P',.8,-.8,'Você'],['Q',-1.2,24.6,'B'],['a',.8,.4,-.5,17.2],['b',-.8,23,1.5,2],['a',1.5,1.8,-3,21.5],['N',0,10.6,'saque no T + forehand aberto',.6]],'Rotina de saque':['c','near',['P',.8,-.8,'Você'],['N',0,-2.4,'1 quicar · 2 respirar · 3 alvo',.7],['B',1.8,.2]]},
+ sv:{'Lançamento sem bater':dgToss('lance e deixe cair'),'Troféu e queda em câmera lenta':dgShadow(.8,'troféu → queda → contato'),'Saque ajoelhado':dgShadow(.8,'ajoelhado, só braço'),'Saque em três alvos':dgServeBox('T · corpo · aberto'),'Segundo saque com margem':['c','mid',['P',.8,-.8,'Você'],['Z',-4.115,11.885,0,18.285],['T',-1.9,16,1.6],['a',.8,.4,-1.9,16],['N',-2,19.3,'centro do quadrado',.75],['N',0,-2.5,'90% de acerto',.75]],'Saque +1':['c','full',['P',.8,-.8,'Você'],['Q',-1.2,24.6,'B'],['a',.8,.4,-.5,17.2],['b',-.8,23,1.5,2],['a',1.5,1.8,-3,21.5],['N',0,10.6,'saque no T + forehand aberto',.6]],'Rotina de saque':['c','mid',['P',.8,-.8,'Você'],['Z',-4.115,11.885,0,18.285],['T',-1.9,16,.9],['a',.8,.4,-1.9,16],['N',0,-2.4,'1 quicar · 2 respirar · 3 alvo',.7]]},
  sm:{'Shadow smash com passos laterais':['c','mid',['P',0,8,'Você'],['m',0,8,0,5],['l',0,22,0,4.5],['N',0,3.5,'passos laterais para trás',.75]],'Smash alimentado':['c','full',['Q',0,16.5,'Treinador'],['P',0,8.5,'Você'],['l',0,16.5,0,8.2],['a',0,8.5,2,20.5]],'Smash depois do voleio':['c','full',['P',0,10,'Você'],['Q',0,22,'B'],['l',0,22,0,6],['m',0,10,0,6],['N',2.5,11,'voleio → recua → smash',.65]],'Smash em recuo e salto':['c','mid',['P',0,9,'Você'],['m',0,9,0,3.5],['l',0,22,0,3.2],['N',0,1.8,'salto',.8]]},
  vl:{'Voleio curto com parceiro':dgVolley(),'Voleio contra voleio':dgVolley('troca de voleios'),'Voleio baixo':['c','near',['P',0,9.8,'Você'],['Q',0,14.5,'B'],['a',0,13.5,.3,10.2],['N',0,7.8,'bola baixa: joelhos flexionados',.7]],'Meia-vôlei':['c','near',['P',0,6.2,'Você'],['Q',0,14.5,'B'],['a',0,13.5,0,7],['T',0,7,.45],['N',0,4.4,'bata logo depois do quique',.7]],'Aproximação + voleio':['c','full',['P',0,-.8,'Você'],['Q',0,24.6,'B'],['m',0,-.8,0,9.7],['a',0,.5,2,18],['a',2,18.4,-1,10.5],['N',-3,6,'subir',.8]]},
  ap:{'Aproximação slice paralela':['c','full',['Q',0,13.3,'Treinador'],['P',2.5,.5,'Você'],['a',0,12.8,2,5],['a',2.5,5.2,2.5,20.5],['m',2.5,6,2.5,10],['N',-2.6,8,'sobe depois do golpe',.65]],'Aproximação cruzada com subida':['c','full',['Q',0,13.3,'Treinador'],['P',2,.5,'Você'],['a',0,12.8,2,5],['a',2,5.2,-3,20.5],['m',2,6,0,10]],'Aproximação contra passada':['c','full',['P',0,9.8,'Você'],['Q',2.5,24.6,'B'],['a',0,.5,0,19],['b',2.2,23,-3.5,9.4],['b',2.2,23,3.5,9.4]]},
@@ -1258,17 +1217,10 @@ const DG={
 };
 function hbDiagram(sec,title){
   const sp=(DG[sec]||{})[title];if(!sp)return '';
-  let svg='';
-  if(sp[0]==='c')svg=dgCourt(sp[1],sp.slice(2));
-  else if(sp[0]==='w')svg=dgWall('side',sp[1]);
-  else if(sp[0]==='wf')svg=dgWall('front',sp[1]);
-  else if(sp[0]==='h')svg=dgHome(sp[1]);
-  else if(sp[0]==='n')svg=dgSide();
-  else if(sp[0]==='p')svg=dgPlan(sp[1]);
-  else if(sp[0]==='k')svg=dgClock();
-  if(!svg)return '';
+  const svg=dgSvgOf(sp,false);if(!svg)return '';
   const leg=sp[0]==='c'?'🔵 você · ⚪ parceiro · 🔺 cone · 🎯 alvo · ▬ bola · ┅ outra opção · ⇢ deslocamento':sp[0]==='w'||sp[0]==='wf'?'🟦 você · 🟧 bola · ⬜ retorno · 🟥 marca no muro':'Esquema ilustrativo do exercício';
-  return '<div class="hb-dg">'+svg+'<div class="hb-dl">'+leg+'</div></div>';
+  const ctl=sp[0]==='p'?'':`<div class="hb-dc"><button data-dgc="play" aria-label="Reproduzir animação">▶</button><button data-dgc="spd" aria-label="Velocidade da animação">${DGA.spd}×</button>${sp[0]==='c'?`<button data-dgc="snd" aria-label="Som da animação">${DGA.snd?'🔔':'🔇'}</button>`:''}</div>`;
+  return `<div class="hb-dg" data-dg="${hbA(sec+'|'+title)}" data-k="${sp[0]}">${svg}${ctl}<div class="hb-dl">${leg}</div></div>`;
 }
 
 const HB_CATS={PR:'Pontuação e regras',QS:'Quadra e superfícies',AR:'Arbitragem',TO:'Torneios e ranking',EQ:'Equipamento',RC:'Cordas',BO:'Bola',PG:'Pegadas',GO:'Golpes',SA:'Saque e devolução',BM:'Biomecânica',JP:'Jogo de pernas',TA:'Tática',TR:'Treino e mental',CS:'Saúde e físico',GI:'Gírias',TD:'Dados e tecnologia'};
@@ -2055,7 +2007,7 @@ document.addEventListener('click',e=>{
 const hbSay=g=>g.t.replace(/\s*\(([^)]*)\)/g,', $1').replace(/\s*\/\s*/g,', ')+'. '+g.d;
 const hbA=x=>hbE(x).replace(/"/g,'&quot;');
 function hubIsOpen(){return $('#drill-panel').style.display==='block'}
-function hubClose(){tacStop();ttsStop();$('#drill-panel').style.display='none';renderMainMenu()}
+function hubClose(){tacStop();dgaStop();ttsStop();$('#drill-panel').style.display='none';renderMainMenu()}
 function openHub(tab){
   const dp=$('#drill-panel');
   const grp=t=>t==='gloss'?'g':t==='tac'?'t':'d';
@@ -2168,8 +2120,8 @@ function renderTac(host){
 <div class="tac-court" id="tac-court">${tacCourtSVG()}</div>
 <div class="tac-ctl"><button id="tac-rst" aria-label="Voltar ao início">⏮</button><button id="tac-prv" aria-label="Passo anterior">◀</button><button id="tac-play" class="big" aria-label="Reproduzir">▶</button><button id="tac-nxt" aria-label="Próximo passo">▶|</button><button id="tac-spd" aria-label="Velocidade"></button><button id="tac-nar" aria-label="Narração" title="Narração automática">🎙</button><button id="tac-snd" aria-label="Sons" title="Sons de impacto">🔔</button><button id="tac-trl" aria-label="Rastro da bola" title="Rastro da bola">⟿</button></div>
 <div class="tac-dots" id="tac-dots">${s.steps.map((p,k)=>`<i data-k="${k}"></i>`).join('')}</div>
-<div class="hub-b tac-info"><div class="tac-badges"><span class="hb-gc">${hbE(s.cat)}</span><span class="hb-gc">${hbE(s.lv)}</span><span class="hb-gc">${hbE(s.floor)}</span></div><div class="tts" id="tac-step"></div>
-<h3>A ideia</h3><div class="tts"><p>${hbE(s.desc)}</p></div><h3>Quando usar</h3><div class="tts"><p>${hbE(s.when)}</p></div><h3>Como reagir (quem está do outro lado)</h3><div class="tts"><p>${hbE(s.counter)}</p></div><h3>Risco</h3><div class="tts"><p>${hbE(s.risk)}</p></div><h3>Referência</h3><div class="tts"><p>${hbE(s.pro)}</p></div></div></div>`;
+<div class="hub-b tac-info"><div class="tac-badges"><span class="hb-gc">${hbE(s.cat)}</span><span class="hb-gc">${hbE(s.lv)}</span><span class="hb-gc">${hbE(s.floor)}</span></div><div class="tts" id="tac-step"></div><button class="tac-3d" id="tac-3d">🎾 Ver este golpe em 3D</button>
+<h3>A ideia</h3><div class="tts"><p>${hbE(s.desc)}</p></div><h3>Quando usar</h3><div class="tts"><p>${hbE(s.when)}</p></div><h3>Como reagir (quem está do outro lado)</h3><div class="tts"><p>${hbE(s.counter)}</p></div><h3>Risco</h3><div class="tts"><p>${hbE(s.risk)}</p></div><h3>Referência</h3><div class="tts"><p>${hbE(s.pro)}</p></div><h3>Treinar esta tática</h3><div class="hb-rel">${tacDrills(s).map(([a,b])=>`<button data-drill="${hbA(a+'|'+b)}">${hbE(b)}</button>`).join('')}</div></div></div>`;
   TR.E={};['pa','ta','ra','pb','tb','rb','sa','sb','sh','ball','imp'].forEach(k=>TR.E[k]=$('#tc-'+k));
   const sync=()=>{$('#tac-spd').textContent=TR.speed+'×';$('#tac-nar').classList.toggle('on',TR.narr);$('#tac-snd').classList.toggle('on',!!st.sound);$('#tac-trl').classList.toggle('on',TR.showTrail)};
   $('#tac-back').onclick=()=>{tacStop();tac.cur=null;renderHubBody()};
@@ -2182,7 +2134,9 @@ function renderTac(host){
   $('#tac-snd').onclick=()=>{st.sound=!st.sound;sync();renderMainMenu()};
   $('#tac-trl').onclick=()=>{TR.showTrail=!TR.showTrail;hbSV('tactrail',TR.showTrail);tacTrailDraw();sync()};
   $('#tac-dots').onclick=e=>{const k=e.target.closest('i');if(k)tacReset(+k.dataset.k)};
-  sync();tacBtn();tacReset(0);
+  $('#tac-3d').onclick=()=>tac3D(TR.i);
+  host.querySelectorAll('[data-drill]').forEach(b=>b.onclick=()=>{const [a,t]=b.dataset.drill.split('|');hbOpenDrill(a,t)});
+  sync();tacBtn();tacReset(TR.i||0);
 }
 function renderTacList(host){
   host.innerHTML=`<input id="tac-q" class="hb-search" type="search" placeholder="Buscar tática, jogador ou golpe…" autocomplete="off" value="${hbE(tac.q)}"><div class="hub-chips" id="tac-cats"></div><div class="hb-count" id="tac-cnt"></div><div class="hub-b" id="tac-list"></div>`;
@@ -2200,15 +2154,223 @@ function tacListUpd(){
   list.innerHTML=R.length?R.map(s=>`<div class="tac-card" data-id="${s.id}"><b>${hbE(s.num+'. '+s.title)}</b><span class="hb-gc">${hbE(s.cat)}</span><p>${hbE(s.desc)}</p><div class="tac-meta">▶ ${s.steps.length} etapas · ${hbE(s.lv)} · ${hbE(s.floor)}</div></div>`).join(''):'<div class="hb-empty">Nenhuma tática encontrada.</div>';
 }
 
+// ===== Ligações: táticas <-> drills <-> 3D =====
+const TAC_CAT_DRILLS={'Saque +1':[['SOLO','Saque nos três alvos'],['sv','Saque +1'],['GER','Jogo de pontos curtos (primeira bola)']],
+ 'Fundo':[['GER','Rali de fundo cruzado'],['GER','Quatro cantos'],['fh','Mudança de direção (cruzada → paralela)']],
+ 'Variação':[['GER','Jogo de pontos com condição'],['sl','Slice e drop shot'],['dp','Disfarce da preparação']],
+ 'Devolução':[['rt','Devolução cruzada profunda'],['rt','Devolução agressiva no 2º saque'],['rt','Split step no saque']],
+ 'Rede':[['GER','Rali de subida'],['GER','Passada contra rede'],['vl','Aproximação + voleio']],
+ 'Defesa':[['sl','Slice defensivo profundo'],['lb','Lob defensivo'],['bh','Defesa e recuperação no backhand']],
+ 'Construção':[['GER','Rali de pressão (pontos de 11)'],['GER','Quatro cantos'],['GER','Jogo de pontos com condição']]};
+function tacDrills(s){
+  const out=[],seen=new Set(),add=(sec,t)=>{const k=sec+'|'+t;if(seen.has(k)||!HB_DR[sec]||!HB_DR[sec].some(d=>d.t===t))return;seen.add(k);out.push([sec,t])};
+  (s.stk||[]).forEach(c=>(HB_DR[c]||[]).filter(d=>d.l!=='A'||s.lv==='Avançado').slice(0,2).forEach(d=>add(c,d.t)));
+  (TAC_CAT_DRILLS[s.cat]||[]).forEach(([a,b])=>add(a,b));
+  return out.slice(0,6);
+}
+let HB_DTMAP=null;
+function hbDtMap(){if(HB_DTMAP)return HB_DTMAP;HB_DTMAP={};HB_TAC.forEach(s=>tacDrills(s).forEach(([a,b])=>{(HB_DTMAP[a+'|'+b]=HB_DTMAP[a+'|'+b]||[]).push(s.id)}));return HB_DTMAP}
+function hbRelTac(d){const ids=(hbDtMap()[d.s+'|'+d.t]||[]).slice(0,4);if(!ids.length)return '';
+  return '<div class="hb-rel"><span>♟ Usado nas táticas:</span>'+ids.map(id=>{const s=HB_TAC.find(x=>x.id===id);return `<button data-tac="${id}">${hbE(s.num+'. '+s.title)}</button>`}).join('')+'</div>'}
+function hbGoTactic(id,step){
+  const s=HB_TAC.find(x=>x.id===id);if(!s)return;tacStop();tac.cur=id;TR.s=s;TR.plan=tacPlan(s);TR.i=step||0;TR.trail=[];TR.bn=[];
+  hub.tab='tac';$('#sci').style.display='none';$('#drill-panel').style.display='block';renderHub();renderMainMenu();
+}
+function hbOpenDrill(sec,title){
+  tacStop();if(S[sec])pick(sec);hub.lvl='';
+  if(sec==='SOLO'||sec==='CASA'){hub.tab='solo';hub.sub=sec}else if(sec==='PAR')hub.tab='wall';else hub.tab='drills';
+  $('#sci').style.display='none';$('#drill-panel').style.display='block';renderHub();renderMainMenu();
+  const el=document.querySelector('details.hb-dr[data-did="'+(sec+'|'+title).replace(/"/g,'\\"')+'"]');
+  if(el){el.open=true;el.scrollIntoView({block:'start'})}
+}
+function tacStrokeOf(s,k){ // qual golpe do 3D representa o passo k
+  const p=s.steps[k],T=(p.ti+' '+p.tx).toLowerCase(),has=r=>r.test(T);
+  if(has(/saque/)){if(has(/kick/))return 'kk';if(has(/slice/))return 'ss';return 'sv'}
+  if(has(/smash/))return 'sm';if(has(/\blob/))return 'lb';if(has(/drop|curtinha|deixadinha/))return 'dp';
+  if(has(/voleio|volley/))return 'vl';if(has(/short angle|ângulo fechado/))return 'sa';
+  if(has(/devolu|return|bloqueio/))return 'rt';if(has(/aproxima|approach/))return 'ap';
+  if(has(/slice/))return 'sl';if(has(/backhand/))return 'bh';if(has(/corrida|correndo/)&&has(/forehand/))return 'rf';
+  return (s.stk&&s.stk[0]&&S[s.stk[0]])?s.stk[0]:'fh';
+}
+function tac3D(k0){
+  const s=TR.s;tacStop();let k=k0;while(k>0&&s.steps[k].sd==='bounce')k--;                     // quique: mostra o golpe que acabou de acontecer
+  if(s.steps[k].sd==='bounce'){k=k0;while(k<s.steps.length-1&&s.steps[k].sd==='bounce')k++}
+  const p=s.steps[k],q=s.steps[Math.min(k+1,s.steps.length-1)],hitB=Math.hypot(p.B[0]-p.ball[0],p.B[1]-p.ball[1])<Math.hypot(p.A[0]-p.ball[0],p.A[1]-p.ball[1]);
+  const id=tacStrokeOf(s,k),tpl=SH.find(h=>h[0]===id)||SH.find(h=>h[0]==='fh');
+  const M=(pt)=>hitB?[-pt[0],23.77-pt[1]]:[pt[0],pt[1]]; // o 3D sempre mostra quem rebate na metade de baixo
+  let pos=M(hitB?p.B:p.A);pos=[Math.max(-4.5,Math.min(4.5,pos[0])),Math.max(-2.4,Math.min(11,pos[1]))];
+  let tg=k<s.steps.length-1?M(q.ball):[tpl[4],tpl[5]];if(tg[1]<12.5||Math.abs(tg[0])>4.1)tg=[Math.max(-4,Math.min(4,tg[0])),Math.max(12.5,Math.min(23.4,tg[1]<12.5?tpl[5]:tg[1]))];
+  for(let i=SH.length-1;i>=0;i--)if(String(SH[i][1]).startsWith('⚑ '))SH.splice(i,1);
+  SH.push([id,'⚑ Tática '+s.num+' · etapa '+(k+1),+pos[0].toFixed(2),+pos[1].toFixed(2),+tg[0].toFixed(2),+tg[1].toFixed(2),tpl[6],tpl[7],tpl[8],tpl[9],p.tx]);
+  hubClose();pick(id);const row=SH[SH.length-1],idx=()=>SH.filter(h=>h[0]===id).indexOf(row);setShot(id,idx());
+  for(let t=0;t<8&&st.fl&&st.fl.net;t++){if(t<4)row[6]=+(row[6]*1.12).toFixed(1);else row[5]=Math.min(23.4,+(row[5]+.7).toFixed(2));setShot(id,idx())} // ajusta velocidade/profundidade até a bola passar a rede
+  st.t=0;st.play=true;ppb.textContent='⏸';
+  tac.ret={id:s.id,step:k0};tacRetShow();
+}
+function tacRetShow(){let b=$('#tac-ret');if(!b){b=document.createElement('button');b.id='tac-ret';b.onclick=()=>{const r=tac.ret;if(!r)return;tac.ret=null;b.style.display='none';hbGoTactic(r.id,r.step)};$('#stage').appendChild(b)}
+  const s=HB_TAC.find(x=>x.id===tac.ret.id);b.textContent='↩ Tática '+s.num+' · etapa '+(tac.ret.step+1);b.style.display='block'}
+
+// ===== Animação dos diagramas: SVG animado (paredão, casa) + motor JS (quadra) =====
+let DG_TS=1;const dgDur=s=>(s*DG_TS).toFixed(2)+'s';
+const DG_SPDS=[.5,1,1.5,2];
+const DGA={spd:hbLS('dgspd',1),snd:hbLS('dgsnd',false),rm:!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches),cur:null};
+function dgWall(kind,o){
+  o=o||{};const T=(x,y,t,c)=>DG_TXT(x,y,t,3.4,c||'#0f172a');
+  let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" role="img" aria-label="Animação do exercício no paredão">'+DG_DEFS+'<rect width="120" height="70" fill="#dbeafe"/><rect y="60" width="120" height="10" fill="#c85a46"/>';
+  if(kind==='front'){
+    s+='<rect x="8" y="6" width="104" height="54" fill="#94a3b8" stroke="#475569" stroke-width="1"/>';
+    const sq=[];(o.items||[]).forEach(it=>{if(it[0]==='sq'){sq.push([it[1]+(it[3]||14)/2,it[2]+(it[3]||14)/2]);s+='<rect x="'+it[1]+'" y="'+it[2]+'" width="'+(it[3]||14)+'" height="'+(it[3]||14)+'" fill="#ef4444" opacity=".4" stroke="#fff" stroke-width="1.4"/>'}
+      else if(it[0]==='ln')s+='<line x1="8" y1="'+it[1]+'" x2="112" y2="'+it[1]+'" stroke="#fff" stroke-width="1.4" stroke-dasharray="4 3"/>'+T(98,it[1]-2,it[2],'#fff');
+      else if(it[0]==='ar')s+='<line x1="'+it[1]+'" y1="'+it[2]+'" x2="'+it[3]+'" y2="'+it[4]+'" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#dgw)"/>'});
+    const lat=(o.items||[]).find(it=>it[0]==='ar'&&sq.length<2);
+    if(sq.length>=2){const a=sq[0],b=sq[1];
+      s+='<circle cx="'+(o.px||60)+'" cy="54" r="4.5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><circle r="2.6" fill="#d7ec3c" stroke="#65a30d" stroke-width=".6"><animateMotion dur="'+dgDur(2.6)+'" repeatCount="indefinite" path="M60 52 L'+a[0]+' '+a[1]+' L60 52 L'+b[0]+' '+b[1]+' L60 52"/></circle>'}
+    else if(lat){const x1=lat[1],x2=lat[3];
+      s+='<circle cy="54" r="4.5" fill="#1d4ed8" stroke="#fff" stroke-width="1"><animate attributeName="cx" values="'+x1+';'+x2+';'+x1+'" dur="'+dgDur(3.2)+'" repeatCount="indefinite"/></circle><circle r="2.6" cy="46" fill="#d7ec3c" stroke="#65a30d" stroke-width=".6"><animate attributeName="cx" values="'+x1+';'+x2+';'+x1+'" dur="'+dgDur(3.2)+'" repeatCount="indefinite"/><animate attributeName="cy" values="46;22;46;22;46" dur="'+dgDur(3.2)+'" repeatCount="indefinite"/></circle>'}
+    else s+='<circle cx="'+(o.px||60)+'" cy="54" r="4.5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>';
+    if(o.l)s+=T(60,68,o.l,'#0f172a');
+    return s+'</svg>';
+  }
+  const d=o.d||6,px=14+d*7.5,gy=60,hx=px-3,hy=gy-14,hl=Math.round(.914*12),yw=(o.path==='high')?gy-36:(o.path==='low')?gy-12:gy-18;
+  s+='<rect x="8" y="6" width="6" height="54" fill="#64748b"/><line x1="0" y1="60" x2="120" y2="60" stroke="#7f1d1d" stroke-width="1"/>';
+  if(o.tape)s+='<rect x="8" y="'+(gy-hl)+'" width="6" height="1.6" fill="#fff"/><line x1="14" y1="'+(gy-hl+.8)+'" x2="86" y2="'+(gy-hl+.8)+'" stroke="#0f172a" stroke-width=".6" stroke-dasharray="2 2"/>'+T(102,gy-hl+1.8,'fita 0,91 m','#0f172a');
+  if(o.target)s+='<rect x="8" y="'+(gy-30)+'" width="6" height="12" fill="#ef4444"/><line x1="14" y1="'+(gy-24)+'" x2="86" y2="'+(gy-24)+'" stroke="#0f172a" stroke-width=".6" stroke-dasharray="2 2"/>'+T(102,gy-23,'alvo 1 m²','#0f172a');
+  const ap=(o.path==='high')?6:(o.path==='low')?gy-12:gy-34,path='M'+hx+' '+hy+' Q'+((hx+14)/2)+' '+ap+' 14 '+yw+' Q'+(14+d*2)+' '+(gy-28)+' '+(14+d*3.4)+' '+(gy-2)+' Q'+(px-14)+' '+(gy-24)+' '+hx+' '+hy;
+  s+='<path d="'+path+'" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/>';
+  s+='<circle cx="'+px+'" cy="'+(gy-20)+'" r="3.6" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><rect x="'+(px-2.6)+'" y="'+(gy-16)+'" width="5.2" height="14" rx="2" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>';
+  s+='<circle cx="'+hx+'" cy="'+hy+'" r="5" fill="none" stroke="#ffd600" stroke-width="1.4" opacity="0"><animate attributeName="opacity" values="1;0;0" keyTimes="0;.18;1" dur="'+dgDur(2.6)+'" repeatCount="indefinite"/><animate attributeName="r" values="2;7;7" keyTimes="0;.18;1" dur="'+dgDur(2.6)+'" repeatCount="indefinite"/></circle>';
+  s+='<circle r="2.6" fill="#d7ec3c" stroke="#65a30d" stroke-width=".6"><animateMotion dur="'+dgDur(2.6)+'" repeatCount="indefinite" path="'+path+'"/></circle>';
+  s+='<line x1="14" y1="67" x2="'+px+'" y2="67" stroke="#0f172a" stroke-width="1" marker-end="url(#dgk)" marker-start="url(#dgk)"/>'+T((14+px)/2,66,d+' m','#0f172a');
+  if(o.l)s+=T(64,10,o.l,'#0f172a');
+  return s+'</svg>';
+}
+function dgHome(kind,txt){
+  const A=(a,v,d,x)=>`<animate attributeName="${a}" values="${v}" dur="${dgDur(d)}" repeatCount="indefinite"${x||''}/>`,R=(f,t,cx,cy,d)=>`<animateTransform attributeName="transform" type="rotate" values="${f};${t};${f}" dur="${dgDur(d)}" repeatCount="indefinite" additive="sum" ${cx!=null?'':''}/>`;
+  const rot=(g,f,t,cx,cy,d)=>`<g><animateTransform attributeName="transform" type="rotate" values="${f} ${cx} ${cy};${t} ${cx} ${cy};${f} ${cx} ${cy}" dur="${dgDur(d)}" repeatCount="indefinite"/>${g}</g>`;
+  const tr=(g,v,d)=>`<g><animateTransform attributeName="transform" type="translate" values="${v}" dur="${dgDur(d)}" repeatCount="indefinite"/>${g}</g>`;
+  let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 70" role="img" aria-label="Animação do exercício em casa">'+DG_DEFS+'<rect width="100" height="70" fill="#e2e8f0"/><rect x="6" y="6" width="88" height="58" rx="3" fill="#f8fafc" stroke="#94a3b8" stroke-width=".8" stroke-dasharray="3 2"/>';
+  const T=(x,y,t,sz)=>DG_TXT(x,y,t,sz||3.6,'#0f172a'),P=(x,y)=>'<circle cx="'+x+'" cy="'+y+'" r="5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/>',Bl=(x,y,an)=>'<circle cx="'+x+'" cy="'+y+'" r="2.4" fill="#d7ec3c" stroke="#65a30d" stroke-width=".6">'+(an||'')+'</circle>',Ar=(a,b,c,d)=>'<line x1="'+a+'" y1="'+b+'" x2="'+c+'" y2="'+d+'" stroke="#0f172a" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#dgk)"/>';
+  const k=kind;
+  if(k==='keep')s+=P(50,40)+'<rect x="40" y="42" width="20" height="3" rx="1.5" fill="#64748b"/>'+Bl(50,22,A('cy','22;34;22',1.1))+T(50,14,'bola no ar (raquete)');
+  else if(k==='bounce')s+=P(50,28)+'<line x1="30" y1="58" x2="70" y2="58" stroke="#64748b" stroke-width="1.5"/>'+Bl(50,52,A('cy','34;52;34',.9))+T(50,14,'quicar a bola no chão');
+  else if(k==='mirror')s+='<rect x="20" y="8" width="60" height="4" fill="#38bdf8"/>'+T(50,20,'espelho / câmera')+P(50,42)+rot('<path d="M52 42 L72 34" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/><ellipse cx="76" cy="32" rx="5" ry="3.4" fill="none" stroke="#0f172a" stroke-width="1.4"/>',-40,35,50,42,1.8)+T(50,62,'unit turn · swing · finalização');
+  else if(k==='towel')s+=P(50,38)+rot('<path d="M55 38 Q72 24 78 40" fill="none" stroke="#f97316" stroke-width="3"/><circle cx="78" cy="40" r="2.5" fill="#f97316"/>',-55,25,55,38,1.2)+T(50,14,'toalha enrolada: ouça o estalo')+T(50,62,'aceleração progressiva');
+  else if(k==='grips')s+=P(50,36)+'<rect x="30" y="52" width="40" height="5" rx="2" fill="#64748b"/>'+['cont.','east.','semi'].map((t,i)=>`<g opacity=".35">${T(26+i*24,48,t,3)}<animate attributeName="opacity" values="${i==0?'1;.35;.35;.35':i==1?'.35;1;.35;.35':'.35;.35;1;.35'}" dur="${dgDur(3)}" repeatCount="indefinite"/></g>`).join('')+T(50,14,'trocar pegadas sem olhar');
+  else if(k==='balance')s+='<circle cx="50" cy="38" r="5" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><rect x="47" y="46" width="6" height="12" rx="2" fill="#1d4ed8" opacity=".6"/>'+T(50,14,'um pé só + raquete em círculos')+rot('<circle cx="66" cy="38" r="3.4" fill="none" stroke="#0f172a" stroke-width="1.4"/>',0,360,50,38,3);
+  else if(k==='band')s+='<rect x="6" y="28" width="5" height="14" fill="#475569"/>'+T(24,24,'ponto fixo',3)+'<line x1="11" y1="35" x2="45" y2="35" stroke="#ef4444" stroke-width="2"/>'+P(52,35)+rot('<path d="M60 28 A10 10 0 0 1 60 42" fill="none" stroke="#0f172a" stroke-width="1.6"/><circle cx="60" cy="42" r="1.8" fill="#0f172a"/>',-25,25,52,35,1.6)+T(60,58,'gire o tronco, quadril firme');
+  else if(k==='pallof')s+='<rect x="6" y="28" width="5" height="14" fill="#475569"/><line x1="11" y1="35" x2="42" y2="35" stroke="#ef4444" stroke-width="2"/>'+P(48,35)+tr('<line x1="54" y1="35" x2="70" y2="35" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="3 2" marker-end="url(#dgk)"/>','0 0;10 0;0 0',1.8)+T(50,14,'empurre à frente, resista ao giro')+T(30,24,'elástico',3);
+  else if(k==='plank')s+='<rect x="20" y="48" width="60" height="6" fill="#38bdf8" opacity=".5"/>'+tr('<rect x="25" y="38" width="50" height="8" rx="4" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><circle cx="76" cy="40" r="4" fill="#fcd9b6" stroke="#fff" stroke-width=".8"/>','0 0;0 -1.8;0 0',1.6)+T(50,18,'prancha: corpo reto')+T(50,62,'30 s frontal · 30 s lateral');
+  else if(k==='squat')s+=tr(P(50,32)+'<path d="M50 38 L44 50 L56 50 Z" fill="#1d4ed8" opacity=".6"/>','0 0;0 9;0 0',2)+T(50,14,'agachamento / afundo')+T(50,62,'joelho alinhado ao pé');
+  else if(k==='jump')s+='<ellipse cx="50" cy="56" rx="12" ry="3" fill="#64748b" opacity=".5"/>'+tr(P(50,38),'0 0;0 -16;0 0',1.2)+T(50,64,'aterrisse flexionando os joelhos',3.2);
+  else if(k==='steps')s+=P(50,38)+['<line x1="58" y1="38" x2="72" y2="38"','<line x1="42" y1="38" x2="28" y2="38"','<line x1="50" y1="30" x2="50" y2="16"','<line x1="50" y1="46" x2="50" y2="58"'].map((l,i)=>`<g opacity=".25">${l} stroke="#0f172a" stroke-width="1.4" stroke-dasharray="3 2" marker-end="url(#dgk)"/><animate attributeName="opacity" values="${[0,1,2,3].map(j=>j===i?1:.25).join(';')};.25" dur="${dgDur(2.4)}" repeatCount="indefinite"/></g>`).join('')+T(50,12,'passos curtos + split step',3.4);
+  else if(k==='catch')s+=P(30,38)+P(70,38)+Bl(0,0,'<animateMotion dur="'+dgDur(2)+'" repeatCount="indefinite" path="M36 36 Q50 8 64 36 Q50 8 36 36"/>')+T(50,62,'lance e pegue com a mão fraca');
+  else if(k==='wall')s+='<rect x="6" y="6" width="88" height="5" fill="#64748b"/>'+T(50,24,'parede (bola macia)')+P(50,50)+Bl(0,0,'<animateMotion dur="'+dgDur(1.6)+'" repeatCount="indefinite" path="M52 44 L52 14 L52 44"/>')+T(50,66,'1,5 m da parede',3.2);
+  else if(k==='stretch')s+='<rect x="8" y="8" width="6" height="54" fill="#64748b"/>'+T(32,16,'batente da porta',3.2)+P(30,40)+rot('<line x1="14" y1="34" x2="26" y2="38" stroke="#fcd9b6" stroke-width="3"/>',-12,12,14,34,2.4)+T(60,58,'30 s por lado');
+  else if(k==='fore')s+='<rect x="25" y="40" width="50" height="6" rx="2" fill="#92400e"/>'+rot('<rect x="48" y="30" width="22" height="6" rx="2" fill="#475569"/><circle cx="73" cy="33" r="3" fill="#475569"/>',-14,10,48,33,1.4)+T(50,14,'antebraço apoiado na mesa');
+  else if(k==='thorax')s+='<ellipse cx="50" cy="42" rx="22" ry="9" fill="#1d4ed8" opacity=".6"/>'+rot('<path d="M44 38 L70 38" stroke="#fcd9b6" stroke-width="3.4" stroke-linecap="round"/>',0,-70,44,38,2.6)+T(50,18,'deitado de lado: abra o braço de cima');
+  else if(k==='mind')s+='<circle cx="35" cy="48" r="8" fill="#1d4ed8" stroke="#fff" stroke-width="1"/><circle cx="48" cy="34" r="2" fill="#94a3b8"/><circle cx="55" cy="26" r="3" fill="#94a3b8"/><g><animateTransform attributeName="transform" type="scale" values="1;1.06;1" dur="'+dgDur(2.4)+'" repeatCount="indefinite" additive="sum"/><ellipse cx="72" cy="20" rx="20" ry="11" fill="#fff" stroke="#94a3b8"/></g>'+T(72,22,'saque → devolução → golpe',2.8);
+  else if(k==='video')s+='<rect x="30" y="14" width="40" height="30" rx="3" fill="#0f172a"/><path d="M46 22 L58 29 L46 36z" fill="#fff">'+A('opacity','1;.25;1',1.6)+'</path>'+T(50,56,'compare seu vídeo ao de referência',3.2)+'<rect x="42" y="46" width="16" height="3" fill="#38bdf8"/>';
+  else s+=P(50,36)+T(50,14,txt||'exercício em casa');
+  return s+'</svg>';
+}
+function dgSide(){return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" role="img" aria-label="Animação de altura sobre a rede">'+DG_DEFS+'<rect width="120" height="70" fill="#dbeafe"/><rect y="58" width="120" height="12" fill="#3688d6"/><rect x="58" y="42" width="3" height="16" fill="#111827"/>'+DG_TXT(60,40,'rede',3.4,'#0f172a')+'<line x1="52" y1="28" x2="68" y2="28" stroke="#ef4444" stroke-width="1.6" stroke-dasharray="3 2"/>'+DG_TXT(60,25,'corda +1 m',3.4,'#0f172a')+'<path d="M12 54 Q58 8 108 56" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/><circle r="2.6" fill="#d7ec3c" stroke="#65a30d" stroke-width=".6"><animateMotion dur="'+dgDur(2.2)+'" repeatCount="indefinite" path="M12 54 Q58 8 108 56"/></circle></svg>'}
+function dgPlan(blocks){let x=6,s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 50" role="img" aria-label="Plano de treino">'+DG_DEFS+'<rect width="120" height="50" fill="#e2e8f0"/>';const tot=blocks.reduce((a,b)=>a+b[0],0),col=['#38bdf8','#3688d6','#16a34a','#f59e0b','#a78bfa'];blocks.forEach((b,i)=>{const w=108*b[0]/tot;s+='<rect x="'+x+'" y="10" width="'+(w-1.5)+'" height="24" rx="3" fill="'+col[i%5]+'"/>'+DG_TXT(x+w/2-.7,24,b[0]+' min',3.4)+DG_TXT(x+w/2-.7,43,b[1],2.8,'#0f172a');x+=w});return s+'</svg>'}
+function dgClock(){let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" role="img" aria-label="Relógio do kick">'+DG_DEFS+'<rect width="120" height="70" fill="#dbeafe"/><circle cx="60" cy="36" r="26" fill="#fff" stroke="#475569" stroke-width="1.4"/>';[['12',0],['3',90],['6',180],['9',270],['7',210],['1',30]].forEach(([t,a])=>{const r=a*Math.PI/180;s+=DG_TXT(60+Math.sin(r)*20,36-Math.cos(r)*20+1.4,t,4.2,'#0f172a')});s+='<path d="M44 52 Q40 30 52 18 Q58 15 66 18" fill="none" stroke="#f59e0b" stroke-width="2.4" stroke-dasharray="60" marker-end="url(#dgy)"><animate attributeName="stroke-dashoffset" values="60;0;0" keyTimes="0;.7;1" dur="'+dgDur(2.4)+'" repeatCount="indefinite"/></path>'+DG_TXT(60,68,'a raquete "escova" a bola de 7 para 1 hora',3.2,'#0f172a')+'</svg>';return s}
+// ---------- motor JS dos drills de quadra ----------
+const DGA_NET=11.885,dgaY=z=>+(27-z).toFixed(3),dgaE=f=>f<.5?2*f*f:1-Math.pow(-2*f+2,2)/2;
+function dgSvgOf(sp,anim){
+  DG_TS=1/DGA.spd;
+  if(sp[0]==='c'){const v=dgCourt(sp[1],sp.slice(2),anim);return anim?v.replace(/<\/svg>$/,'<g class="dyn"></g></svg>'):v}
+  if(sp[0]==='w')return dgWall('side',sp[1]);if(sp[0]==='wf')return dgWall('front',sp[1]);if(sp[0]==='h')return dgHome(sp[1]);
+  if(sp[0]==='n')return dgSide();if(sp[0]==='p')return dgPlan(sp[1]);if(sp[0]==='k')return dgClock();return '';
+}
+function dgaPlan(sp){
+  const ops=sp.slice(2),actors=[],beats=[],alts=[];let pend=[];
+  ops.forEach(o=>{const k=o[0];
+    if(k==='P'||k==='Q')actors.push({k,x0:o[1],z0:o[2],l:o[3]||(k==='P'?'Você':'B')});
+    else if(k==='m')pend.push(o);
+    else if(k==='a'||k==='l'){beats.push({b:o,mv:pend,alt:false});pend=[]}
+    else if(k==='b')alts.push({b:o,mv:[],alt:true})});
+  const all=beats.concat(alts);if(pend.length)all.push({b:null,mv:pend});
+  if(!all.length&&ops.find(o=>o[0]==='S'))all.push({b:null,mv:[],swing:true});
+  if(!actors.length&&all.some(x=>x.mv.length)){const m=all.find(x=>x.mv.length).mv[0];actors.push({k:'P',x0:m[1],z0:m[2],l:'',virt:1})}
+  const hasB=!!ops.find(o=>o[0]==='B'),pos=actors.map(a=>[a.x0,a.z0]);let T=0;
+  all.forEach(bt=>{
+    bt.start=pos.map(p=>p.slice());bt.legs=[];const tl=actors.map(()=>0);
+    bt.mv.forEach(m=>{let ai=0,bd=1e9;actors.forEach((a,i)=>{const d=Math.hypot(a.x0-m[1],a.z0-m[2]);if(d<bd){bd=d;ai=i}});
+      if(bd>3.6&&actors.length>1)ai=actors.findIndex(a=>a.k==='P');if(ai<0)ai=0;
+      const from=pos[ai].slice(),to=[m[3],m[4]],d=Math.hypot(to[0]-from[0],to[1]-from[1]),t=Math.max(.5,d/4.8);
+      bt.legs.push({ai,from,to,t0:tl[ai],t1:tl[ai]+t});tl[ai]+=t;pos[ai]=to.slice()});
+    const dm=Math.max(0,...tl);let Tb=0;
+    if(bt.b){const o=bt.b,S=[o[1],o[2]],E=[o[3],o[4]],d=Math.hypot(E[0]-S[0],E[1]-S[1]);
+      let hit=-1,bd=2.7;actors.forEach((a,i)=>{const dd=Math.hypot(bt.start[i][0]-S[0],bt.start[i][1]-S[1]);if(dd<bd){bd=dd;hit=i}});
+      bt.S=S;bt.E=E;bt.hit=hit;
+      if(hasB&&Math.abs(E[0]-S[0])<.4&&d>1.5){bt.kind='toss';Tb=1.5;bt.E=[S[0],S[1]]}
+      else if(o[0]==='l'){bt.kind='lob';Tb=Math.max(1.1,d/10)}
+      else if(hit>=0&&/Você|Saca|Sacador/.test(actors[hit].l)&&S[1]<1.5&&E[1]>11.8&&E[1]<18.4){bt.kind='serve';Tb=Math.max(.75,d/30)}
+      else{bt.kind='flight';Tb=Math.max(.8,Math.min(2.4,d/17))}
+      const h0=bt.kind==='serve'?2.6:bt.kind==='toss'?.9:1,N=DGA_NET;let ap=bt.kind==='lob'?4.8:bt.kind==='toss'?2.6:.5;
+      if(bt.kind!=='toss'&&(S[1]-N)*(E[1]-N)<0){const un=(N-S[1])/(E[1]-S[1]);ap=Math.max(ap,(1.4-h0*(1-un))/(4*un*(1-un)))}
+      bt.h0=h0;bt.ap=ap;
+    }
+    bt.Tb=Tb;bt.D=Math.max(Tb,dm,bt.swing?1.3:0,.6)+.35;bt.t0=T;T+=bt.D;bt.end=pos.map(p=>p.slice());
+  });
+  return {actors,beats:all,total:T+1};
+}
+function dgaStart(g,sp){
+  dgaStop();const plan=dgaPlan(sp);if(!plan.beats.length)return;
+  const old=g.querySelector('svg');old.outerHTML=dgSvgOf(sp,true);const svg=g.querySelector('svg'),dyn=svg.querySelector('.dyn');
+  let h='<g class="bn"></g>';
+  plan.actors.forEach((a,i)=>{h+=`<ellipse class="as" rx=".7" ry=".28" fill="rgba(0,0,0,.3)"/><circle class="ar" r="1.1" fill="none" stroke="#ffd600" stroke-width=".2" opacity="0"/><circle class="ac" r=".75" fill="${a.k==='P'?'#1d4ed8':'#e2e8f0'}" stroke="${a.k==='P'?'#fff':'#475569'}" stroke-width=".16"/><text class="at" font-size=".66" text-anchor="middle" fill="${a.k==='P'?'#fff':'#0f172a'}" font-weight="800" font-family="system-ui,sans-serif" dy=".26">${hbE(a.l)}</text>`});
+  h+='<ellipse class="bs" rx=".3" ry=".15" fill="rgba(0,0,0,.4)" opacity="0"/><circle class="bl" r=".3" fill="#d7ec3c" stroke="#65a30d" stroke-width=".07" opacity="0"/>';
+  dyn.innerHTML=h;
+  const els={ac:[...dyn.querySelectorAll('.ac')],at:[...dyn.querySelectorAll('.at')],ar:[...dyn.querySelectorAll('.ar')],as:[...dyn.querySelectorAll('.as')],bl:dyn.querySelector('.bl'),bs:dyn.querySelector('.bs'),bn:dyn.querySelector('.bn')};
+  const A=g._dga={plan,els,t:0,last:0,paused:DGA.rm,raf:0,ev:{},sp};DGA.cur=g;dgaBtn(g);
+  const place=(i,x,z)=>{const y=dgaY(z);els.ac[i].setAttribute('cx',x);els.ac[i].setAttribute('cy',y);els.at[i].setAttribute('x',x);els.at[i].setAttribute('y',y);els.ar[i].setAttribute('cx',x);els.ar[i].setAttribute('cy',y);els.as[i].setAttribute('cx',x+.12);els.as[i].setAttribute('cy',y+.12)};
+  const frame=(now)=>{
+    if(!g.isConnected||A.paused){A.raf=0;return}
+    if(!A.last)A.last=now;A.t+=(now-A.last)/1000*DGA.spd;A.last=now;if(A.t>=plan.total){A.t=0;A.ev={};els.bn.innerHTML=''}
+    const bt=plan.beats.find((b,i)=>A.t>=b.t0&&(i===plan.beats.length-1||A.t<plan.beats[i+1].t0))||plan.beats[plan.beats.length-1],bi=plan.beats.indexOf(bt),tt=Math.max(0,A.t-bt.t0);
+    if(bi!==A.bi){A.bi=bi;els.bl.setAttribute('opacity',0);els.bs.setAttribute('opacity',0)}
+    plan.actors.forEach((a,i)=>{let p=bt.start[i];const L=bt.legs.filter(l=>l.ai===i);for(const l of L){if(tt>=l.t1)p=l.to;else if(tt>l.t0){const f=dgaE((tt-l.t0)/(l.t1-l.t0));p=[l.from[0]+(l.to[0]-l.from[0])*f,l.from[1]+(l.to[1]-l.from[1])*f];break}else{p=l.from;break}}if(A.t>=plan.beats[plan.beats.length-1].t0+plan.beats[plan.beats.length-1].D&&!L.length)p=bt.start[i];place(i,p[0],p[1])});
+    els.ar.forEach(r=>r.setAttribute('opacity',0));
+    if(bt.swing){const k=tt%1.3/1.3;els.ar[0]&&els.ar[0].setAttribute('opacity',k<.4?(1-k/.4):0)}
+    if(bt.b){
+      const u=Math.min(1,tt/bt.Tb),h=bt.kind==='toss'?bt.h0*(1-u)+4*bt.ap*u*(1-u):bt.h0*(1-u)+4*bt.ap*u*(1-u),x=bt.S[0]+(bt.E[0]-bt.S[0])*u,z=bt.S[1]+(bt.E[1]-bt.S[1])*u;
+      els.bl.setAttribute('cx',x);els.bl.setAttribute('cy',(dgaY(z)-h*.34).toFixed(3));els.bl.setAttribute('r',(.3+h*.05).toFixed(3));els.bl.setAttribute('opacity',1);
+      els.bs.setAttribute('cx',x);els.bs.setAttribute('cy',dgaY(z));els.bs.setAttribute('rx',(.3+h*.05).toFixed(2));els.bs.setAttribute('opacity',Math.max(.25,.9-h*.18));
+      if(bt.hit>=0&&tt<.45)els.ar[bt.hit].setAttribute('opacity',1-tt/.45);
+      const ek='h'+bi;if(!A.ev[ek]&&tt<.2){A.ev[ek]=1;if(DGA.snd&&st.sound&&bt.kind!=='toss')playRacketHit(bt.kind==='serve'?42:24,2000)}
+      if(u>=1&&!A.ev['b'+bi]){A.ev['b'+bi]=1;if(bt.kind!=='toss'){els.bn.insertAdjacentHTML('beforeend',`<ellipse cx="${bt.E[0]}" cy="${dgaY(bt.E[1])}" rx=".42" ry=".2" fill="none" stroke="#fff" stroke-width=".12"/>`);if(DGA.snd&&st.sound)playCourtBounce()}}
+    }
+    A.raf=requestAnimationFrame(frame);
+  };
+  A.frame=frame;
+  if(!A.paused)A.raf=requestAnimationFrame(frame);else frame(performance.now());
+}
+function dgaStop(){const g=DGA.cur;if(g&&g._dga){cancelAnimationFrame(g._dga.raf);g._dga.paused=true;g._dga.raf=0}DGA.cur=null}
+function dgaBtn(g){const b=g.querySelector('[data-dgc="play"]');if(!b)return;const A=g._dga;const playing=A?!A.paused:!g._smilPaused;b.textContent=playing?'⏸':'▶';b.setAttribute('aria-label',playing?'Pausar animação':'Reproduzir animação');
+  const sp=g.querySelector('[data-dgc="spd"]');if(sp)sp.textContent=DGA.spd+'×';const sn=g.querySelector('[data-dgc="snd"]');if(sn){sn.textContent=DGA.snd?'🔔':'🔇';sn.style.display=(g.dataset.k==='c')?'':'none'}}
+function dgOpen(d){const g=d.querySelector('.hb-dg');if(!g||!g.dataset.dg)return;const [sec,t]=g.dataset.dg.split('|'),sp=(DG[sec]||{})[t];if(!sp||sp[0]==='p')return;
+  if(sp[0]==='c')dgaStart(g,sp);else{const svg=g.querySelector('svg');if(svg&&svg.unpauseAnimations){svg.setCurrentTime(0);if(DGA.rm){svg.pauseAnimations();g._smilPaused=true}else{svg.unpauseAnimations();g._smilPaused=false}}dgaBtn(g)}}
+function dgClose(d){const g=d.querySelector('.hb-dg');if(!g)return;if(g._dga){cancelAnimationFrame(g._dga.raf);g._dga.paused=true}const svg=g.querySelector('svg');if(svg&&svg.pauseAnimations)svg.pauseAnimations()}
+function dgCtl(e){
+  const b=e.target.closest('[data-dgc]');if(!b)return;e.preventDefault();e.stopPropagation();const g=b.closest('.hb-dg'),act=b.dataset.dgc,[sec,t]=g.dataset.dg.split('|'),sp=DG[sec][t];
+  if(act==='play'){if(g._dga){const A=g._dga;A.paused=!A.paused;A.last=0;if(!A.paused)A.raf=requestAnimationFrame(A.frame)}else{const svg=g.querySelector('svg');if(svg){g._smilPaused=!g._smilPaused;g._smilPaused?svg.pauseAnimations():svg.unpauseAnimations()}}}
+  else if(act==='spd'){DGA.spd=DG_SPDS[(DG_SPDS.indexOf(DGA.spd)+1)%DG_SPDS.length]||1;hbSV('dgspd',DGA.spd);
+    if(!g._dga&&sp[0]!=='c'){const was=g._smilPaused;g.querySelector('svg').outerHTML=dgSvgOf(sp,false);const svg=g.querySelector('svg');if(was)svg.pauseAnimations();else svg.unpauseAnimations?.()}}
+  else if(act==='snd'){DGA.snd=!DGA.snd;hbSV('dgsnd',DGA.snd);ensureAudio&&DGA.snd&&ensureAudio()}
+  document.querySelectorAll('.hb-dg').forEach(x=>dgaBtn(x));
+}
 
 function hbCards(list){
   const L=hub.lvl?list.filter(d=>d.l===hub.lvl):list;
   if(!L.length)return '<div class="hb-empty">Nenhum exercício neste nível.</div>';
-  return L.map(d=>`<details class="hb-dr"><summary><span>${hbE(d.t)}</span><span class="hb-lv hb-lv${d.l}">${HB_LV[d.l]}</span></summary>${hbDiagram(d.s,d.t)}<div class="tts" data-tts="${hbA(d.t+'. Nível '+HB_LV[d.l]+'. Duração: '+d.n+'. Como fazer: '+d.h+' Foco: '+d.f)}"><div class="hb-m">⏱ ${hbE(d.n)}</div><p>${hbE(d.h)}</p><p class="f">🎯 Foco: ${hbE(d.f)}</p></div></details>`).join('');
+  return L.map(d=>`<details class="hb-dr" data-did="${hbA(d.s+'|'+d.t)}"><summary><span>${hbE(d.t)}</span><span class="hb-lv hb-lv${d.l}">${HB_LV[d.l]}</span></summary>${hbDiagram(d.s,d.t)}${hbRelTac(d)}<div class="tts" data-tts="${hbA(d.t+'. Nível '+HB_LV[d.l]+'. Duração: '+d.n+'. Como fazer: '+d.h+' Foco: '+d.f)}"><div class="hb-m">⏱ ${hbE(d.n)}</div><p>${hbE(d.h)}</p><p class="f">🎯 Foco: ${hbE(d.f)}</p></div></details>`).join('');
 }
 function hbLvChips(){return '<div class="hub-chips">'+[['','Todos os níveis'],['I','Iniciante'],['M','Intermediário'],['A','Avançado']].map(([v,t])=>`<button class="hb-chip sm${hub.lvl===v?' on':''}" data-lv="${v}">${t}</button>`).join('')+'</div>'}
 function renderHub(){
-  const dp=$('#drill-panel');tacStop();ttsStop();
+  const dp=$('#drill-panel');tacStop();dgaStop();ttsStop();
   dp.style.setProperty('--hbs',hub.fs);
   const tabs=[['drills','📋 Drills'],['solo','🏟️ Solo e casa'],['wall','🧱 Paredão'],['tac','♟ Táticas'],['gloss','📖 Glossário']];
   const g=hub.tab==='gloss';
@@ -2233,7 +2395,10 @@ function renderHubBody(){
     h=hbLvChips()+`<div class="hub-b"><div class="hub-note tts">Paredão: use um muro liso e plano, com marcações de fita (rede a 0,914 m). Prefira bolas de baixa pressão, confira se o local permite e cuide do ricochete, mantendo distância segura de pessoas e vidros.</div>${hbCards(HB_DR.PAR)}</div>`;
   }
   host.innerHTML=h;
+  host.querySelectorAll('.hb-dg svg').forEach(v=>v.pauseAnimations&&v.pauseAnimations());
+  if(!host._tg){host._tg=1;host.addEventListener('toggle',e=>{const d=e.target;if(d&&d.matches&&d.matches('details.hb-dr'))d.open?dgOpen(d):dgClose(d)},true);host.addEventListener('click',dgCtl)}
   host.querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{hub.lvl=b.dataset.lv;renderHubBody()});
+  host.querySelectorAll('[data-tac]').forEach(b=>b.onclick=()=>hbGoTactic(b.dataset.tac,0));
   host.querySelectorAll('[data-sub]').forEach(b=>b.onclick=()=>{hub.sub=b.dataset.sub;renderHubBody()});
 }
 function renderGloss(host){
